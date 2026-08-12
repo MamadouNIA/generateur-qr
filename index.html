@@ -1,0 +1,81 @@
+const { jsPDF } = window.jspdf;
+
+// ==========================================
+// 1. TÉLÉCHARGEMENT PNG
+// ==========================================
+document.getElementById('dl-png').addEventListener('click', () => {
+  const canvas = document.getElementById('qr-canvas');
+  const link = document.createElement('a');
+  link.download = 'qrcode.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// ==========================================
+// 2. TÉLÉCHARGEMENT SVG (VECTORIEL)
+// ==========================================
+document.getElementById('dl-svg').addEventListener('click', () => {
+  const text = document.getElementById('qr-text').value;
+  const qr = qrcode(0, 'H');
+  qr.addData(text);
+  qr.make();
+
+  // Génération du SVG sous forme de String
+  const svgData = generateSVG(qr, {
+    color: document.getElementById('qr-color').value,
+    bgColor: document.getElementById('bg-color').value,
+    logoUrl: document.getElementById('logo-url').value
+  });
+
+  // Création du Blob et lien de téléchargement
+  const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement('a');
+  link.download = 'qrcode.svg';
+  link.href = url;
+  link.click();
+  
+  URL.revokeObjectURL(url); // Libération de la mémoire
+});
+
+// ==========================================
+// 3. TÉLÉCHARGEMENT PDF (A4 CENTRÉ)
+// ==========================================
+document.getElementById('dl-pdf').addEventListener('click', () => {
+  const canvas = document.getElementById('qr-canvas');
+  const text = document.getElementById('qr-text').value;
+
+  // Création du document PDF (A4 Portrait, unités en mm)
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const imgData = canvas.toDataURL('image/png');
+  
+  // 1. Entête du document
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(2, 119, 189);
+  doc.text('Fiche QR Code', 105, 30, { align: 'center' });
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(100);
+  doc.text(`URL Cible : ${text}`, 105, 40, { align: 'center' });
+
+  // 2. Insertion et centrage du QR Code (Taille 100x100 mm)
+  const qrSize = 100;
+  const xPos = (210 - qrSize) / 2; // Largeur A4 = 210mm
+  doc.addImage(imgData, 'PNG', xPos, 60, qrSize, qrSize);
+
+  // 3. Pied de page
+  doc.setFontSize(9);
+  doc.setTextColor(150);
+  doc.text('Généré automatiquement via QR Code Engine', 105, 175, { align: 'center' });
+
+  // Téléchargement du fichier PDF
+  doc.save('qrcode-document.pdf');
+});
