@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Générateur de QR Code Pro</title>
+  <title>Générateur de QR Code Pro | Design & Réseaux Sociaux</title>
 
   <!-- Dépendances externes -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
@@ -11,106 +11,182 @@
 
   <style>
     :root {
-      --primary: #0277bd;
-      --primary-hover: #01579b;
-      --bg-color: #f4f7f9;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --accent: #06b6d4;
+      --bg-color: #f8fafc;
       --card-bg: #ffffff;
-      --text-color: #2c3e50;
-      --border-color: #e0e6ed;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --radius-lg: 16px;
+      --radius-md: 10px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: var(--text-main);
       padding: 40px 20px;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
     }
 
-    .container {
+    .app-card {
       background: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
       width: 100%;
-      max-width: 900px;
-      padding: 32px;
+      max-width: 980px;
+      padding: 36px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
     }
 
-    @media (max-width: 768px) {
-      .container { grid-template-columns: 1fr; }
+    @media (max-width: 850px) {
+      .app-card { grid-template-columns: 1fr; padding: 24px; }
     }
 
-    h1 {
-      font-size: 1.5rem;
-      color: var(--primary);
+    .header {
       grid-column: 1 / -1;
       text-align: center;
-      border-bottom: 2px solid var(--border-color);
-      padding-bottom: 12px;
+      margin-bottom: 8px;
     }
 
-    .form-group { margin-bottom: 20px; }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
 
     label {
       display: block;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 12px;
+      padding: 12px 16px;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
+      background-color: #f8fafc;
     }
 
-    input[type="text"]:focus { border-color: var(--primary); }
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
 
-    .color-pickers { display: flex; gap: 16px; }
+    /* Raccourcis Réseaux Sociaux */
+    .social-presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .social-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      background: #e2e8f0;
+    }
+
+    .social-btn img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .color-pickers {
+      display: flex;
+      gap: 16px;
+    }
+
     .color-field { flex: 1; }
 
-    input[type="color"] {
-      width: 100%;
-      height: 42px;
+    .color-wrapper {
+      display: flex;
+      align-items: center;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      cursor: pointer;
-      background: transparent;
+      border-radius: var(--radius-md);
+      padding: 4px 8px;
+      background: #f8fafc;
     }
 
-    .preview-section {
+    input[type="color"] {
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+    }
+
+    .color-val {
+      margin-left: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .preview-box {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #fafbfc;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 24px;
     }
 
     #qr-canvas {
       max-width: 100%;
       height: auto;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
       background: #ffffff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .btn-group {
@@ -124,7 +200,7 @@
     .btn {
       padding: 12px 18px;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       font-weight: 600;
       font-size: 0.9rem;
       cursor: pointer;
@@ -135,15 +211,27 @@
       gap: 8px;
     }
 
-    .btn-primary { background-color: var(--primary); color: white; }
-    .btn-primary:hover { background-color: var(--primary-hover); }
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
 
     .btn-outline {
-      background-color: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
+      background-color: #fff;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
     }
-    .btn-outline:hover { background-color: #e1f5fe; }
+
+    .btn-outline:hover {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
 
     .export-options { display: flex; gap: 10px; width: 100%; }
     .export-options .btn { flex: 1; }
@@ -151,46 +239,85 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>Générateur de QR Code</h1>
+  <div class="app-card">
+    <div class="header">
+      <h1>Générateur de QR Code Pro</h1>
+      <p>Créez, personnalisez et téléchargez vos QR codes aux formats PNG, SVG et PDF</p>
+    </div>
 
-    <!-- Formulaire de paramétrage -->
+    <!-- Formulaire de configuration -->
     <div class="form-section">
       <div class="form-group">
         <label for="qr-text">Contenu / URL du QR Code</label>
-        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Entrez une URL ou un texte">
+        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Collez votre lien ici...">
       </div>
 
+      <!-- Presets Réseaux Sociaux -->
+      <div class="form-group">
+        <label>Modèles Rapides Réseaux Sociaux</label>
+        <div class="social-presets">
+          <button class="social-btn" title="WhatsApp" onclick="applyPreset('https://wa.me/', '#25D366', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
+          </button>
+          <button class="social-btn" title="Instagram" onclick="applyPreset('https://instagram.com/', '#E1306C', 'https://cdn-icons-png.flaticon.com/512/3955/3955024.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3955/3955024.png" alt="Instagram">
+          </button>
+          <button class="social-btn" title="Facebook" onclick="applyPreset('https://facebook.com/', '#1877F2', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook">
+          </button>
+          <button class="social-btn" title="LinkedIn" onclick="applyPreset('https://linkedin.com/in/', '#0A66C2', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn">
+          </button>
+          <button class="social-btn" title="YouTube" onclick="applyPreset('https://youtube.com/@', '#FF0000', 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+          </button>
+          <button class="social-btn" title="TikTok" onclick="applyPreset('https://tiktok.com/@', '#000000', 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok">
+          </button>
+          <button class="social-btn" title="X (Twitter)" onclick="applyPreset('https://x.com/', '#000000', 'https://cdn-icons-png.flaticon.com/512/5969/5969020.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png" alt="X">
+          </button>
+        </div>
+      </div>
+
+      <!-- Couleurs -->
       <div class="form-group color-pickers">
         <div class="color-field">
-          <label for="qr-color">Couleur Premier Plan</label>
-          <input type="color" id="qr-color" value="#0277bd">
+          <label for="qr-color">Couleur Code</label>
+          <div class="color-wrapper">
+            <input type="color" id="qr-color" value="#4f46e5">
+            <span class="color-val" id="qr-color-val">#4f46e5</span>
+          </div>
         </div>
         <div class="color-field">
-          <label for="bg-color">Couleur Arrière-plan</label>
-          <input type="color" id="bg-color" value="#ffffff">
+          <label for="bg-color">Arrière-plan</label>
+          <div class="color-wrapper">
+            <input type="color" id="bg-color" value="#ffffff">
+            <span class="color-val" id="bg-color-val">#ffffff</span>
+          </div>
         </div>
       </div>
 
+      <!-- Logo personnalisé -->
       <div class="form-group">
-        <label for="logo-url">URL de l'icône / Logo (Optionnel)</label>
-        <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/25/25231.png" placeholder="Lien vers un logo PNG/SVG">
+        <label for="logo-url">URL du Logo Central</label>
+        <input type="text" id="logo-url" value="" placeholder="Collez le lien d'un logo (.png, .jpg)">
       </div>
 
       <button class="btn btn-primary" id="generate-btn" style="width: 100%;">
-        🔄 Actualiser la Prévisualisation
+        🔄 Actualiser l'aperçu
       </button>
     </div>
 
-    <!-- Zone d'affichage et téléchargement -->
-    <div class="preview-section">
-      <canvas id="qr-canvas" width="300" height="300"></canvas>
+    <!-- Zone de prévisualisation et téléchargement -->
+    <div class="preview-box">
+      <canvas id="qr-canvas" width="280" height="280"></canvas>
 
       <div class="btn-group">
-        <button class="btn btn-primary" id="dl-png">Télécharger en PNG</button>
+        <button class="btn btn-primary" id="dl-png">🖼️ Télécharger en PNG</button>
         <div class="export-options">
-          <button class="btn btn-outline" id="dl-svg">Vectoriel SVG</button>
-          <button class="btn btn-outline" id="dl-pdf">Document PDF</button>
+          <button class="btn btn-outline" id="dl-svg">📐 Vectoriel SVG</button>
+          <button class="btn btn-outline" id="dl-pdf">📄 Document PDF</button>
         </div>
       </div>
     </div>
@@ -199,7 +326,24 @@
   <script>
     const { jsPDF } = window.jspdf || {};
 
-    // --- 1. FONCTIONS ET LOGIQUE MOTEUR ---
+    // Synchronisation dynamique des textes de couleur
+    document.getElementById('qr-color').addEventListener('input', (e) => {
+      document.getElementById('qr-color-val').textContent = e.target.value;
+    });
+    document.getElementById('bg-color').addEventListener('input', (e) => {
+      document.getElementById('bg-color-val').textContent = e.target.value;
+    });
+
+    // Application automatique des modèles réseaux sociaux
+    function applyPreset(urlPrefix, colorHex, logoUrl) {
+      document.getElementById('qr-text').value = urlPrefix;
+      document.getElementById('qr-color').value = colorHex;
+      document.getElementById('qr-color-val').textContent = colorHex;
+      document.getElementById('logo-url').value = logoUrl;
+      updateQR();
+    }
+
+    // --- MOTEUR RENDU CANVAS & SVG ---
     function getQRMatrix(text) {
       const qr = qrcode(0, 'H');
       qr.addData(text);
@@ -315,7 +459,7 @@
       return svg;
     }
 
-    // --- 2. GESTION DES REQUÊTES ET FORMULAIRES ---
+    // --- FORMULAIRES & EVENEMENTS ---
     const getFormValues = () => {
       const textInput = document.getElementById('qr-text');
       const colorInput = document.getElementById('qr-color');
@@ -327,7 +471,7 @@
 
       return {
         text,
-        color: colorInput ? colorInput.value : '#0277bd',
+        color: colorInput ? colorInput.value : '#4f46e5',
         bgColor: bgInput ? bgInput.value : '#ffffff',
         logoUrl: logoInput ? logoInput.value.trim() : ''
       };
@@ -349,7 +493,7 @@
       renderCanvas(qr, canvas, values, callback);
     }
 
-    // --- 3. ÉVÉNEMENTS EXPORTS ---
+    // EXPORTS
     document.getElementById('dl-png').addEventListener('click', () => {
       updateQR(() => {
         const canvas = document.getElementById('qr-canvas');
@@ -377,14 +521,14 @@
 
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
-        doc.setTextColor(2, 119, 189);
+        doc.setTextColor(79, 70, 229);
         doc.text('Fiche QR Code', 105, 25, { align: 'center' });
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(80);
+        doc.setTextColor(100);
         
-        const splitText = doc.splitTextToSize(`Cible : ${values.text}`, 160);
+        const splitText = doc.splitTextToSize(`Lien : ${values.text}`, 160);
         doc.text(splitText, 105, 35, { align: 'center' });
 
         const qrSize = 90;
@@ -395,13 +539,12 @@
 
         doc.setFontSize(9);
         doc.setTextColor(150);
-        doc.text('Généré via https://mamadounia.github.io/generateur-qr/', 105, yPos + qrSize + 20, { align: 'center' });
+        doc.text('Généré sur https://mamadounia.github.io/generateur-qr/', 105, yPos + qrSize + 20, { align: 'center' });
 
         doc.save('qrcode-document.pdf');
       });
     });
 
-    // Événements d'initialisation
     document.getElementById('generate-btn').addEventListener('click', () => updateQR());
     window.onload = () => updateQR();
   </script>
