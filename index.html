@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR Studio — Extended Styles Ultra</title>
+  <title>CyberQR Studio — Multi-Social Link Hub</title>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -49,7 +49,7 @@
       border-radius: 20px;
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
       width: 100%;
-      max-width: 1150px;
+      max-width: 1200px;
       padding: 35px;
       display: grid;
       grid-template-columns: 1.25fr 0.75fr;
@@ -73,6 +73,33 @@
     }
 
     .title-zone p { color: #9ca3af; font-size: 1rem; }
+
+    .mode-switch {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .mode-btn {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glow);
+      color: #fff;
+      font-family: var(--font-title);
+      font-size: 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .mode-btn.active {
+      background: var(--neon-cyan);
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+    }
 
     .control-group { margin-bottom: 18px; }
 
@@ -163,6 +190,27 @@
       cursor: pointer;
       background: transparent;
     }
+
+    .multi-social-container {
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(3, 7, 18, 0.5);
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-input-row img { width: 22px; height: 22px; }
 
     .preview-stage {
       background: rgba(3, 7, 18, 0.85);
@@ -267,14 +315,20 @@
 
   <div class="cyber-card">
     <div class="title-zone">
-      <h1>CyberQR Studio Pro</h1>
-      <p>// 12 Styles de Modules & Moteur Vectoriel</p>
+      <h1>CyberQR Hub Pro</h1>
+      <p>// Multi-Social Hub & Direct Redirect QR Engine</p>
     </div>
 
-    <!-- Controls -->
-    <div class="controls-panel">
+    <!-- Choix du Mode -->
+    <div class="mode-switch">
+      <button class="mode-btn active" id="mode-single-btn" onclick="switchMode('single')">🔗 Canal Unique</button>
+      <button class="mode-btn" id="mode-multi-btn" onclick="switchMode('multi')">🌐 Multi-Réseaux (Bio Link)</button>
+    </div>
+
+    <!-- Controls Single -->
+    <div class="controls-panel" id="single-panel">
       <div class="control-group">
-        <label>⚡ Sélectionner un Canal</label>
+        <label>⚡ Sélectionner un Canal Direct</label>
         <div class="preset-grid">
           <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'email', 'mailto:')">
             <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
@@ -310,10 +364,47 @@
       </div>
 
       <div class="control-group">
-        <label for="qr-text" id="input-label">🔗 Adresse Email Cible</label>
+        <label for="qr-text" id="input-label">🔗 URL / Donnée Cible</label>
         <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez la donnée cible">
       </div>
+    </div>
 
+    <!-- Controls Multi Social Panel -->
+    <div class="controls-panel hidden" id="multi-panel">
+      <div class="control-group">
+        <label>🌐 Configurer vos Liens Réseaux Sociaux</label>
+        <div class="multi-social-container">
+          <div class="social-input-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram">
+            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" placeholder="Lien Instagram (ex: https://instagram.com/pseudo)">
+          </div>
+          <div class="social-input-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
+            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" placeholder="Lien WhatsApp (ex: https://wa.me/33600000000)">
+          </div>
+          <div class="social-input-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn">
+            <input type="text" class="multi-social-link" data-name="LinkedIn" data-icon="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" placeholder="Lien LinkedIn">
+          </div>
+          <div class="social-input-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+            <input type="text" class="multi-social-link" data-name="YouTube" data-icon="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" placeholder="Lien YouTube">
+          </div>
+          <div class="social-input-row">
+            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok">
+            <input type="text" class="multi-social-link" data-name="TikTok" data-icon="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" placeholder="Lien TikTok">
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <button class="btn btn-cyber-outline" style="width: 100%;" onclick="exportBioLinkPage()">🌐 Exporter la Page Bio-Link (.HTML)</button>
+        <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">* Hébergez ce fichier HTML sur GitHub Pages/Netlify pour l'utiliser avec votre QR Code.</p>
+      </div>
+    </div>
+
+    <!-- Style & Customization Controls Shared -->
+    <div class="shared-controls">
       <div class="grid-2 control-group">
         <div>
           <label for="module-style">📐 Style Modules (12)</label>
@@ -342,7 +433,7 @@
             <option value="leaf">Feuille / Goutte</option>
             <option value="diamond">Losange Cyber</option>
             <option value="target">Cible Ciblée</option>
-            <option value="bars">Cadre Ouvert (Corner Lines)</option>
+            <option value="bars">Cadre Ouvert</option>
           </select>
         </div>
       </div>
@@ -364,9 +455,9 @@
         </div>
       </div>
 
-      <div class="grid-2 control-group">
+      <div class="grid-2 control-group" id="icon-group">
         <div>
-          <label for="icon-select">🛡️ Sélectionner une Icône</label>
+          <label for="icon-select">🛡️ Icône centrale</label>
           <select id="icon-select" onchange="toggleCustomUrlInput()">
             <option value="email">Email</option>
             <option value="whatsapp">WhatsApp</option>
@@ -383,7 +474,7 @@
           </select>
         </div>
         <div id="custom-url-wrapper" class="hidden">
-          <label for="logo-url">🌐 Lien d'Image (URL)</label>
+          <label for="logo-url">🌐 Lien Image</label>
           <input type="text" id="logo-url" placeholder="https://domaine.com/logo.png">
         </div>
       </div>
@@ -413,6 +504,7 @@
   <script>
     const { jsPDF } = window.jspdf || {};
     let currentPrefix = 'mailto:';
+    let activeMode = 'single';
 
     const ICON_CATALOG = {
       email: 'https://cdn-icons-png.flaticon.com/512/732/732200.png',
@@ -427,6 +519,15 @@
       phone: 'https://cdn-icons-png.flaticon.com/512/126/126509.png'
     };
 
+    function switchMode(mode) {
+      activeMode = mode;
+      document.getElementById('mode-single-btn').classList.toggle('active', mode === 'single');
+      document.getElementById('mode-multi-btn').classList.toggle('active', mode === 'multi');
+      document.getElementById('single-panel').classList.toggle('hidden', mode !== 'single');
+      document.getElementById('multi-panel').classList.toggle('hidden', mode !== 'multi');
+      renderUI();
+    }
+
     class CyberQREngine {
       static generateSVGString(text, options) {
         const qr = qrcode(0, 'H');
@@ -440,7 +541,7 @@
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
         svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
 
-        // DESSIN DES MODULES (12 STYLES)
+        // DRAW MODULES
         svg += `<g fill="${options.color}">`;
         for (let r = 0; r < count; r++) {
           for (let c = 0; c < count; c++) {
@@ -453,18 +554,15 @@
               const cy = y + cellSize / 2;
 
               switch(options.moduleStyle) {
-                case 'dots': {
+                case 'dots':
                   svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.3).toFixed(2)}"/>`;
                   break;
-                }
-                case 'smooth': {
+                case 'smooth':
                   svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize / 2.2).toFixed(2)}"/>`;
                   break;
-                }
-                case 'diamonds': {
+                case 'diamonds':
                   svg += `<polygon points="${cx},${y} ${x + cellSize},${cy} ${cx},${y + cellSize} ${x},${cy}"/>`;
                   break;
-                }
                 case 'diamonds-soft': {
                   const offset = cellSize * 0.15;
                   svg += `<polygon points="${cx},${y + offset} ${x + cellSize - offset},${cy} ${cx},${y + cellSize - offset} ${x + offset},${cy}"/>`;
@@ -481,45 +579,38 @@
                   svg += `<path d="M ${x + o} ${y} h ${w} v ${o} h ${o} v ${w} h -${o} v ${o} h -${w} v -${o} h -${o} v -${w} h ${o} z"/>`;
                   break;
                 }
-                case 'pill': {
+                case 'pill':
                   svg += `<rect x="${(x + cellSize * 0.1).toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${(cellSize * 0.8).toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.25).toFixed(2)}"/>`;
                   break;
-                }
-                case 'vertical': {
+                case 'vertical':
                   svg += `<rect x="${(x + cellSize * 0.15).toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize * 0.7).toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.2).toFixed(2)}"/>`;
                   break;
-                }
-                case 'horizontal': {
+                case 'horizontal':
                   svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.15).toFixed(2)}"/>`;
                   break;
-                }
-                case 'horizontal-bold': {
+                case 'horizontal-bold':
                   svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.1).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.8).toFixed(2)}"/>`;
                   break;
-                }
                 case 'fluid': {
                   let top = (r > 0) && qr.isDark(r - 1, c);
                   let bottom = (r < count - 1) && qr.isDark(r + 1, c);
                   let left = (c > 0) && qr.isDark(r, c - 1);
                   let right = (c < count - 1) && qr.isDark(r, c + 1);
-                  
                   let rxTop = (!top && !left) ? cellSize * 0.45 : 0;
                   let rxBot = (!bottom && !right) ? cellSize * 0.45 : 0;
-
                   svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${rxTop || rxBot}"/>`;
                   break;
                 }
-                default: { // square
+                default:
                   svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}"/>`;
                   break;
-                }
               }
             }
           }
         }
         svg += `</g>`;
 
-        // DESSIN DES YEUX (8 STYLES)
+        // DRAW EYES
         const renderEye = (x, y) => {
           const eyeSize = 7 * cellSize;
           const innerSize = eyeSize - (2 * cellSize);
@@ -528,64 +619,21 @@
 
           switch(options.eyeStyle) {
             case 'circle':
-              return `
-                <g>
-                  <circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/>
-                </g>`;
+              return `<g><circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/></g>`;
             case 'rounded':
-              return `
-                <g>
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 2}" fill="${options.color}"/>
-                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/>
-                </g>`;
+              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 2}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/></g>`;
             case 'shield':
-              return `
-                <g>
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" fill="${options.color}"/>
-                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize * 1.5}" fill="${options.bgColor}"/>
-                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize}" fill="${options.color}"/>
-                </g>`;
+              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize * 1.5}" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize}" fill="${options.color}"/></g>`;
             case 'leaf':
-              return `
-                <g>
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize*3.5} 0 ${cellSize*3.5} 0" fill="${options.color}"/>
-                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize*2} 0 ${cellSize*2} 0" fill="${options.bgColor}"/>
-                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize} 0 ${cellSize} 0" fill="${options.color}"/>
-                </g>`;
+              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize*3.5} 0 ${cellSize*3.5} 0" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize*2} 0 ${cellSize*2} 0" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize} 0 ${cellSize} 0" fill="${options.color}"/></g>`;
             case 'diamond':
-              return `
-                <g>
-                  <polygon points="${center},${y} ${x + eyeSize},${centerY} ${center},${y + eyeSize} ${x},${centerY}" fill="${options.color}"/>
-                  <polygon points="${center},${y + cellSize*1.5} ${x + eyeSize - cellSize*1.5},${centerY} ${center},${y + eyeSize - cellSize*1.5} ${x + cellSize*1.5},${centerY}" fill="${options.bgColor}"/>
-                  <polygon points="${center},${y + cellSize*2.5} ${x + eyeSize - cellSize*2.5},${centerY} ${center},${y + eyeSize - cellSize*2.5} ${x + cellSize*2.5},${centerY}" fill="${options.color}"/>
-                </g>`;
+              return `<g><polygon points="${center},${y} ${x + eyeSize},${centerY} ${center},${y + eyeSize} ${x},${centerY}" fill="${options.color}"/><polygon points="${center},${y + cellSize*1.5} ${x + eyeSize - cellSize*1.5},${centerY} ${center},${y + eyeSize - cellSize*1.5} ${x + cellSize*1.5},${centerY}" fill="${options.bgColor}"/><polygon points="${center},${y + cellSize*2.5} ${x + eyeSize - cellSize*2.5},${centerY} ${center},${y + eyeSize - cellSize*2.5} ${x + cellSize*2.5},${centerY}" fill="${options.color}"/></g>`;
             case 'target':
-              return `
-                <g>
-                  <circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.8}" fill="${options.color}"/>
-                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 0.8}" fill="${options.bgColor}"/>
-                </g>`;
+              return `<g><circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.8}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 0.8}" fill="${options.bgColor}"/></g>`;
             case 'bars':
-              return `
-                <g fill="${options.color}">
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${cellSize}"/>
-                  <rect x="${x}" y="${y + eyeSize - cellSize}" width="${eyeSize}" height="${cellSize}"/>
-                  <rect x="${x}" y="${y}" width="${cellSize}" height="${eyeSize}"/>
-                  <rect x="${x + eyeSize - cellSize}" y="${y}" width="${cellSize}" height="${eyeSize}"/>
-                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}"/>
-                </g>`;
-            default: // square
-              return `
-                <g>
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" fill="${options.color}"/>
-                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" fill="${options.bgColor}"/>
-                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" fill="${options.color}"/>
-                </g>`;
+              return `<g fill="${options.color}"><rect x="${x}" y="${y}" width="${eyeSize}" height="${cellSize}"/><rect x="${x}" y="${y + eyeSize - cellSize}" width="${eyeSize}" height="${cellSize}"/><rect x="${x}" y="${y}" width="${cellSize}" height="${eyeSize}"/><rect x="${x + eyeSize - cellSize}" y="${y}" width="${cellSize}" height="${eyeSize}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}"/></g>`;
+            default:
+              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" fill="${options.color}"/></g>`;
           }
         };
 
@@ -593,13 +641,10 @@
         svg += renderEye((count - 7) * cellSize, 0);
         svg += renderEye(0, (count - 7) * cellSize);
 
-        // LOGO CENTRAL
         if (options.logoUrl) {
           const logoSize = size * 0.22;
           const center = (size - logoSize) / 2;
-          svg += `
-            <rect x="${center - 6}" y="${center - 6}" width="${logoSize + 12}" height="${logoSize + 12}" fill="${options.bgColor}" rx="12"/>
-            <image href="${options.logoUrl}" x="${center}" y="${center}" width="${logoSize}" height="${logoSize}"/>`;
+          svg += `<rect x="${center - 6}" y="${center - 6}" width="${logoSize + 12}" height="${logoSize + 12}" fill="${options.bgColor}" rx="12"/><image href="${options.logoUrl}" x="${center}" y="${center}" width="${logoSize}" height="${logoSize}"/>`;
         }
 
         svg += `</svg>`;
@@ -610,19 +655,22 @@
     function toggleCustomUrlInput() {
       const selectedValue = document.getElementById('icon-select').value;
       const customWrapper = document.getElementById('custom-url-wrapper');
-      
-      if (selectedValue === 'custom') {
-        customWrapper.classList.remove('hidden');
-      } else {
-        customWrapper.classList.add('hidden');
-      }
+      customWrapper.classList.toggle('hidden', selectedValue !== 'custom');
       renderUI();
     }
 
     function getOptions() {
-      let rawText = document.getElementById('qr-text').value.trim();
-      if (currentPrefix && !rawText.startsWith(currentPrefix) && !rawText.startsWith('http')) {
-        rawText = currentPrefix + rawText;
+      let finalTargetText = '';
+
+      if (activeMode === 'single') {
+        let rawText = document.getElementById('qr-text').value.trim();
+        if (currentPrefix && !rawText.startsWith(currentPrefix) && !rawText.startsWith('http')) {
+          rawText = currentPrefix + rawText;
+        }
+        finalTargetText = rawText || 'https://votre-site.com';
+      } else {
+        // En mode multi, pointer vers la landing page par défaut ou locale
+        finalTargetText = 'https://votre-domaine.com/mes-reseaux.html';
       }
 
       const iconChoice = document.getElementById('icon-select').value;
@@ -635,7 +683,7 @@
       }
 
       return {
-        text: rawText || 'https://mamadounia.github.io/generateur-qr/',
+        text: finalTargetText,
         color: document.getElementById('qr-color').value,
         bgColor: document.getElementById('bg-color').value,
         moduleStyle: document.getElementById('module-style').value,
@@ -654,17 +702,57 @@
     function selectPreset(type, defaultValue, iconKey, prefix = '') {
       currentPrefix = prefix;
       document.getElementById('qr-text').value = defaultValue;
-      
-      const iconSelect = document.getElementById('icon-select');
-      iconSelect.value = iconKey;
-
-      const label = document.getElementById('input-label');
-      label.innerText = `🔗 ${type.toUpperCase()} CIBLE`;
+      document.getElementById('icon-select').value = iconKey;
+      document.getElementById('input-label').innerText = `🔗 ${type.toUpperCase()} CIBLE`;
 
       document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       event.currentTarget.classList.add('active');
 
       toggleCustomUrlInput();
+    }
+
+    function exportBioLinkPage() {
+      const inputs = document.querySelectorAll('.multi-social-link');
+      let linksHTML = '';
+
+      inputs.forEach(input => {
+        const val = input.value.trim();
+        const name = input.dataset.name;
+        const icon = input.dataset.icon;
+        if (val) {
+          linksHTML += `
+            <a href="${val}" target="_blank" class="link-card">
+              <img src="${icon}" alt="${name}">
+              <span>Suivez-moi sur ${name}</span>
+            </a>`;
+        }
+      });
+
+      const pageHTML = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Réseaux Sociaux</title>
+  <style>
+    body { background: #080c14; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .container { width: 100%; max-width: 400px; padding: 20px; text-align: center; }
+    h1 { font-size: 1.5rem; margin-bottom: 20px; color: #00f3ff; }
+    .link-card { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); border: 1px solid #00f3ff; padding: 12px 20px; margin-bottom: 12px; border-radius: 10px; color: #fff; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    .link-card:hover { background: #00f3ff; color: #000; }
+    .link-card img { width: 24px; height: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mes Réseaux</h1>
+    ${linksHTML || '<p>Aucun lien renseigné.</p>'}
+  </div>
+</body>
+</html>`;
+
+      downloadFile(pageHTML, 'index.html', 'text/html');
     }
 
     function downloadFile(content, fileName, contentType) {
@@ -680,20 +768,16 @@
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
       const img = new Image();
-      
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = 1000;
-        canvas.height = 1000;
+        canvas.width = 1000; canvas.height = 1000;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, 1000, 1000);
-        
         const a = document.createElement('a');
         a.download = 'cyber-qr.png';
         a.href = canvas.toDataURL('image/png');
         a.click();
       };
-
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     });
 
@@ -707,39 +791,27 @@
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
       const img = new Image();
-
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = 800;
-        canvas.height = 800;
+        canvas.width = 800; canvas.height = 800;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, 800, 800);
-
         const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(22);
         doc.setTextColor(0, 243, 255);
-        doc.text('CyberQR Extended Style Export', 105, 25, { align: 'center' });
-
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(150);
-        doc.text(`Target : ${options.text}`, 105, 34, { align: 'center' });
-
+        doc.text('CyberQR Multi-Social Export', 105, 25, { align: 'center' });
         doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 45, 100, 100);
         doc.save('cyber-qr.pdf');
       };
-
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     });
 
-    ['qr-text', 'module-style', 'eye-style', 'qr-color', 'bg-color', 'logo-url'].forEach(id => {
-      document.getElementById(id).addEventListener('input', renderUI);
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', renderUI);
     });
 
-    window.onload = () => {
-      toggleCustomUrlInput();
-    };
+    window.onload = () => { toggleCustomUrlInput(); };
   </script>
 </body>
 </html>
