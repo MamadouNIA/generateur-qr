@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR Studio — Multi-Social Link Hub</title>
+  <title>CyberQR Studio — Ultra Multi-Link Hub</title>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,6 +16,7 @@
     :root {
       --neon-cyan: #00f3ff;
       --neon-magenta: #ff0055;
+      --neon-purple: #ab00ff;
       --bg-dark: #030712;
       --panel-bg: rgba(15, 23, 42, 0.75);
       --border-glow: rgba(0, 243, 255, 0.25);
@@ -74,31 +75,36 @@
 
     .title-zone p { color: #9ca3af; font-size: 1rem; }
 
+    /* Modern Mode Switch Tabs */
     .mode-switch {
       grid-column: 1 / -1;
       display: flex;
-      gap: 10px;
       justify-content: center;
-      margin-bottom: 15px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .mode-btn {
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-glow);
-      color: #fff;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      color: #9ca3af;
       font-family: var(--font-title);
       font-size: 0.8rem;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .mode-btn.active {
-      background: var(--neon-cyan);
-      color: #000;
-      font-weight: bold;
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(255, 0, 85, 0.1));
+      border-color: var(--neon-cyan);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+      transform: translateY(-2px);
     }
 
     .control-group { margin-bottom: 18px; }
@@ -134,6 +140,47 @@
     }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Dynamic Bio-Link Inputs */
+    .multi-social-container {
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .multi-social-container::-webkit-scrollbar { width: 6px; }
+    .multi-social-container::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 4px; }
+
+    .social-input-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 3px solid var(--neon-cyan);
+      padding: 12px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .social-input-card:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      color: #fff;
+    }
+
+    .social-card-header img { width: 20px; height: 20px; }
 
     .preset-grid {
       display: grid;
@@ -190,27 +237,6 @@
       cursor: pointer;
       background: transparent;
     }
-
-    .multi-social-container {
-      max-height: 280px;
-      overflow-y: auto;
-      padding-right: 5px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .social-input-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(3, 7, 18, 0.5);
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .social-input-row img { width: 22px; height: 22px; }
 
     .preview-stage {
       background: rgba(3, 7, 18, 0.85);
@@ -315,20 +341,24 @@
 
   <div class="cyber-card">
     <div class="title-zone">
-      <h1>CyberQR Hub Pro</h1>
-      <p>// Multi-Social Hub & Direct Redirect QR Engine</p>
+      <h1>CyberQR Studio Pro</h1>
+      <p>// Multi-Social Hub & Dynamic Link Engine</p>
     </div>
 
-    <!-- Choix du Mode -->
+    <!-- Mode Selector Tabs -->
     <div class="mode-switch">
-      <button class="mode-btn active" id="mode-single-btn" onclick="switchMode('single')">🔗 Canal Unique</button>
-      <button class="mode-btn" id="mode-multi-btn" onclick="switchMode('multi')">🌐 Multi-Réseaux (Bio Link)</button>
+      <button class="mode-btn active" id="mode-single-btn" onclick="switchMode('single')">
+        ⚡ Direct Single Link
+      </button>
+      <button class="mode-btn" id="mode-multi-btn" onclick="switchMode('multi')">
+        ✨ Multi-Réseaux Bio Link Hub
+      </button>
     </div>
 
     <!-- Controls Single -->
     <div class="controls-panel" id="single-panel">
       <div class="control-group">
-        <label>⚡ Sélectionner un Canal Direct</label>
+        <label>⚡ Canal Direct</label>
         <div class="preset-grid">
           <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'email', 'mailto:')">
             <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
@@ -346,7 +376,7 @@
             <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook
           </button>
           <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'x')">
-            <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X/Twitter"> X / Twitter
+            <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X"> X / Twitter
           </button>
           <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'youtube')">
             <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
@@ -364,46 +394,70 @@
       </div>
 
       <div class="control-group">
-        <label for="qr-text" id="input-label">🔗 URL / Donnée Cible</label>
+        <label for="qr-text" id="input-label">🔗 Adresse Cible</label>
         <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez la donnée cible">
       </div>
     </div>
 
     <!-- Controls Multi Social Panel -->
     <div class="controls-panel hidden" id="multi-panel">
+      <div class="grid-2 control-group">
+        <div>
+          <label>👤 Nom du Profil</label>
+          <input type="text" id="bio-title" value="Alex Cyber" placeholder="Votre Nom / Marque">
+        </div>
+        <div>
+          <label>💬 Bio / Sous-titre</label>
+          <input type="text" id="bio-subtitle" value="Créateur Digital & Designer" placeholder="Une courte description">
+        </div>
+      </div>
+
       <div class="control-group">
-        <label>🌐 Configurer vos Liens Réseaux Sociaux</label>
+        <label>🌐 Configurer vos Réseaux</label>
         <div class="multi-social-container">
-          <div class="social-input-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram">
-            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" placeholder="Lien Instagram (ex: https://instagram.com/pseudo)">
+          <div class="social-input-card">
+            <div class="social-card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Insta"> Instagram
+            </div>
+            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" placeholder="https://instagram.com/votre_pseudo">
           </div>
-          <div class="social-input-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
-            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" placeholder="Lien WhatsApp (ex: https://wa.me/33600000000)">
+
+          <div class="social-input-card" style="border-left-color: #25D366;">
+            <div class="social-card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
+            </div>
+            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" placeholder="https://wa.me/33600000000">
           </div>
-          <div class="social-input-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn">
-            <input type="text" class="multi-social-link" data-name="LinkedIn" data-icon="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" placeholder="Lien LinkedIn">
+
+          <div class="social-input-card" style="border-left-color: #0A66C2;">
+            <div class="social-card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
+            </div>
+            <input type="text" class="multi-social-link" data-name="LinkedIn" data-icon="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" placeholder="https://linkedin.com/in/votre_profil">
           </div>
-          <div class="social-input-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-            <input type="text" class="multi-social-link" data-name="YouTube" data-icon="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" placeholder="Lien YouTube">
+
+          <div class="social-input-card" style="border-left-color: #FF0000;">
+            <div class="social-card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
+            </div>
+            <input type="text" class="multi-social-link" data-name="YouTube" data-icon="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" placeholder="https://youtube.com/@votre_chaine">
           </div>
-          <div class="social-input-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok">
-            <input type="text" class="multi-social-link" data-name="TikTok" data-icon="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" placeholder="Lien TikTok">
+
+          <div class="social-input-card" style="border-left-color: #fe2c55;">
+            <div class="social-card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
+            </div>
+            <input type="text" class="multi-social-link" data-name="TikTok" data-icon="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" placeholder="https://tiktok.com/@votre_compte">
           </div>
         </div>
       </div>
 
       <div class="control-group">
-        <button class="btn btn-cyber-outline" style="width: 100%;" onclick="exportBioLinkPage()">🌐 Exporter la Page Bio-Link (.HTML)</button>
-        <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">* Hébergez ce fichier HTML sur GitHub Pages/Netlify pour l'utiliser avec votre QR Code.</p>
+        <button class="btn btn-cyber-primary" style="width: 100%;" onclick="exportBioLinkPage()">🚀 Télécharger la Page Bio-Link (.HTML)</button>
       </div>
     </div>
 
-    <!-- Style & Customization Controls Shared -->
+    <!-- Style Controls Shared -->
     <div class="shared-controls">
       <div class="grid-2 control-group">
         <div>
@@ -669,8 +723,7 @@
         }
         finalTargetText = rawText || 'https://votre-site.com';
       } else {
-        // En mode multi, pointer vers la landing page par défaut ou locale
-        finalTargetText = 'https://votre-domaine.com/mes-reseaux.html';
+        finalTargetText = 'https://votre-domaine.com/bio-link.html';
       }
 
       const iconChoice = document.getElementById('icon-select').value;
@@ -711,7 +764,12 @@
       toggleCustomUrlInput();
     }
 
+    /* Generates an ultra modern dark Cyberpunk Landing Page */
     function exportBioLinkPage() {
+      const title = document.getElementById('bio-title').value.trim() || 'Alex Cyber';
+      const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Digital Creator';
+      const color = document.getElementById('qr-color').value;
+
       const inputs = document.querySelectorAll('.multi-social-link');
       let linksHTML = '';
 
@@ -721,9 +779,9 @@
         const icon = input.dataset.icon;
         if (val) {
           linksHTML += `
-            <a href="${val}" target="_blank" class="link-card">
+            <a href="${val}" target="_blank" class="bio-btn">
               <img src="${icon}" alt="${name}">
-              <span>Suivez-moi sur ${name}</span>
+              <span>${name}</span>
             </a>`;
         }
       });
@@ -734,20 +792,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Réseaux Sociaux</title>
+  <title>${title} — Bio Link</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    body { background: #080c14; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .container { width: 100%; max-width: 400px; padding: 20px; text-align: center; }
-    h1 { font-size: 1.5rem; margin-bottom: 20px; color: #00f3ff; }
-    .link-card { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); border: 1px solid #00f3ff; padding: 12px 20px; margin-bottom: 12px; border-radius: 10px; color: #fff; text-decoration: none; font-weight: bold; transition: 0.3s; }
-    .link-card:hover { background: #00f3ff; color: #000; }
-    .link-card img { width: 24px; height: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #030712;
+      background-image: radial-gradient(circle at 50% 0%, ${color}22 0%, transparent 70%);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .bio-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid ${color}44;
+      border-radius: 24px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 0 40px ${color}22;
+    }
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, ${color}, #000);
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #000;
+      box-shadow: 0 0 20px ${color}66;
+    }
+    h1 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 1.5px; margin-bottom: 6px; }
+    p { color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px; }
+    .links-container { display: flex; flex-direction: column; gap: 12px; }
+    .bio-btn {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 20px;
+      border-radius: 14px;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .bio-btn:hover {
+      background: ${color}22;
+      border-color: ${color};
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px ${color}44;
+    }
+    .bio-btn img { width: 24px; height: 24px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Mes Réseaux</h1>
-    ${linksHTML || '<p>Aucun lien renseigné.</p>'}
+  <div class="bio-card">
+    <div class="avatar">${title.charAt(0)}</div>
+    <h1>${title}</h1>
+    <p>${subtitle}</p>
+    <div class="links-container">
+      ${linksHTML || '<p style="color:#aaa;">Aucun lien renseigné.</p>'}
+    </div>
   </div>
 </body>
 </html>`;
