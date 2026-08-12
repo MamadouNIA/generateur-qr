@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR Studio — Ultra Multi-Link Hub</title>
+  <title>CyberQR Studio — Multi-Social Hub Pro</title>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -18,7 +18,7 @@
       --neon-magenta: #ff0055;
       --neon-purple: #ab00ff;
       --bg-dark: #030712;
-      --panel-bg: rgba(15, 23, 42, 0.75);
+      --panel-bg: rgba(15, 23, 42, 0.85);
       --border-glow: rgba(0, 243, 255, 0.25);
       --font-title: 'Orbitron', sans-serif;
       --font-body: 'Rajdhani', sans-serif;
@@ -75,7 +75,6 @@
 
     .title-zone p { color: #9ca3af; font-size: 1rem; }
 
-    /* Modern Mode Switch Tabs */
     .mode-switch {
       grid-column: 1 / -1;
       display: flex;
@@ -141,7 +140,6 @@
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    /* Dynamic Bio-Link Inputs */
     .multi-social-container {
       max-height: 320px;
       overflow-y: auto;
@@ -184,7 +182,7 @@
 
     .preset-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       margin-bottom: 15px;
     }
@@ -334,7 +332,7 @@
 
     .btn-cyber-outline:hover { background: rgba(0, 243, 255, 0.1); }
     
-    .hidden { display: none; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -342,23 +340,23 @@
   <div class="cyber-card">
     <div class="title-zone">
       <h1>CyberQR Studio Pro</h1>
-      <p>// Multi-Social Hub & Dynamic Link Engine</p>
+      <p>// Multi-Social Hub & Dynamic QR Engine</p>
     </div>
 
     <!-- Mode Selector Tabs -->
     <div class="mode-switch">
       <button class="mode-btn active" id="mode-single-btn" onclick="switchMode('single')">
-        ⚡ Direct Single Link
+        ⚡ Canal Direct
       </button>
       <button class="mode-btn" id="mode-multi-btn" onclick="switchMode('multi')">
-        ✨ Multi-Réseaux Bio Link Hub
+        ✨ Multi-Réseaux Bio Link
       </button>
     </div>
 
     <!-- Controls Single -->
     <div class="controls-panel" id="single-panel">
       <div class="control-group">
-        <label>⚡ Canal Direct</label>
+        <label>⚡ Canal Direct Réseaux</label>
         <div class="preset-grid">
           <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'email', 'mailto:')">
             <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
@@ -387,6 +385,12 @@
           <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'telegram')">
             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram
           </button>
+          <button class="preset-btn" onclick="selectPreset('snapchat', 'https://snapchat.com/add/votre_pseudo', 'snapchat')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" alt="Snapchat"> Snapchat
+          </button>
+          <button class="preset-btn" onclick="selectPreset('discord', 'https://discord.gg/votre_serveur', 'discord')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"> Discord
+          </button>
           <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'phone', 'tel:')">
             <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Téléphone
           </button>
@@ -413,41 +417,66 @@
       </div>
 
       <div class="control-group">
-        <label>🌐 Configurer vos Réseaux</label>
+        <label>🌐 Configurer l'ensemble de vos Réseaux (12 Total)</label>
         <div class="multi-social-container">
-          <div class="social-input-card">
-            <div class="social-card-header">
-              <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Insta"> Instagram
-            </div>
+          <div class="social-input-card" style="border-left-color: #E1306C;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Insta"> Instagram</div>
             <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" placeholder="https://instagram.com/votre_pseudo">
           </div>
 
           <div class="social-input-card" style="border-left-color: #25D366;">
-            <div class="social-card-header">
-              <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
-            </div>
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp</div>
             <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" placeholder="https://wa.me/33600000000">
           </div>
 
           <div class="social-input-card" style="border-left-color: #0A66C2;">
-            <div class="social-card-header">
-              <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
-            </div>
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn</div>
             <input type="text" class="multi-social-link" data-name="LinkedIn" data-icon="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" placeholder="https://linkedin.com/in/votre_profil">
           </div>
 
+          <div class="social-input-card" style="border-left-color: #1877F2;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook</div>
+            <input type="text" class="multi-social-link" data-name="Facebook" data-icon="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" placeholder="https://facebook.com/votre_page">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #000000;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X"> X / Twitter</div>
+            <input type="text" class="multi-social-link" data-name="X / Twitter" data-icon="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" placeholder="https://x.com/votre_profil">
+          </div>
+
           <div class="social-input-card" style="border-left-color: #FF0000;">
-            <div class="social-card-header">
-              <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
-            </div>
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube</div>
             <input type="text" class="multi-social-link" data-name="YouTube" data-icon="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" placeholder="https://youtube.com/@votre_chaine">
           </div>
 
           <div class="social-input-card" style="border-left-color: #fe2c55;">
-            <div class="social-card-header">
-              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
-            </div>
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok</div>
             <input type="text" class="multi-social-link" data-name="TikTok" data-icon="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" placeholder="https://tiktok.com/@votre_compte">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #0088cc;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram</div>
+            <input type="text" class="multi-social-link" data-name="Telegram" data-icon="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" placeholder="https://t.me/votre_nom">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #FFFC00;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" alt="Snapchat"> Snapchat</div>
+            <input type="text" class="multi-social-link" data-name="Snapchat" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" placeholder="https://snapchat.com/add/votre_pseudo">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #5865F2;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"> Discord</div>
+            <input type="text" class="multi-social-link" data-name="Discord" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" placeholder="https://discord.gg/votre_serveur">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #EA4335;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email Direct</div>
+            <input type="text" class="multi-social-link" data-name="Email" data-icon="https://cdn-icons-png.flaticon.com/512/732/732200.png" placeholder="mailto:contact@domaine.com">
+          </div>
+
+          <div class="social-input-card" style="border-left-color: #34A853;">
+            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Appel Téléphonique</div>
+            <input type="text" class="multi-social-link" data-name="Téléphone" data-icon="https://cdn-icons-png.flaticon.com/512/126/126509.png" placeholder="tel:+33600000000">
           </div>
         </div>
       </div>
@@ -522,6 +551,8 @@
             <option value="youtube">YouTube</option>
             <option value="tiktok">TikTok</option>
             <option value="telegram">Telegram</option>
+            <option value="snapchat">Snapchat</option>
+            <option value="discord">Discord</option>
             <option value="phone">Téléphone</option>
             <option value="none">Aucun Logo</option>
             <option value="custom">URL Personnalisée...</option>
@@ -570,6 +601,8 @@
       youtube: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
       tiktok: 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
       telegram: 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png',
+      snapchat: 'https://cdn-icons-png.flaticon.com/512/3670/3670013.png',
+      discord: 'https://cdn-icons-png.flaticon.com/512/3670/3670157.png',
       phone: 'https://cdn-icons-png.flaticon.com/512/126/126509.png'
     };
 
@@ -723,7 +756,7 @@
         }
         finalTargetText = rawText || 'https://votre-site.com';
       } else {
-        finalTargetText = 'https://votre-domaine.com/bio-link.html';
+        finalTargetText = 'index.html';
       }
 
       const iconChoice = document.getElementById('icon-select').value;
@@ -759,12 +792,13 @@
       document.getElementById('input-label').innerText = `🔗 ${type.toUpperCase()} CIBLE`;
 
       document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      if(event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
 
       toggleCustomUrlInput();
     }
 
-    /* Generates an ultra modern dark Cyberpunk Landing Page */
     function exportBioLinkPage() {
       const title = document.getElementById('bio-title').value.trim() || 'Alex Cyber';
       const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Digital Creator';
@@ -786,8 +820,7 @@
         }
       });
 
-      const pageHTML = `
-<!DOCTYPE html>
+      const pageHTML = `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -810,7 +843,7 @@
     .bio-card {
       width: 100%;
       max-width: 420px;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid ${color}44;
       border-radius: 24px;
@@ -898,7 +931,7 @@
         a.href = canvas.toDataURL('image/png');
         a.click();
       };
-      img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
     });
 
     document.getElementById('dl-svg').addEventListener('click', () => {
@@ -924,7 +957,7 @@
         doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 45, 100, 100);
         doc.save('cyber-qr.pdf');
       };
-      img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
     });
 
     document.querySelectorAll('input, select').forEach(el => {
