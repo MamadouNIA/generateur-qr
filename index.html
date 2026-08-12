@@ -3,150 +3,252 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Générateur QR Code Pro & Studio Design</title>
+  <title>CyberQR — Générateur Holographique Studio</title>
 
   <!-- Dépendances Moteur QR & PDF -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+  <!-- Polices Futuristes Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 12px;
+      --neon-cyan: #00f3ff;
+      --neon-magenta: #ff0055;
+      --neon-blue: #3b82f6;
+      --bg-dark: #030712;
+      --panel-bg: rgba(15, 23, 42, 0.65);
+      --border-glow: rgba(0, 243, 255, 0.2);
+      --text-glow: 0 0 10px rgba(0, 243, 255, 0.5);
+      --font-title: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg-color);
-      color: var(--text-main);
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(0, 243, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(255, 0, 85, 0.08) 0px, transparent 50%),
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+      color: #f3f4f6;
+      font-family: var(--font-body);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      padding: 30px 15px;
+      overflow-x: hidden;
     }
 
-    .app-card {
-      background: var(--card-bg);
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    /* Carte Principale Glassmorphic */
+    .cyber-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.05);
       width: 100%;
-      max-width: 1050px;
-      padding: 36px;
+      max-width: 1100px;
+      padding: 40px;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
       gap: 40px;
+      position: relative;
+    }
+
+    .cyber-card::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(45deg, var(--neon-cyan), transparent, var(--neon-magenta));
+      border-radius: 22px;
+      z-index: -1;
+      opacity: 0.4;
     }
 
     @media (max-width: 900px) {
-      .app-card { grid-template-columns: 1fr; padding: 24px; }
+      .cyber-card { grid-template-columns: 1fr; padding: 20px; }
     }
 
-    .title {
+    /* En-tête */
+    .title-zone {
       grid-column: 1 / -1;
       text-align: center;
+      margin-bottom: 10px;
     }
 
-    .title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
-    .title p { color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+    .title-zone h1 {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #ffffff, var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--text-glow);
+    }
 
+    .title-zone p {
+      color: #9ca3af;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Formulaires & Contrôles Futuristes */
     .control-group { margin-bottom: 20px; }
 
     label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
+      color: var(--neon-cyan);
+      margin-bottom: 8px;
     }
 
     input[type="text"], select {
       width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 0.95rem;
+      padding: 12px 16px;
+      background: rgba(3, 7, 18, 0.7);
+      border: 1px solid var(--border-glow);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 1.1rem;
       outline: none;
-      background: #ffffff;
-      transition: border-color 0.2s;
+      transition: all 0.3s ease;
     }
 
-    input[type="text"]:focus, select:focus { border-color: var(--primary); }
+    input[type="text"]:focus, select:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+    }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-    .social-presets {
+    /* Raccourcis Réseaux en Neumorphism / Cyber Style */
+    .preset-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
       margin-bottom: 20px;
     }
 
     .preset-btn {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       cursor: pointer;
-      font-size: 0.7rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
+      color: #d1d5db;
+      font-family: var(--font-title);
+      font-size: 0.65rem;
+      transition: all 0.3s ease;
     }
 
-    .preset-btn img { width: 22px; height: 22px; }
+    .preset-btn img { width: 22px; height: 22px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); }
 
     .preset-btn:hover, .preset-btn.active {
-      border-color: var(--primary);
-      background: #eff6ff;
-      color: var(--primary);
+      background: rgba(0, 243, 255, 0.1);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
       transform: translateY(-2px);
     }
 
-    /* Conteneur de prévisualisation */
+    /* Sélecteur de couleur personnalisé */
+    .color-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(3, 7, 18, 0.7);
+      border: 1px solid var(--border-glow);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    input[type="color"] {
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    /* Zone de prévisualisation Holographique */
     .preview-stage {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
+      background: rgba(3, 7, 18, 0.8);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      border-radius: 16px;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    .qr-frame {
-      background: white;
+    .status-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-title);
+      font-size: 0.65rem;
+      color: var(--neon-cyan);
+      letter-spacing: 1px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+    }
+
+    .qr-holo-frame {
+      background: #ffffff;
       padding: 16px;
       border-radius: 16px;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+      position: relative;
+      transition: all 0.3s ease;
     }
 
     #qr-svg-container {
-      width: 260px;
-      height: 260px;
+      width: 240px;
+      height: 240px;
     }
 
-    #qr-svg-container svg {
-      width: 100%;
-      height: 100%;
-    }
+    #qr-svg-container svg { width: 100%; height: 100%; }
 
+    /* Boutons Cyber */
     .action-stack {
       width: 100%;
       display: flex;
@@ -156,114 +258,139 @@
     }
 
     .btn {
-      padding: 12px 16px;
+      padding: 14px 20px;
       border: none;
-      border-radius: var(--radius);
+      border-radius: 8px;
+      font-family: var(--font-title);
+      font-size: 0.85rem;
       font-weight: 700;
-      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
 
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-cyber-primary {
+      background: linear-gradient(90deg, #00f3ff, #0066ff);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+    }
+
+    .btn-cyber-primary:hover {
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
+      transform: translateY(-2px);
+    }
 
     .btn-row { display: flex; gap: 10px; width: 100%; }
     .btn-row .btn { flex: 1; }
 
-    .btn-outline {
+    .btn-cyber-outline {
       background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--text-main);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
     }
 
-    .btn-outline:hover { background: #f1f5f9; border-color: var(--text-muted); }
+    .btn-cyber-outline:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
   </style>
 </head>
 <body>
 
-  <div class="app-card">
-    <div class="title">
-      <h1>Générateur de QR Code Modernized</h1>
-      <p>Personnalisez les modules, les formes d'yeux et les formats vectoriels</p>
+  <div class="cyber-card">
+    <div class="title-zone">
+      <h1>CyberQR Studio</h1>
+      <p>// Générateur Vectoriel Holographique</p>
     </div>
 
-    <!-- Panneau de Contrôle -->
+    <!-- Section Contrôles -->
     <div class="controls-panel">
       <div class="control-group">
-        <label>1. Raccourcis Réseaux</label>
-        <div class="social-presets">
+        <label>⚡ Réseau Cible</label>
+        <div class="preset-grid">
           <button class="preset-btn active" onclick="applyPreset('https://mamadounia.github.io/generateur-qr/', 'https://cdn-icons-png.flaticon.com/512/25/25231.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GitHub
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GITHUB
           </button>
           <button class="preset-btn" onclick="applyPreset('https://wa.me/33600000000', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WHATSAPP
           </button>
-          <button class="preset-btn" onclick="applyPreset('https://instagram.com/votre_compte', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> Instagram
+          <button class="preset-btn" onclick="applyPreset('https://instagram.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> INSTA
           </button>
           <button class="preset-btn" onclick="applyPreset('https://linkedin.com/in/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
+            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LINKEDIN
           </button>
         </div>
       </div>
 
       <div class="control-group">
-        <label for="qr-text">2. Contenu ou URL Cible</label>
-        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Saisissez une URL">
+        <label for="qr-text">🔗 Contenu / URL Cible</label>
+        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Saisissez une adresse Web">
       </div>
 
       <div class="grid-2 control-group">
         <div>
-          <label for="module-style">Style des Modules</label>
+          <label for="module-style">📐 Style Modules</label>
           <select id="module-style">
-            <option value="dots">Arrondis (Dots)</option>
-            <option value="square">Carrés Classiques</option>
+            <option value="dots">Dots (Arrondis)</option>
             <option value="smooth">Gouttes (Smooth)</option>
+            <option value="square">Matrice Brut</option>
           </select>
         </div>
         <div>
-          <label for="eye-style">Style des Yeux</label>
+          <label for="eye-style">👁️ Cadran Yeux</label>
           <select id="eye-style">
-            <option value="rounded">Coins Arrondis</option>
-            <option value="circle">Cercle Concentrique</option>
-            <option value="square">Carré Brut</option>
+            <option value="rounded">Cyber Rounded</option>
+            <option value="circle">Orbital Circle</option>
+            <option value="square">Square Tech</option>
           </select>
         </div>
       </div>
 
       <div class="grid-2 control-group">
         <div>
-          <label for="qr-color">Couleur Code</label>
-          <input type="color" id="qr-color" value="#1e40af">
+          <label for="qr-color">🎨 Couleur Code</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="qr-color" value="#00f3ff">
+            <span style="font-size:0.9rem; color:#aaa;">Néon Principal</span>
+          </div>
         </div>
         <div>
-          <label for="bg-color">Couleur Fond</label>
-          <input type="color" id="bg-color" value="#ffffff">
+          <label for="bg-color">⬛ Background</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="bg-color" value="#0a0f1d">
+            <span style="font-size:0.9rem; color:#aaa;">Fond Fondé</span>
+          </div>
         </div>
       </div>
 
       <div class="control-group">
-        <label for="logo-url">Logo Intégré (URL)</label>
+        <label for="logo-url">🛡️ Logo Central (URL)</label>
         <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/25/25231.png">
       </div>
     </div>
 
-    <!-- Zone de Rendu -->
+    <!-- Section Rendu Holographique -->
     <div class="preview-stage">
-      <div class="qr-frame">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        SYSTEM READY
+      </div>
+
+      <div class="qr-holo-frame" id="qr-frame">
         <div id="qr-svg-container"></div>
       </div>
 
       <div class="action-stack">
-        <button class="btn btn-primary" id="dl-png">Télécharger en PNG HD</button>
+        <button class="btn btn-cyber-primary" id="dl-png">💾 Télécharger PNG HD</button>
         <div class="btn-row">
-          <button class="btn btn-outline" id="dl-svg">Vectoriel SVG</button>
-          <button class="btn btn-outline" id="dl-pdf">Document PDF</button>
+          <button class="btn btn-cyber-outline" id="dl-svg">Vector SVG</button>
+          <button class="btn btn-cyber-outline" id="dl-pdf">Doc PDF</button>
         </div>
       </div>
     </div>
@@ -272,8 +399,8 @@
   <script>
     const { jsPDF } = window.jspdf || {};
 
-    // --- MOTEUR DE DESSIN VECTORIEL (SVG) ---
-    class QRCodeEngine {
+    // --- MOTEUR VECTORIEL SVG DE HAUTE PRÉCISION ---
+    class CyberQREngine {
       static generateSVGString(text, options) {
         const qr = qrcode(0, 'H');
         qr.addData(text);
@@ -286,11 +413,10 @@
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
         svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
 
-        // Dessin des modules
+        // Traitement des modules internes
         svg += `<g fill="${options.color}">`;
         for (let r = 0; r < count; r++) {
           for (let c = 0; c < count; c++) {
-            // Ignorer les zones réservées aux yeux (7x7)
             if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
 
             if (qr.isDark(r, c)) {
@@ -311,7 +437,7 @@
         }
         svg += `</g>`;
 
-        // Dessin des Cadrans (Yeux)
+        // Cadrans (Yeux)
         const renderEye = (x, y) => {
           const eyeSize = 7 * cellSize;
           const innerSize = eyeSize - (2 * cellSize);
@@ -346,7 +472,7 @@
         svg += renderEye((count - 7) * cellSize, 0);
         svg += renderEye(0, (count - 7) * cellSize);
 
-        // Incrustation du Logo avec masque propre
+        // Logo central masqué
         if (options.logoUrl) {
           const logoSize = size * 0.22;
           const center = (size - logoSize) / 2;
@@ -360,7 +486,7 @@
       }
     }
 
-    // --- LOGIQUE I/O ET INTERFACE ---
+    // --- LOGIQUE METIER ET INTERACTION ---
     function getOptions() {
       return {
         text: document.getElementById('qr-text').value.trim() || 'https://mamadounia.github.io/generateur-qr/',
@@ -374,8 +500,11 @@
 
     function renderUI() {
       const options = getOptions();
-      const svgString = QRCodeEngine.generateSVGString(options.text, options);
+      const svgString = CyberQREngine.generateSVGString(options.text, options);
       document.getElementById('qr-svg-container').innerHTML = svgString;
+      
+      // Ajuste la lueur (glow) selon la couleur du néon
+      document.getElementById('qr-frame').style.boxShadow = `0 0 30px ${options.color}66`;
     }
 
     function applyPreset(url, logo) {
@@ -397,10 +526,10 @@
       URL.revokeObjectURL(a.href);
     }
 
-    // Export PNG HD via Canvas conversion
+    // Export PNG
     document.getElementById('dl-png').addEventListener('click', () => {
       const options = getOptions();
-      const svgString = QRCodeEngine.generateSVGString(options.text, options);
+      const svgString = CyberQREngine.generateSVGString(options.text, options);
       const img = new Image();
       
       img.onload = () => {
@@ -411,7 +540,7 @@
         ctx.drawImage(img, 0, 0, 1000, 1000);
         
         const a = document.createElement('a');
-        a.download = 'qrcode.png';
+        a.download = 'cyber-qrcode.png';
         a.href = canvas.toDataURL('image/png');
         a.click();
       };
@@ -422,14 +551,14 @@
     // Export SVG
     document.getElementById('dl-svg').addEventListener('click', () => {
       const options = getOptions();
-      const svgString = QRCodeEngine.generateSVGString(options.text, options);
-      downloadFile(svgString, 'qrcode.svg', 'image/svg+xml');
+      const svgString = CyberQREngine.generateSVGString(options.text, options);
+      downloadFile(svgString, 'cyber-qrcode.svg', 'image/svg+xml');
     });
 
-    // Export PDF Document
+    // Export PDF
     document.getElementById('dl-pdf').addEventListener('click', () => {
       const options = getOptions();
-      const svgString = QRCodeEngine.generateSVGString(options.text, options);
+      const svgString = CyberQREngine.generateSVGString(options.text, options);
       const img = new Image();
 
       img.onload = () => {
@@ -442,30 +571,30 @@
         const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(22);
-        doc.setTextColor(30, 64, 175);
-        doc.text('Fiche QR Code Vectoriel', 105, 25, { align: 'center' });
+        doc.setTextColor(0, 243, 255);
+        doc.text('CyberQR Holographic Record', 105, 25, { align: 'center' });
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(100);
-        doc.text(`Cible : ${options.text}`, 105, 34, { align: 'center' });
+        doc.setTextColor(150);
+        doc.text(`Target URL : ${options.text}`, 105, 34, { align: 'center' });
 
         doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 45, 100, 100);
 
         doc.setFontSize(9);
-        doc.text('Généré via GitHub Pages Engine', 105, 160, { align: 'center' });
-        doc.save('qrcode-export.pdf');
+        doc.text('Generated via CyberQR Engine', 105, 160, { align: 'center' });
+        doc.save('cyber-qrcode.pdf');
       };
 
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     });
 
-    // Événements dynamiques de modification
+    // Événements d'écoute en temps réel
     ['qr-text', 'module-style', 'eye-style', 'qr-color', 'bg-color', 'logo-url'].forEach(id => {
       document.getElementById(id).addEventListener('input', renderUI);
     });
 
-    // Lancement au chargement
+    // Initialisation
     window.onload = renderUI;
   </script>
 </body>
