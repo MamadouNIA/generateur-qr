@@ -1,174 +1,409 @@
-<!-- Dépendances nécessaires -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur de QR Code Pro</title>
 
-<script>
-// Initialisation de jsPDF
-const { jsPDF } = window.jspdf || {};
+  <!-- Dépendances externes -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-// ==========================================
-// UTILITAIRES & VALIDATION
-// ==========================================
-
-// Nettoyage et formatage du nom de fichier à partir de l'URL/Texte
-const getSafeFileName = (text, extension) => {
-  try {
-    const url = new URL(text);
-    // Extrait le dernier segment de l'URL ou le nom du chemin (ex: 'generateur-qr')
-    const pathSegments = url.pathname.split('/').filter(Boolean);
-    const name = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : url.hostname;
-    return `qrcode-${name}.${extension}`;
-  } catch (e) {
-    // Si ce n'est pas une URL valide, simplifie la chaîne de texte
-    const sanitized = text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 20);
-    return `qrcode-${sanitized || 'export'}.${extension}`;
-  }
-};
-
-// Récupération sécurisée des valeurs du formulaire
-const getFormValues = () => {
-  const textInput = document.getElementById('qr-text');
-  const colorInput = document.getElementById('qr-color');
-  const bgInput = document.getElementById('bg-color');
-  const logoInput = document.getElementById('logo-url');
-
-  // URL GitHub Pages par défaut si le champ est vide
-  const defaultUrl = 'https://mamadounia.github.io/generateur-qr/';
-  const text = textInput && textInput.value.trim() ? textInput.value.trim() : defaultUrl;
-
-  return {
-    text,
-    color: colorInput ? colorInput.value : '#0277bd',
-    bgColor: bgInput ? bgInput.value : '#ffffff',
-    logoUrl: logoInput ? logoInput.value.trim() : ''
-  };
-};
-
-// Fonction universelle d'assistance au téléchargement
-const triggerDownload = (href, fileName) => {
-  const link = document.createElement('a');
-  link.download = fileName;
-  link.href = href;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-// ==========================================
-// 1. TÉLÉCHARGEMENT PNG
-// ==========================================
-const btnPng = document.getElementById('dl-png');
-if (btnPng) {
-  btnPng.addEventListener('click', () => {
-    try {
-      const values = getFormValues();
-      const canvas = document.getElementById('qr-canvas');
-      if (!canvas) throw new Error("Élément Canvas introuvable dans le DOM.");
-
-      const dataUrl = canvas.toDataURL('image/png');
-      const fileName = getSafeFileName(values.text, 'png');
-      
-      triggerDownload(dataUrl, fileName);
-    } catch (error) {
-      console.error('Erreur lors du téléchargement PNG:', error);
-      alert('Impossible de générer le fichier PNG.');
+  <style>
+    :root {
+      --primary: #0277bd;
+      --primary-hover: #01579b;
+      --bg-color: #f4f7f9;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --border-color: #e0e6ed;
     }
-  });
-}
 
-// ==========================================
-// 2. TÉLÉCHARGEMENT SVG (VECTORIEL)
-// ==========================================
-const btnSvg = document.getElementById('dl-svg');
-if (btnSvg) {
-  btnSvg.addEventListener('click', () => {
-    try {
-      const values = getFormValues();
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-      if (typeof qrcode === 'undefined' || typeof generateSVG === 'undefined') {
-        throw new Error("Librairies de génération SVG non chargées.");
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 900px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      grid-column: 1 / -1;
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus { border-color: var(--primary); }
+
+    .color-pickers { display: flex; gap: 16px; }
+    .color-field { flex: 1; }
+
+    input[type="color"] {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fafbfc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    #qr-canvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .btn-group {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary { background-color: var(--primary); color: white; }
+    .btn-primary:hover { background-color: var(--primary-hover); }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn-outline:hover { background-color: #e1f5fe; }
+
+    .export-options { display: flex; gap: 10px; width: 100%; }
+    .export-options .btn { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Générateur de QR Code</h1>
+
+    <!-- Formulaire de paramétrage -->
+    <div class="form-section">
+      <div class="form-group">
+        <label for="qr-text">Contenu / URL du QR Code</label>
+        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Entrez une URL ou un texte">
+      </div>
+
+      <div class="form-group color-pickers">
+        <div class="color-field">
+          <label for="qr-color">Couleur Premier Plan</label>
+          <input type="color" id="qr-color" value="#0277bd">
+        </div>
+        <div class="color-field">
+          <label for="bg-color">Couleur Arrière-plan</label>
+          <input type="color" id="bg-color" value="#ffffff">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="logo-url">URL de l'icône / Logo (Optionnel)</label>
+        <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/25/25231.png" placeholder="Lien vers un logo PNG/SVG">
+      </div>
+
+      <button class="btn btn-primary" id="generate-btn" style="width: 100%;">
+        🔄 Actualiser la Prévisualisation
+      </button>
+    </div>
+
+    <!-- Zone d'affichage et téléchargement -->
+    <div class="preview-section">
+      <canvas id="qr-canvas" width="300" height="300"></canvas>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="dl-png">Télécharger en PNG</button>
+        <div class="export-options">
+          <button class="btn btn-outline" id="dl-svg">Vectoriel SVG</button>
+          <button class="btn btn-outline" id="dl-pdf">Document PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { jsPDF } = window.jspdf || {};
+
+    // --- 1. FONCTIONS ET LOGIQUE MOTEUR ---
+    function getQRMatrix(text) {
+      const qr = qrcode(0, 'H');
+      qr.addData(text);
+      qr.make();
+      return qr;
+    }
+
+    function renderCanvas(qr, canvas, options, callback) {
+      const ctx = canvas.getContext('2d');
+      const count = qr.getModuleCount();
+      const cellSize = canvas.width / count;
+
+      ctx.fillStyle = options.bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = options.color;
+      for (let r = 0; r < count; r++) {
+        for (let c = 0; c < count; c++) {
+          if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
+          if (qr.isDark(r, c)) {
+            const x = c * cellSize;
+            const y = r * cellSize;
+            ctx.beginPath();
+            ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
       }
 
-      const qr = qrcode(0, 'H');
-      qr.addData(values.text);
-      qr.make();
+      drawCanvasEye(ctx, 0, 0, cellSize, options.color, options.bgColor);
+      drawCanvasEye(ctx, (count - 7) * cellSize, 0, cellSize, options.color, options.bgColor);
+      drawCanvasEye(ctx, 0, (count - 7) * cellSize, cellSize, options.color, options.bgColor);
 
-      const svgData = generateSVG(qr, {
-        color: values.color,
-        bgColor: values.bgColor,
-        logoUrl: values.logoUrl
+      if (options.logoUrl) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = options.logoUrl;
+        img.onload = () => {
+          const logoSize = canvas.width * 0.22;
+          const center = (canvas.width - logoSize) / 2;
+          ctx.fillStyle = options.bgColor;
+          ctx.fillRect(center - 4, center - 4, logoSize + 8, logoSize + 8);
+          ctx.drawImage(img, center, center, logoSize, logoSize);
+          if (callback) callback();
+        };
+        img.onerror = () => { if (callback) callback(); };
+      } else {
+        if (callback) callback();
+      }
+    }
+
+    function drawCanvasEye(ctx, x, y, cellSize, color, bgColor) {
+      const eyeSize = 7 * cellSize;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x, y, eyeSize, eyeSize, cellSize * 1.5);
+      ctx.fill();
+      ctx.fillStyle = bgColor;
+      ctx.beginPath();
+      ctx.roundRect(x + cellSize, y + cellSize, eyeSize - 2 * cellSize, eyeSize - 2 * cellSize, cellSize);
+      ctx.fill();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x + eyeSize / 2, y + eyeSize / 2, cellSize * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function generateSVG(qr, options) {
+      const count = qr.getModuleCount();
+      const size = 600;
+      const cellSize = size / count;
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
+      svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
+      
+      svg += `<g fill="${options.color}">`;
+      for (let r = 0; r < count; r++) {
+        for (let c = 0; c < count; c++) {
+          if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
+          if (qr.isDark(r, c)) {
+            const cx = (c * cellSize) + (cellSize / 2);
+            const cy = (r * cellSize) + (cellSize / 2);
+            svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.2).toFixed(2)}"/>`;
+          }
+        }
+      }
+      svg += `</g>`;
+
+      const drawEyeSVG = (x, y) => {
+        const eyeSize = 7 * cellSize;
+        const innerSize = eyeSize - (2 * cellSize);
+        return `
+          <g>
+            <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 1.5}" fill="${options.color}"/>
+            <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/>
+            <circle cx="${x + eyeSize/2}" cy="${y + eyeSize/2}" r="${cellSize * 1.5}" fill="${options.color}"/>
+          </g>`;
+      };
+
+      svg += drawEyeSVG(0, 0);
+      svg += drawEyeSVG((count - 7) * cellSize, 0);
+      svg += drawEyeSVG(0, (count - 7) * cellSize);
+
+      if (options.logoUrl) {
+        const logoSize = size * 0.22;
+        const center = (size - logoSize) / 2;
+        svg += `
+          <rect x="${center - 5}" y="${center - 5}" width="${logoSize + 10}" height="${logoSize + 10}" fill="${options.bgColor}" rx="6"/>
+          <image href="${options.logoUrl}" x="${center}" y="${center}" width="${logoSize}" height="${logoSize}"/>`;
+      }
+
+      svg += `</svg>`;
+      return svg;
+    }
+
+    // --- 2. GESTION DES REQUÊTES ET FORMULAIRES ---
+    const getFormValues = () => {
+      const textInput = document.getElementById('qr-text');
+      const colorInput = document.getElementById('qr-color');
+      const bgInput = document.getElementById('bg-color');
+      const logoInput = document.getElementById('logo-url');
+
+      const defaultUrl = 'https://mamadounia.github.io/generateur-qr/';
+      const text = textInput && textInput.value.trim() ? textInput.value.trim() : defaultUrl;
+
+      return {
+        text,
+        color: colorInput ? colorInput.value : '#0277bd',
+        bgColor: bgInput ? bgInput.value : '#ffffff',
+        logoUrl: logoInput ? logoInput.value.trim() : ''
+      };
+    };
+
+    const triggerDownload = (href, fileName) => {
+      const link = document.createElement('a');
+      link.download = fileName;
+      link.href = href;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    function updateQR(callback) {
+      const values = getFormValues();
+      const qr = getQRMatrix(values.text);
+      const canvas = document.getElementById('qr-canvas');
+      renderCanvas(qr, canvas, values, callback);
+    }
+
+    // --- 3. ÉVÉNEMENTS EXPORTS ---
+    document.getElementById('dl-png').addEventListener('click', () => {
+      updateQR(() => {
+        const canvas = document.getElementById('qr-canvas');
+        triggerDownload(canvas.toDataURL('image/png'), 'qrcode.png');
       });
+    });
 
+    document.getElementById('dl-svg').addEventListener('click', () => {
+      const values = getFormValues();
+      const qr = getQRMatrix(values.text);
+      const svgData = generateSVG(qr, values);
       const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const fileName = getSafeFileName(values.text, 'svg');
-
-      triggerDownload(url, fileName);
+      triggerDownload(url, 'qrcode.svg');
       URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Erreur lors du téléchargement SVG:', error);
-      alert('Impossible de générer le fichier SVG.');
-    }
-  });
-}
+    });
 
-// ==========================================
-// 3. TÉLÉCHARGEMENT PDF (A4 STRUCTURÉ)
-// ==========================================
-const btnPdf = document.getElementById('dl-pdf');
-if (btnPdf) {
-  btnPdf.addEventListener('click', () => {
-    try {
-      const values = getFormValues();
+    document.getElementById('dl-pdf').addEventListener('click', () => {
+      updateQR(() => {
+        const values = getFormValues();
+        const canvas = document.getElementById('qr-canvas');
 
-      if (!jsPDF) {
-        throw new Error("La bibliothèque jsPDF est introuvable.");
-      }
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const imgData = canvas.toDataURL('image/png');
 
-      const canvas = document.getElementById('qr-canvas');
-      if (!canvas) throw new Error("Élément Canvas introuvable.");
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.setTextColor(2, 119, 189);
+        doc.text('Fiche QR Code', 105, 25, { align: 'center' });
 
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(80);
+        
+        const splitText = doc.splitTextToSize(`Cible : ${values.text}`, 160);
+        doc.text(splitText, 105, 35, { align: 'center' });
+
+        const qrSize = 90;
+        const xPos = (210 - qrSize) / 2;
+        const yPos = 35 + (splitText.length * 5) + 10;
+
+        doc.addImage(imgData, 'PNG', xPos, yPos, qrSize, qrSize);
+
+        doc.setFontSize(9);
+        doc.setTextColor(150);
+        doc.text('Généré via https://mamadounia.github.io/generateur-qr/', 105, yPos + qrSize + 20, { align: 'center' });
+
+        doc.save('qrcode-document.pdf');
       });
+    });
 
-      const imgData = canvas.toDataURL('image/png');
-
-      // En-tête du document
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(20);
-      doc.setTextColor(2, 119, 189);
-      doc.text('Fiche QR Code', 105, 25, { align: 'center' });
-
-      // Affichage sécurisé de l'URL (gestion des lignes multiples)
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(80);
-      
-      const splitText = doc.splitTextToSize(`Cible : ${values.text}`, 160);
-      doc.text(splitText, 105, 35, { align: 'center' });
-
-      // Rendu du QR Code centré
-      const qrSize = 90;
-      const xPos = (210 - qrSize) / 2;
-      const yPos = 35 + (splitText.length * 5) + 10;
-
-      doc.addImage(imgData, 'PNG', xPos, yPos, qrSize, qrSize);
-
-      // Pied de page
-      doc.setFontSize(9);
-      doc.setTextColor(150);
-      doc.text('Généré via https://mamadounia.github.io/generateur-qr/', 105, yPos + qrSize + 20, { align: 'center' });
-
-      // Sauvegarde du fichier PDF
-      const fileName = getSafeFileName(values.text, 'pdf');
-      doc.save(fileName);
-    } catch (error) {
-      console.error('Erreur lors de la création du PDF:', error);
-      alert('Impossible de générer le document PDF.');
-    }
-  });
-}
-</script>
+    // Événements d'initialisation
+    document.getElementById('generate-btn').addEventListener('click', () => updateQR());
+    window.onload = () => updateQR();
+  </script>
+</body>
+</html>
