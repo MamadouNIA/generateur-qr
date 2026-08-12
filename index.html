@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR Studio — Multi-Social Hub Pro</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <title>CyberBio Studio — Bio-Link Generator Pro</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +13,6 @@
     :root {
       --neon-cyan: #00f3ff;
       --neon-magenta: #ff0055;
-      --neon-purple: #ab00ff;
       --bg-dark: #030712;
       --panel-bg: rgba(15, 23, 42, 0.85);
       --border-glow: rgba(0, 243, 255, 0.25);
@@ -50,18 +46,18 @@
       border-radius: 20px;
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
       width: 100%;
-      max-width: 1200px;
+      max-width: 1100px;
       padding: 35px;
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 35px;
     }
 
-    @media (max-width: 950px) {
+    @media (max-width: 900px) {
       .cyber-card { grid-template-columns: 1fr; padding: 20px; }
     }
 
-    .title-zone { grid-column: 1 / -1; text-align: center; margin-bottom: 5px; }
+    .title-zone { grid-column: 1 / -1; text-align: center; margin-bottom: 10px; }
 
     .title-zone h1 {
       font-family: var(--font-title);
@@ -74,37 +70,6 @@
     }
 
     .title-zone p { color: #9ca3af; font-size: 1rem; }
-
-    .mode-switch {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .mode-btn {
-      padding: 12px 24px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      color: #9ca3af;
-      font-family: var(--font-title);
-      font-size: 0.8rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mode-btn.active {
-      background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(255, 0, 85, 0.1));
-      border-color: var(--neon-cyan);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-      transform: translateY(-2px);
-    }
 
     .control-group { margin-bottom: 18px; }
 
@@ -120,7 +85,7 @@
       margin-bottom: 8px;
     }
 
-    input[type="text"], select {
+    input[type="text"] {
       width: 100%;
       padding: 11px 14px;
       background: rgba(3, 7, 18, 0.7);
@@ -133,7 +98,7 @@
       transition: all 0.3s;
     }
 
-    input[type="text"]:focus, select:focus {
+    input[type="text"]:focus {
       border-color: var(--neon-cyan);
       box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
     }
@@ -141,7 +106,7 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .multi-social-container {
-      max-height: 320px;
+      max-height: 380px;
       overflow-y: auto;
       padding-right: 8px;
       display: flex;
@@ -156,17 +121,11 @@
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-left: 3px solid var(--neon-cyan);
-      padding: 12px;
+      padding: 10px 14px;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      transition: all 0.3s;
-    }
-
-    .social-input-card:hover {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      gap: 6px;
     }
 
     .social-card-header {
@@ -178,44 +137,7 @@
       color: #fff;
     }
 
-    .social-card-header img { width: 20px; height: 20px; }
-
-    .preset-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-
-    @media (max-width: 600px) {
-      .preset-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    .preset-btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 8px 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      color: #d1d5db;
-      font-family: var(--font-title);
-      font-size: 0.6rem;
-      transition: all 0.25s ease;
-    }
-
-    .preset-btn img { width: 20px; height: 20px; }
-
-    .preset-btn:hover, .preset-btn.active {
-      background: rgba(0, 243, 255, 0.15);
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-      transform: translateY(-2px);
-    }
+    .social-card-header img { width: 18px; height: 18px; }
 
     .color-input-wrapper {
       display: flex;
@@ -223,7 +145,7 @@
       gap: 10px;
       background: rgba(3, 7, 18, 0.7);
       border: 1px solid var(--border-glow);
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 8px;
     }
 
@@ -236,83 +158,85 @@
       background: transparent;
     }
 
+    /* PREVIEW CONTAINER */
     .preview-stage {
       background: rgba(3, 7, 18, 0.85);
       border: 1px solid rgba(0, 243, 255, 0.2);
       border-radius: 16px;
-      padding: 25px 20px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      position: relative;
+      justify-content: space-between;
     }
 
-    .status-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
+    .preview-phone-frame {
+      width: 100%;
+      max-width: 320px;
+      min-height: 480px;
+      background: #030712;
+      border: 2px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 25px 15px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      font-family: var(--font-title);
-      font-size: 0.65rem;
-      color: var(--neon-cyan);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--neon-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--neon-cyan);
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(1.2); }
-    }
-
-    .qr-holo-frame {
-      background: #ffffff;
-      padding: 14px;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
       transition: all 0.3s;
     }
 
-    #qr-svg-container { width: 230px; height: 230px; }
-    #qr-svg-container svg { width: 100%; height: 100%; }
-
-    .action-stack {
-      width: 100%;
+    .preview-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), #000);
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px var(--neon-cyan);
     }
 
-    .btn {
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
+    .preview-title { font-family: var(--font-title); font-size: 1.1rem; text-align: center; margin-bottom: 4px; }
+    .preview-sub { font-size: 0.85rem; color: #9ca3af; text-align: center; margin-bottom: 20px; }
+
+    .preview-links { width: 100%; display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+    
+    .preview-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
       font-family: var(--font-title);
-      font-size: 0.8rem;
+      font-size: 0.7rem;
+      text-decoration: none;
+    }
+
+    .preview-btn img { width: 16px; height: 16px; }
+
+    .btn-cyber-primary {
+      width: 100%;
+      margin-top: 15px;
+      padding: 14px;
+      background: linear-gradient(90deg, #00f3ff, #0066ff);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-title);
+      font-size: 0.85rem;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .btn-cyber-primary {
-      background: linear-gradient(90deg, #00f3ff, #0066ff);
-      color: #000;
       box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
     }
 
@@ -320,91 +244,18 @@
       box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
       transform: translateY(-2px);
     }
-
-    .btn-row { display: flex; gap: 8px; width: 100%; }
-    .btn-row .btn { flex: 1; }
-
-    .btn-cyber-outline {
-      background: transparent;
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
-    }
-
-    .btn-cyber-outline:hover { background: rgba(0, 243, 255, 0.1); }
-    
-    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
   <div class="cyber-card">
     <div class="title-zone">
-      <h1>CyberQR Studio Pro</h1>
-      <p>// Multi-Social Hub & Dynamic QR Engine</p>
+      <h1>CyberBio Studio</h1>
+      <p>// Générateur Indépendant de Page Bio-Link Multi-Réseaux</p>
     </div>
 
-    <!-- Mode Selector Tabs -->
-    <div class="mode-switch">
-      <button class="mode-btn active" id="mode-single-btn" onclick="switchMode('single')">
-        ⚡ Canal Direct
-      </button>
-      <button class="mode-btn" id="mode-multi-btn" onclick="switchMode('multi')">
-        ✨ Multi-Réseaux Bio Link
-      </button>
-    </div>
-
-    <!-- Controls Single -->
-    <div class="controls-panel" id="single-panel">
-      <div class="control-group">
-        <label>⚡ Canal Direct Réseaux</label>
-        <div class="preset-grid">
-          <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'email', 'mailto:')">
-            <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
-          </button>
-          <button class="preset-btn" onclick="selectPreset('whatsapp', 'https://wa.me/33600000000', 'whatsapp')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
-          </button>
-          <button class="preset-btn" onclick="selectPreset('instagram', 'https://instagram.com/votre_profil', 'instagram')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> Insta
-          </button>
-          <button class="preset-btn" onclick="selectPreset('linkedin', 'https://linkedin.com/in/votre_profil', 'linkedin')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
-          </button>
-          <button class="preset-btn" onclick="selectPreset('facebook', 'https://facebook.com/votre_page', 'facebook')">
-            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook
-          </button>
-          <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'x')">
-            <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X"> X / Twitter
-          </button>
-          <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'youtube')">
-            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
-          </button>
-          <button class="preset-btn" onclick="selectPreset('tiktok', 'https://tiktok.com/@votre_compte', 'tiktok')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
-          </button>
-          <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'telegram')">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram
-          </button>
-          <button class="preset-btn" onclick="selectPreset('snapchat', 'https://snapchat.com/add/votre_pseudo', 'snapchat')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" alt="Snapchat"> Snapchat
-          </button>
-          <button class="preset-btn" onclick="selectPreset('discord', 'https://discord.gg/votre_serveur', 'discord')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"> Discord
-          </button>
-          <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'phone', 'tel:')">
-            <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Téléphone
-          </button>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label for="qr-text" id="input-label">🔗 Adresse Cible</label>
-        <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez la donnée cible">
-      </div>
-    </div>
-
-    <!-- Controls Multi Social Panel -->
-    <div class="controls-panel hidden" id="multi-panel">
+    <!-- Controls Panel -->
+    <div class="controls-panel">
       <div class="grid-2 control-group">
         <div>
           <label>👤 Nom du Profil</label>
@@ -417,16 +268,25 @@
       </div>
 
       <div class="control-group">
-        <label>🌐 Configurer l'ensemble de vos Réseaux (12 Total)</label>
+        <label>🎨 Thème Accent Néon</label>
+        <div class="color-input-wrapper">
+          <input type="color" id="theme-color" value="#00f3ff">
+          <span style="font-size:0.85rem; color:#aaa;">Couleur des bordures & lueurs</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>🌐 Vos Réseaux Sociaux (12 Canaux)</label>
         <div class="multi-social-container">
+          
           <div class="social-input-card" style="border-left-color: #E1306C;">
             <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Insta"> Instagram</div>
-            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" placeholder="https://instagram.com/votre_pseudo">
+            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" value="https://instagram.com/votre_pseudo" placeholder="https://instagram.com/votre_pseudo">
           </div>
 
           <div class="social-input-card" style="border-left-color: #25D366;">
             <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp</div>
-            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" placeholder="https://wa.me/33600000000">
+            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" value="https://wa.me/33600000000" placeholder="https://wa.me/33600000000">
           </div>
 
           <div class="social-input-card" style="border-left-color: #0A66C2;">
@@ -439,7 +299,7 @@
             <input type="text" class="multi-social-link" data-name="Facebook" data-icon="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" placeholder="https://facebook.com/votre_page">
           </div>
 
-          <div class="social-input-card" style="border-left-color: #000000;">
+          <div class="social-input-card" style="border-left-color: #ffffff;">
             <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X"> X / Twitter</div>
             <input type="text" class="multi-social-link" data-name="X / Twitter" data-icon="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" placeholder="https://x.com/votre_profil">
           </div>
@@ -478,331 +338,67 @@
             <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Appel Téléphonique</div>
             <input type="text" class="multi-social-link" data-name="Téléphone" data-icon="https://cdn-icons-png.flaticon.com/512/126/126509.png" placeholder="tel:+33600000000">
           </div>
-        </div>
-      </div>
 
-      <div class="control-group">
-        <button class="btn btn-cyber-primary" style="width: 100%;" onclick="exportBioLinkPage()">🚀 Télécharger la Page Bio-Link (.HTML)</button>
-      </div>
-    </div>
-
-    <!-- Style Controls Shared -->
-    <div class="shared-controls">
-      <div class="grid-2 control-group">
-        <div>
-          <label for="module-style">📐 Style Modules (12)</label>
-          <select id="module-style">
-            <option value="dots">Dots (Circulaires)</option>
-            <option value="smooth">Gouttes (Rounded)</option>
-            <option value="diamonds">Étoiles / Losanges</option>
-            <option value="diamonds-soft">Losanges Doux</option>
-            <option value="star">Étoile Tech (4 Pts)</option>
-            <option value="cross">Croix Cyber</option>
-            <option value="pill">Pilule / Bâtonnet</option>
-            <option value="vertical">Barres Verticales</option>
-            <option value="horizontal">Lignes Fine</option>
-            <option value="horizontal-bold">Lignes Épaisses</option>
-            <option value="fluid">Fluide Connecté</option>
-            <option value="square">Carré Brut</option>
-          </select>
-        </div>
-        <div>
-          <label for="eye-style">👁️ Style Yeux (8)</label>
-          <select id="eye-style">
-            <option value="rounded">Cyber Rounded</option>
-            <option value="circle">Orbital Circle</option>
-            <option value="square">Square Tech</option>
-            <option value="shield">Bouclier / Hexagone</option>
-            <option value="leaf">Feuille / Goutte</option>
-            <option value="diamond">Losange Cyber</option>
-            <option value="target">Cible Ciblée</option>
-            <option value="bars">Cadre Ouvert</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid-2 control-group">
-        <div>
-          <label for="qr-color">🎨 Couleur Code</label>
-          <div class="color-input-wrapper">
-            <input type="color" id="qr-color" value="#00f3ff">
-            <span style="font-size:0.85rem; color:#aaa;">Couleur Néon</span>
-          </div>
-        </div>
-        <div>
-          <label for="bg-color">⬛ Background</label>
-          <div class="color-input-wrapper">
-            <input type="color" id="bg-color" value="#0a0f1d">
-            <span style="font-size:0.85rem; color:#aaa;">Arrière-plan</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2 control-group" id="icon-group">
-        <div>
-          <label for="icon-select">🛡️ Icône centrale</label>
-          <select id="icon-select" onchange="toggleCustomUrlInput()">
-            <option value="email">Email</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="instagram">Instagram</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="facebook">Facebook</option>
-            <option value="x">X / Twitter</option>
-            <option value="youtube">YouTube</option>
-            <option value="tiktok">TikTok</option>
-            <option value="telegram">Telegram</option>
-            <option value="snapchat">Snapchat</option>
-            <option value="discord">Discord</option>
-            <option value="phone">Téléphone</option>
-            <option value="none">Aucun Logo</option>
-            <option value="custom">URL Personnalisée...</option>
-          </select>
-        </div>
-        <div id="custom-url-wrapper" class="hidden">
-          <label for="logo-url">🌐 Lien Image</label>
-          <input type="text" id="logo-url" placeholder="https://domaine.com/logo.png">
         </div>
       </div>
     </div>
 
-    <!-- Preview -->
+    <!-- Live Preview Stage -->
     <div class="preview-stage">
-      <div class="status-badge">
-        <div class="status-dot"></div>
-        ENGINE READY
+      <label>📱 Aperçu en Temps Réel</label>
+      
+      <div class="preview-phone-frame" id="phone-frame">
+        <div class="preview-avatar" id="prev-avatar">A</div>
+        <div class="preview-title" id="prev-title">Alex Cyber</div>
+        <div class="preview-sub" id="prev-sub">Créateur Digital & Designer</div>
+        <div class="preview-links" id="prev-links"></div>
       </div>
 
-      <div class="qr-holo-frame" id="qr-frame">
-        <div id="qr-svg-container"></div>
-      </div>
-
-      <div class="action-stack">
-        <button class="btn btn-cyber-primary" id="dl-png">💾 Exporter PNG HD</button>
-        <div class="btn-row">
-          <button class="btn btn-cyber-outline" id="dl-svg">Vector SVG</button>
-          <button class="btn btn-cyber-outline" id="dl-pdf">Document PDF</button>
-        </div>
-      </div>
+      <button class="btn-cyber-primary" onclick="exportBioLinkPage()">🚀 Télécharger la Page (.HTML)</button>
     </div>
   </div>
 
   <script>
-    const { jsPDF } = window.jspdf || {};
-    let currentPrefix = 'mailto:';
-    let activeMode = 'single';
+    function updatePreview() {
+      const title = document.getElementById('bio-title').value.trim() || 'Mon Profil';
+      const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Bienvenue sur mes liens';
+      const color = document.getElementById('theme-color').value;
 
-    const ICON_CATALOG = {
-      email: 'https://cdn-icons-png.flaticon.com/512/732/732200.png',
-      whatsapp: 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png',
-      instagram: 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png',
-      linkedin: 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png',
-      facebook: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png',
-      x: 'https://cdn-icons-png.flaticon.com/512/5969/5968830.png',
-      youtube: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
-      tiktok: 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
-      telegram: 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png',
-      snapchat: 'https://cdn-icons-png.flaticon.com/512/3670/3670013.png',
-      discord: 'https://cdn-icons-png.flaticon.com/512/3670/3670157.png',
-      phone: 'https://cdn-icons-png.flaticon.com/512/126/126509.png'
-    };
+      document.getElementById('prev-title').innerText = title;
+      document.getElementById('prev-sub').innerText = subtitle;
+      document.getElementById('prev-avatar').innerText = title.charAt(0).toUpperCase();
 
-    function switchMode(mode) {
-      activeMode = mode;
-      document.getElementById('mode-single-btn').classList.toggle('active', mode === 'single');
-      document.getElementById('mode-multi-btn').classList.toggle('active', mode === 'multi');
-      document.getElementById('single-panel').classList.toggle('hidden', mode !== 'single');
-      document.getElementById('multi-panel').classList.toggle('hidden', mode !== 'multi');
-      renderUI();
-    }
+      // Update phone styling
+      const frame = document.getElementById('phone-frame');
+      frame.style.borderColor = color;
+      frame.style.boxShadow = `0 0 25px ${color}33`;
+      document.getElementById('prev-avatar').style.background = `linear-gradient(135deg, ${color}, #000)`;
+      document.getElementById('prev-avatar').style.boxShadow = `0 0 15px ${color}`;
 
-    class CyberQREngine {
-      static generateSVGString(text, options) {
-        const qr = qrcode(0, 'H');
-        qr.addData(text);
-        qr.make();
+      // Render links
+      const linksContainer = document.getElementById('prev-links');
+      linksContainer.innerHTML = '';
 
-        const count = qr.getModuleCount();
-        const size = 500;
-        const cellSize = size / count;
+      const inputs = document.querySelectorAll('.multi-social-link');
+      inputs.forEach(input => {
+        const val = input.value.trim();
+        const name = input.dataset.name;
+        const icon = input.dataset.icon;
 
-        let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
-        svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
-
-        // DRAW MODULES
-        svg += `<g fill="${options.color}">`;
-        for (let r = 0; r < count; r++) {
-          for (let c = 0; c < count; c++) {
-            if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
-
-            if (qr.isDark(r, c)) {
-              const x = c * cellSize;
-              const y = r * cellSize;
-              const cx = x + cellSize / 2;
-              const cy = y + cellSize / 2;
-
-              switch(options.moduleStyle) {
-                case 'dots':
-                  svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.3).toFixed(2)}"/>`;
-                  break;
-                case 'smooth':
-                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize / 2.2).toFixed(2)}"/>`;
-                  break;
-                case 'diamonds':
-                  svg += `<polygon points="${cx},${y} ${x + cellSize},${cy} ${cx},${y + cellSize} ${x},${cy}"/>`;
-                  break;
-                case 'diamonds-soft': {
-                  const offset = cellSize * 0.15;
-                  svg += `<polygon points="${cx},${y + offset} ${x + cellSize - offset},${cy} ${cx},${y + cellSize - offset} ${x + offset},${cy}"/>`;
-                  break;
-                }
-                case 'star': {
-                  const inset = cellSize * 0.3;
-                  svg += `<polygon points="${cx},${y} ${x + cellSize - inset},${y + inset} ${x + cellSize},${cy} ${x + cellSize - inset},${y + cellSize - inset} ${cx},${y + cellSize} ${x + inset},${y + cellSize - inset} ${x},${cy} ${x + inset},${y + inset}"/>`;
-                  break;
-                }
-                case 'cross': {
-                  const w = cellSize * 0.35;
-                  const o = (cellSize - w) / 2;
-                  svg += `<path d="M ${x + o} ${y} h ${w} v ${o} h ${o} v ${w} h -${o} v ${o} h -${w} v -${o} h -${o} v -${w} h ${o} z"/>`;
-                  break;
-                }
-                case 'pill':
-                  svg += `<rect x="${(x + cellSize * 0.1).toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${(cellSize * 0.8).toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.25).toFixed(2)}"/>`;
-                  break;
-                case 'vertical':
-                  svg += `<rect x="${(x + cellSize * 0.15).toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize * 0.7).toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.2).toFixed(2)}"/>`;
-                  break;
-                case 'horizontal':
-                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.15).toFixed(2)}"/>`;
-                  break;
-                case 'horizontal-bold':
-                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.1).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.8).toFixed(2)}"/>`;
-                  break;
-                case 'fluid': {
-                  let top = (r > 0) && qr.isDark(r - 1, c);
-                  let bottom = (r < count - 1) && qr.isDark(r + 1, c);
-                  let left = (c > 0) && qr.isDark(r, c - 1);
-                  let right = (c < count - 1) && qr.isDark(r, c + 1);
-                  let rxTop = (!top && !left) ? cellSize * 0.45 : 0;
-                  let rxBot = (!bottom && !right) ? cellSize * 0.45 : 0;
-                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${rxTop || rxBot}"/>`;
-                  break;
-                }
-                default:
-                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}"/>`;
-                  break;
-              }
-            }
-          }
+        if (val) {
+          const a = document.createElement('div');
+          a.className = 'preview-btn';
+          a.style.borderColor = `${color}44`;
+          a.innerHTML = `<img src="${icon}" alt="${name}"> <span>${name}</span>`;
+          linksContainer.appendChild(a);
         }
-        svg += `</g>`;
-
-        // DRAW EYES
-        const renderEye = (x, y) => {
-          const eyeSize = 7 * cellSize;
-          const innerSize = eyeSize - (2 * cellSize);
-          const center = x + eyeSize / 2;
-          const centerY = y + eyeSize / 2;
-
-          switch(options.eyeStyle) {
-            case 'circle':
-              return `<g><circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/></g>`;
-            case 'rounded':
-              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 2}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/></g>`;
-            case 'shield':
-              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize * 1.5}" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize}" fill="${options.color}"/></g>`;
-            case 'leaf':
-              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize*3.5} 0 ${cellSize*3.5} 0" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize*2} 0 ${cellSize*2} 0" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize} 0 ${cellSize} 0" fill="${options.color}"/></g>`;
-            case 'diamond':
-              return `<g><polygon points="${center},${y} ${x + eyeSize},${centerY} ${center},${y + eyeSize} ${x},${centerY}" fill="${options.color}"/><polygon points="${center},${y + cellSize*1.5} ${x + eyeSize - cellSize*1.5},${centerY} ${center},${y + eyeSize - cellSize*1.5} ${x + cellSize*1.5},${centerY}" fill="${options.bgColor}"/><polygon points="${center},${y + cellSize*2.5} ${x + eyeSize - cellSize*2.5},${centerY} ${center},${y + eyeSize - cellSize*2.5} ${x + cellSize*2.5},${centerY}" fill="${options.color}"/></g>`;
-            case 'target':
-              return `<g><circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 1.8}" fill="${options.color}"/><circle cx="${center}" cy="${centerY}" r="${cellSize * 0.8}" fill="${options.bgColor}"/></g>`;
-            case 'bars':
-              return `<g fill="${options.color}"><rect x="${x}" y="${y}" width="${eyeSize}" height="${cellSize}"/><rect x="${x}" y="${y + eyeSize - cellSize}" width="${eyeSize}" height="${cellSize}"/><rect x="${x}" y="${y}" width="${cellSize}" height="${eyeSize}"/><rect x="${x + eyeSize - cellSize}" y="${y}" width="${cellSize}" height="${eyeSize}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}"/></g>`;
-            default:
-              return `<g><rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" fill="${options.color}"/><rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" fill="${options.bgColor}"/><rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" fill="${options.color}"/></g>`;
-          }
-        };
-
-        svg += renderEye(0, 0);
-        svg += renderEye((count - 7) * cellSize, 0);
-        svg += renderEye(0, (count - 7) * cellSize);
-
-        if (options.logoUrl) {
-          const logoSize = size * 0.22;
-          const center = (size - logoSize) / 2;
-          svg += `<rect x="${center - 6}" y="${center - 6}" width="${logoSize + 12}" height="${logoSize + 12}" fill="${options.bgColor}" rx="12"/><image href="${options.logoUrl}" x="${center}" y="${center}" width="${logoSize}" height="${logoSize}"/>`;
-        }
-
-        svg += `</svg>`;
-        return svg;
-      }
-    }
-
-    function toggleCustomUrlInput() {
-      const selectedValue = document.getElementById('icon-select').value;
-      const customWrapper = document.getElementById('custom-url-wrapper');
-      customWrapper.classList.toggle('hidden', selectedValue !== 'custom');
-      renderUI();
-    }
-
-    function getOptions() {
-      let finalTargetText = '';
-
-      if (activeMode === 'single') {
-        let rawText = document.getElementById('qr-text').value.trim();
-        if (currentPrefix && !rawText.startsWith(currentPrefix) && !rawText.startsWith('http')) {
-          rawText = currentPrefix + rawText;
-        }
-        finalTargetText = rawText || 'https://votre-site.com';
-      } else {
-        finalTargetText = 'index.html';
-      }
-
-      const iconChoice = document.getElementById('icon-select').value;
-      let finalLogoUrl = '';
-
-      if (iconChoice === 'custom') {
-        finalLogoUrl = document.getElementById('logo-url').value.trim();
-      } else if (iconChoice !== 'none') {
-        finalLogoUrl = ICON_CATALOG[iconChoice] || '';
-      }
-
-      return {
-        text: finalTargetText,
-        color: document.getElementById('qr-color').value,
-        bgColor: document.getElementById('bg-color').value,
-        moduleStyle: document.getElementById('module-style').value,
-        eyeStyle: document.getElementById('eye-style').value,
-        logoUrl: finalLogoUrl
-      };
-    }
-
-    function renderUI() {
-      const options = getOptions();
-      const svgString = CyberQREngine.generateSVGString(options.text, options);
-      document.getElementById('qr-svg-container').innerHTML = svgString;
-      document.getElementById('qr-frame').style.boxShadow = `0 0 30px ${options.color}66`;
-    }
-
-    function selectPreset(type, defaultValue, iconKey, prefix = '') {
-      currentPrefix = prefix;
-      document.getElementById('qr-text').value = defaultValue;
-      document.getElementById('icon-select').value = iconKey;
-      document.getElementById('input-label').innerText = `🔗 ${type.toUpperCase()} CIBLE`;
-
-      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-      if(event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
-      }
-
-      toggleCustomUrlInput();
+      });
     }
 
     function exportBioLinkPage() {
-      const title = document.getElementById('bio-title').value.trim() || 'Alex Cyber';
-      const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Digital Creator';
-      const color = document.getElementById('qr-color').value;
+      const title = document.getElementById('bio-title').value.trim() || 'Mon Profil';
+      const subtitle = document.getElementById('bio-subtitle').value.trim() || '';
+      const color = document.getElementById('theme-color').value;
 
       const inputs = document.querySelectorAll('.multi-social-link');
       let linksHTML = '';
@@ -895,7 +491,7 @@
 </head>
 <body>
   <div class="bio-card">
-    <div class="avatar">${title.charAt(0)}</div>
+    <div class="avatar">${title.charAt(0).toUpperCase()}</div>
     <h1>${title}</h1>
     <p>${subtitle}</p>
     <div class="links-container">
@@ -905,66 +501,20 @@
 </body>
 </html>`;
 
-      downloadFile(pageHTML, 'index.html', 'text/html');
-    }
-
-    function downloadFile(content, fileName, contentType) {
       const a = document.createElement('a');
-      const file = new Blob([content], { type: contentType });
+      const file = new Blob([pageHTML], { type: 'text/html' });
       a.href = URL.createObjectURL(file);
-      a.download = fileName;
+      a.download = 'index.html';
       a.click();
       URL.revokeObjectURL(a.href);
     }
 
-    document.getElementById('dl-png').addEventListener('click', () => {
-      const options = getOptions();
-      const svgString = CyberQREngine.generateSVGString(options.text, options);
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1000; canvas.height = 1000;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 1000, 1000);
-        const a = document.createElement('a');
-        a.download = 'cyber-qr.png';
-        a.href = canvas.toDataURL('image/png');
-        a.click();
-      };
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
+    // Dynamic listeners
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', updatePreview);
     });
 
-    document.getElementById('dl-svg').addEventListener('click', () => {
-      const options = getOptions();
-      const svgString = CyberQREngine.generateSVGString(options.text, options);
-      downloadFile(svgString, 'cyber-qr.svg', 'image/svg+xml');
-    });
-
-    document.getElementById('dl-pdf').addEventListener('click', () => {
-      const options = getOptions();
-      const svgString = CyberQREngine.generateSVGString(options.text, options);
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 800; canvas.height = 800;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 800, 800);
-        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(22);
-        doc.setTextColor(0, 243, 255);
-        doc.text('CyberQR Multi-Social Export', 105, 25, { align: 'center' });
-        doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 45, 100, 100);
-        doc.save('cyber-qr.pdf');
-      };
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
-    });
-
-    document.querySelectorAll('input, select').forEach(el => {
-      el.addEventListener('input', renderUI);
-    });
-
-    window.onload = () => { toggleCustomUrlInput(); };
+    window.onload = updatePreview;
   </script>
 </body>
 </html>
