@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR — Générateur Holographique Studio</title>
+  <title>CyberQR — Générateur Universal & Réseaux</title>
 
-  <!-- Dépendances Moteur QR & PDF -->
+  <!-- Moteur QR & PDF -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- Polices Futuristes Google Fonts -->
+  <!-- Polices Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -18,10 +18,9 @@
     :root {
       --neon-cyan: #00f3ff;
       --neon-magenta: #ff0055;
-      --neon-blue: #3b82f6;
       --bg-dark: #030712;
-      --panel-bg: rgba(15, 23, 42, 0.65);
-      --border-glow: rgba(0, 243, 255, 0.2);
+      --panel-bg: rgba(15, 23, 42, 0.7);
+      --border-glow: rgba(0, 243, 255, 0.25);
       --text-glow: 0 0 10px rgba(0, 243, 255, 0.5);
       --font-title: 'Orbitron', sans-serif;
       --font-body: 'Rajdhani', sans-serif;
@@ -44,45 +43,31 @@
       justify-content: center;
       align-items: center;
       padding: 30px 15px;
-      overflow-x: hidden;
     }
 
-    /* Carte Principale Glassmorphic */
     .cyber-card {
       background: var(--panel-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 243, 255, 0.3);
+      border: 1px solid var(--border-glow);
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.05);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
       width: 100%;
-      max-width: 1100px;
-      padding: 40px;
+      max-width: 1150px;
+      padding: 35px;
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 40px;
-      position: relative;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 35px;
     }
 
-    .cyber-card::before {
-      content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(45deg, var(--neon-cyan), transparent, var(--neon-magenta));
-      border-radius: 22px;
-      z-index: -1;
-      opacity: 0.4;
-    }
-
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
       .cyber-card { grid-template-columns: 1fr; padding: 20px; }
     }
 
-    /* En-tête */
     .title-zone {
       grid-column: 1 / -1;
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .title-zone h1 {
@@ -96,15 +81,9 @@
       text-shadow: var(--text-glow);
     }
 
-    .title-zone p {
-      color: #9ca3af;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
+    .title-zone p { color: #9ca3af; font-size: 1rem; }
 
-    /* Formulaires & Contrôles Futuristes */
-    .control-group { margin-bottom: 20px; }
+    .control-group { margin-bottom: 18px; }
 
     label {
       display: flex;
@@ -120,15 +99,15 @@
 
     input[type="text"], select {
       width: 100%;
-      padding: 12px 16px;
+      padding: 11px 14px;
       background: rgba(3, 7, 18, 0.7);
       border: 1px solid var(--border-glow);
       border-radius: 8px;
       color: #ffffff;
       font-family: var(--font-body);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       outline: none;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
     }
 
     input[type="text"]:focus, select:focus {
@@ -136,68 +115,70 @@
       box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    /* Raccourcis Réseaux en Neumorphism / Cyber Style */
+    /* Grille des Réseaux Sociaux */
     .preset-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .preset-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     .preset-btn {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 10px 4px;
+      border-radius: 8px;
+      padding: 8px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       cursor: pointer;
       color: #d1d5db;
       font-family: var(--font-title);
-      font-size: 0.65rem;
-      transition: all 0.3s ease;
+      font-size: 0.6rem;
+      transition: all 0.25s ease;
     }
 
-    .preset-btn img { width: 22px; height: 22px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); }
+    .preset-btn img { width: 20px; height: 20px; }
 
     .preset-btn:hover, .preset-btn.active {
-      background: rgba(0, 243, 255, 0.1);
+      background: rgba(0, 243, 255, 0.15);
       border-color: var(--neon-cyan);
       color: var(--neon-cyan);
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
       transform: translateY(-2px);
     }
 
-    /* Sélecteur de couleur personnalisé */
     .color-input-wrapper {
       display: flex;
       align-items: center;
       gap: 10px;
       background: rgba(3, 7, 18, 0.7);
       border: 1px solid var(--border-glow);
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 8px;
     }
 
     input[type="color"] {
       border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
       cursor: pointer;
       background: transparent;
     }
 
-    /* Zone de prévisualisation Holographique */
     .preview-stage {
-      background: rgba(3, 7, 18, 0.8);
+      background: rgba(3, 7, 18, 0.85);
       border: 1px solid rgba(0, 243, 255, 0.2);
       border-radius: 16px;
-      padding: 30px 20px;
+      padding: 25px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -215,7 +196,6 @@
       font-family: var(--font-title);
       font-size: 0.65rem;
       color: var(--neon-cyan);
-      letter-spacing: 1px;
     }
 
     .status-dot {
@@ -229,45 +209,39 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.2); }
+      50% { opacity: 0.3; transform: scale(1.2); }
     }
 
     .qr-holo-frame {
       background: #ffffff;
-      padding: 16px;
+      padding: 14px;
       border-radius: 16px;
       box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
-      position: relative;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
     }
 
-    #qr-svg-container {
-      width: 240px;
-      height: 240px;
-    }
-
+    #qr-svg-container { width: 230px; height: 230px; }
     #qr-svg-container svg { width: 100%; height: 100%; }
 
-    /* Boutons Cyber */
     .action-stack {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 24px;
+      gap: 10px;
+      margin-top: 20px;
     }
 
     .btn {
-      padding: 14px 20px;
+      padding: 12px 16px;
       border: none;
       border-radius: 8px;
       font-family: var(--font-title);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -285,7 +259,7 @@
       transform: translateY(-2px);
     }
 
-    .btn-row { display: flex; gap: 10px; width: 100%; }
+    .btn-row { display: flex; gap: 8px; width: 100%; }
     .btn-row .btn { flex: 1; }
 
     .btn-cyber-outline {
@@ -296,7 +270,6 @@
 
     .btn-cyber-outline:hover {
       background: rgba(0, 243, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
     }
   </style>
 </head>
@@ -305,32 +278,59 @@
   <div class="cyber-card">
     <div class="title-zone">
       <h1>CyberQR Studio</h1>
-      <p>// Générateur Vectoriel Holographique</p>
+      <p>// Générateur Omnicanal & Multi-Réseaux</p>
     </div>
 
-    <!-- Section Contrôles -->
+    <!-- Controls -->
     <div class="controls-panel">
       <div class="control-group">
-        <label>⚡ Réseau Cible</label>
+        <label>⚡ Sélectionner un Média / Canal</label>
         <div class="preset-grid">
-          <button class="preset-btn active" onclick="applyPreset('https://mamadounia.github.io/generateur-qr/', 'https://cdn-icons-png.flaticon.com/512/25/25231.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"> GITHUB
+          <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'https://cdn-icons-png.flaticon.com/512/732/732200.png', 'mailto:')">
+            <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
           </button>
-          <button class="preset-btn" onclick="applyPreset('https://wa.me/33600000000', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WHATSAPP
+
+          <button class="preset-btn" onclick="selectPreset('whatsapp', 'https://wa.me/33600000000', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
           </button>
-          <button class="preset-btn" onclick="applyPreset('https://instagram.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> INSTA
+
+          <button class="preset-btn" onclick="selectPreset('instagram', 'https://instagram.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> Insta
           </button>
-          <button class="preset-btn" onclick="applyPreset('https://linkedin.com/in/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LINKEDIN
+
+          <button class="preset-btn" onclick="selectPreset('linkedin', 'https://linkedin.com/in/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('facebook', 'https://facebook.com/votre_page', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/5969/5968830.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X/Twitter"> X / Twitter
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('tiktok', 'https://tiktok.com/@votre_compte', 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram
+          </button>
+
+          <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'https://cdn-icons-png.flaticon.com/512/126/126509.png', 'tel:')">
+            <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Téléphone
           </button>
         </div>
       </div>
 
       <div class="control-group">
-        <label for="qr-text">🔗 Contenu / URL Cible</label>
-        <input type="text" id="qr-text" value="https://mamadounia.github.io/generateur-qr/" placeholder="Saisissez une adresse Web">
+        <label for="qr-text" id="input-label">🔗 Adresse Email Cible</label>
+        <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez le lien ou la donnée">
       </div>
 
       <div class="grid-2 control-group">
@@ -357,29 +357,29 @@
           <label for="qr-color">🎨 Couleur Code</label>
           <div class="color-input-wrapper">
             <input type="color" id="qr-color" value="#00f3ff">
-            <span style="font-size:0.9rem; color:#aaa;">Néon Principal</span>
+            <span style="font-size:0.85rem; color:#aaa;">Couleur Néon</span>
           </div>
         </div>
         <div>
           <label for="bg-color">⬛ Background</label>
           <div class="color-input-wrapper">
             <input type="color" id="bg-color" value="#0a0f1d">
-            <span style="font-size:0.9rem; color:#aaa;">Fond Fondé</span>
+            <span style="font-size:0.85rem; color:#aaa;">Arrière-plan</span>
           </div>
         </div>
       </div>
 
       <div class="control-group">
         <label for="logo-url">🛡️ Logo Central (URL)</label>
-        <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/25/25231.png">
+        <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/732/732200.png">
       </div>
     </div>
 
-    <!-- Section Rendu Holographique -->
+    <!-- Preview -->
     <div class="preview-stage">
       <div class="status-badge">
         <div class="status-dot"></div>
-        SYSTEM READY
+        SYSTEM ACTIVE
       </div>
 
       <div class="qr-holo-frame" id="qr-frame">
@@ -387,10 +387,10 @@
       </div>
 
       <div class="action-stack">
-        <button class="btn btn-cyber-primary" id="dl-png">💾 Télécharger PNG HD</button>
+        <button class="btn btn-cyber-primary" id="dl-png">💾 Exporter PNG HD</button>
         <div class="btn-row">
           <button class="btn btn-cyber-outline" id="dl-svg">Vector SVG</button>
-          <button class="btn btn-cyber-outline" id="dl-pdf">Doc PDF</button>
+          <button class="btn btn-cyber-outline" id="dl-pdf">Document PDF</button>
         </div>
       </div>
     </div>
@@ -398,8 +398,8 @@
 
   <script>
     const { jsPDF } = window.jspdf || {};
+    let currentPrefix = 'mailto:';
 
-    // --- MOTEUR VECTORIEL SVG DE HAUTE PRÉCISION ---
     class CyberQREngine {
       static generateSVGString(text, options) {
         const qr = qrcode(0, 'H');
@@ -413,7 +413,7 @@
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
         svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
 
-        // Traitement des modules internes
+        // Draw Modules
         svg += `<g fill="${options.color}">`;
         for (let r = 0; r < count; r++) {
           for (let c = 0; c < count; c++) {
@@ -437,7 +437,7 @@
         }
         svg += `</g>`;
 
-        // Cadrans (Yeux)
+        // Draw Eyes
         const renderEye = (x, y) => {
           const eyeSize = 7 * cellSize;
           const innerSize = eyeSize - (2 * cellSize);
@@ -472,7 +472,7 @@
         svg += renderEye((count - 7) * cellSize, 0);
         svg += renderEye(0, (count - 7) * cellSize);
 
-        // Logo central masqué
+        // Overlay Logo
         if (options.logoUrl) {
           const logoSize = size * 0.22;
           const center = (size - logoSize) / 2;
@@ -486,10 +486,14 @@
       }
     }
 
-    // --- LOGIQUE METIER ET INTERACTION ---
     function getOptions() {
+      let rawText = document.getElementById('qr-text').value.trim();
+      if (currentPrefix && !rawText.startsWith(currentPrefix) && !rawText.startsWith('http')) {
+        rawText = currentPrefix + rawText;
+      }
+
       return {
-        text: document.getElementById('qr-text').value.trim() || 'https://mamadounia.github.io/generateur-qr/',
+        text: rawText || 'https://mamadounia.github.io/generateur-qr/',
         color: document.getElementById('qr-color').value,
         bgColor: document.getElementById('bg-color').value,
         moduleStyle: document.getElementById('module-style').value,
@@ -502,15 +506,17 @@
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
       document.getElementById('qr-svg-container').innerHTML = svgString;
-      
-      // Ajuste la lueur (glow) selon la couleur du néon
       document.getElementById('qr-frame').style.boxShadow = `0 0 30px ${options.color}66`;
     }
 
-    function applyPreset(url, logo) {
-      document.getElementById('qr-text').value = url;
+    function selectPreset(type, defaultValue, logo, prefix = '') {
+      currentPrefix = prefix;
+      document.getElementById('qr-text').value = defaultValue;
       document.getElementById('logo-url').value = logo;
       
+      const label = document.getElementById('input-label');
+      label.innerText = `🔗 ${type.toUpperCase()} CIBLE`;
+
       document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       event.currentTarget.classList.add('active');
 
@@ -526,7 +532,6 @@
       URL.revokeObjectURL(a.href);
     }
 
-    // Export PNG
     document.getElementById('dl-png').addEventListener('click', () => {
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
@@ -540,7 +545,7 @@
         ctx.drawImage(img, 0, 0, 1000, 1000);
         
         const a = document.createElement('a');
-        a.download = 'cyber-qrcode.png';
+        a.download = 'cyber-qr.png';
         a.href = canvas.toDataURL('image/png');
         a.click();
       };
@@ -548,14 +553,12 @@
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     });
 
-    // Export SVG
     document.getElementById('dl-svg').addEventListener('click', () => {
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
-      downloadFile(svgString, 'cyber-qrcode.svg', 'image/svg+xml');
+      downloadFile(svgString, 'cyber-qr.svg', 'image/svg+xml');
     });
 
-    // Export PDF
     document.getElementById('dl-pdf').addEventListener('click', () => {
       const options = getOptions();
       const svgString = CyberQREngine.generateSVGString(options.text, options);
@@ -572,29 +575,24 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(22);
         doc.setTextColor(0, 243, 255);
-        doc.text('CyberQR Holographic Record', 105, 25, { align: 'center' });
+        doc.text('CyberQR Omnichannel Export', 105, 25, { align: 'center' });
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(150);
-        doc.text(`Target URL : ${options.text}`, 105, 34, { align: 'center' });
+        doc.text(`Target : ${options.text}`, 105, 34, { align: 'center' });
 
         doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 45, 100, 100);
-
-        doc.setFontSize(9);
-        doc.text('Generated via CyberQR Engine', 105, 160, { align: 'center' });
-        doc.save('cyber-qrcode.pdf');
+        doc.save('cyber-qr.pdf');
       };
 
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     });
 
-    // Événements d'écoute en temps réel
     ['qr-text', 'module-style', 'eye-style', 'qr-color', 'bg-color', 'logo-url'].forEach(id => {
       document.getElementById(id).addEventListener('input', renderUI);
     });
 
-    // Initialisation
     window.onload = renderUI;
   </script>
 </body>
