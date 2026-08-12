@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR Studio — Extended Styles</title>
+  <title>CyberQR Studio — Extended Styles Ultra</title>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -259,6 +259,8 @@
     }
 
     .btn-cyber-outline:hover { background: rgba(0, 243, 255, 0.1); }
+    
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -266,7 +268,7 @@
   <div class="cyber-card">
     <div class="title-zone">
       <h1>CyberQR Studio Pro</h1>
-      <p>// Modules Avancés & Moteur Vectoriel</p>
+      <p>// 12 Styles de Modules & Moteur Vectoriel</p>
     </div>
 
     <!-- Controls -->
@@ -274,34 +276,34 @@
       <div class="control-group">
         <label>⚡ Sélectionner un Canal</label>
         <div class="preset-grid">
-          <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'https://cdn-icons-png.flaticon.com/512/732/732200.png', 'mailto:')">
+          <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'email', 'mailto:')">
             <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
           </button>
-          <button class="preset-btn" onclick="selectPreset('whatsapp', 'https://wa.me/33600000000', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
+          <button class="preset-btn" onclick="selectPreset('whatsapp', 'https://wa.me/33600000000', 'whatsapp')">
             <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
           </button>
-          <button class="preset-btn" onclick="selectPreset('instagram', 'https://instagram.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
+          <button class="preset-btn" onclick="selectPreset('instagram', 'https://instagram.com/votre_profil', 'instagram')">
             <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> Insta
           </button>
-          <button class="preset-btn" onclick="selectPreset('linkedin', 'https://linkedin.com/in/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+          <button class="preset-btn" onclick="selectPreset('linkedin', 'https://linkedin.com/in/votre_profil', 'linkedin')">
             <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
           </button>
-          <button class="preset-btn" onclick="selectPreset('facebook', 'https://facebook.com/votre_page', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+          <button class="preset-btn" onclick="selectPreset('facebook', 'https://facebook.com/votre_page', 'facebook')">
             <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook
           </button>
-          <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/5969/5968830.png')">
+          <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'x')">
             <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X/Twitter"> X / Twitter
           </button>
-          <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png')">
+          <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'youtube')">
             <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
           </button>
-          <button class="preset-btn" onclick="selectPreset('tiktok', 'https://tiktok.com/@votre_compte', 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png')">
+          <button class="preset-btn" onclick="selectPreset('tiktok', 'https://tiktok.com/@votre_compte', 'tiktok')">
             <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
           </button>
-          <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png')">
+          <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'telegram')">
             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram
           </button>
-          <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'https://cdn-icons-png.flaticon.com/512/126/126509.png', 'tel:')">
+          <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'phone', 'tel:')">
             <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Téléphone
           </button>
         </div>
@@ -314,25 +316,33 @@
 
       <div class="grid-2 control-group">
         <div>
-          <label for="module-style">📐 Style Modules (7)</label>
+          <label for="module-style">📐 Style Modules (12)</label>
           <select id="module-style">
             <option value="dots">Dots (Circulaires)</option>
             <option value="smooth">Gouttes (Rounded)</option>
             <option value="diamonds">Étoiles / Losanges</option>
+            <option value="diamonds-soft">Losanges Doux</option>
+            <option value="star">Étoile Tech (4 Pts)</option>
+            <option value="cross">Croix Cyber</option>
+            <option value="pill">Pilule / Bâtonnet</option>
             <option value="vertical">Barres Verticales</option>
-            <option value="horizontal">Lignes Horizontales</option>
+            <option value="horizontal">Lignes Fine</option>
+            <option value="horizontal-bold">Lignes Épaisses</option>
             <option value="fluid">Fluide Connecté</option>
             <option value="square">Carré Brut</option>
           </select>
         </div>
         <div>
-          <label for="eye-style">👁️ Style Yeux (5)</label>
+          <label for="eye-style">👁️ Style Yeux (8)</label>
           <select id="eye-style">
             <option value="rounded">Cyber Rounded</option>
             <option value="circle">Orbital Circle</option>
             <option value="square">Square Tech</option>
             <option value="shield">Bouclier / Hexagone</option>
             <option value="leaf">Feuille / Goutte</option>
+            <option value="diamond">Losange Cyber</option>
+            <option value="target">Cible Ciblée</option>
+            <option value="bars">Cadre Ouvert (Corner Lines)</option>
           </select>
         </div>
       </div>
@@ -354,9 +364,28 @@
         </div>
       </div>
 
-      <div class="control-group">
-        <label for="logo-url">🛡️ Logo Central (URL)</label>
-        <input type="text" id="logo-url" value="https://cdn-icons-png.flaticon.com/512/732/732200.png">
+      <div class="grid-2 control-group">
+        <div>
+          <label for="icon-select">🛡️ Sélectionner une Icône</label>
+          <select id="icon-select" onchange="toggleCustomUrlInput()">
+            <option value="email">Email</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="instagram">Instagram</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="facebook">Facebook</option>
+            <option value="x">X / Twitter</option>
+            <option value="youtube">YouTube</option>
+            <option value="tiktok">TikTok</option>
+            <option value="telegram">Telegram</option>
+            <option value="phone">Téléphone</option>
+            <option value="none">Aucun Logo</option>
+            <option value="custom">URL Personnalisée...</option>
+          </select>
+        </div>
+        <div id="custom-url-wrapper" class="hidden">
+          <label for="logo-url">🌐 Lien d'Image (URL)</label>
+          <input type="text" id="logo-url" placeholder="https://domaine.com/logo.png">
+        </div>
       </div>
     </div>
 
@@ -385,6 +414,19 @@
     const { jsPDF } = window.jspdf || {};
     let currentPrefix = 'mailto:';
 
+    const ICON_CATALOG = {
+      email: 'https://cdn-icons-png.flaticon.com/512/732/732200.png',
+      whatsapp: 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png',
+      instagram: 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png',
+      linkedin: 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png',
+      facebook: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png',
+      x: 'https://cdn-icons-png.flaticon.com/512/5969/5968830.png',
+      youtube: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
+      tiktok: 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
+      telegram: 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png',
+      phone: 'https://cdn-icons-png.flaticon.com/512/126/126509.png'
+    };
+
     class CyberQREngine {
       static generateSVGString(text, options) {
         const qr = qrcode(0, 'H');
@@ -398,21 +440,20 @@
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
         svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
 
-        // DESSIN DES MODULES
+        // DESSIN DES MODULES (12 STYLES)
         svg += `<g fill="${options.color}">`;
         for (let r = 0; r < count; r++) {
           for (let c = 0; c < count; c++) {
-            // Ignorer les yeux (7x7 dans chaque coin)
             if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
 
             if (qr.isDark(r, c)) {
               const x = c * cellSize;
               const y = r * cellSize;
+              const cx = x + cellSize / 2;
+              const cy = y + cellSize / 2;
 
               switch(options.moduleStyle) {
                 case 'dots': {
-                  const cx = x + cellSize / 2;
-                  const cy = y + cellSize / 2;
                   svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.3).toFixed(2)}"/>`;
                   break;
                 }
@@ -421,29 +462,49 @@
                   break;
                 }
                 case 'diamonds': {
-                  const cx = x + cellSize / 2;
-                  const cy = y + cellSize / 2;
-                  const h = cellSize / 2;
                   svg += `<polygon points="${cx},${y} ${x + cellSize},${cy} ${cx},${y + cellSize} ${x},${cy}"/>`;
                   break;
                 }
+                case 'diamonds-soft': {
+                  const offset = cellSize * 0.15;
+                  svg += `<polygon points="${cx},${y + offset} ${x + cellSize - offset},${cy} ${cx},${y + cellSize - offset} ${x + offset},${cy}"/>`;
+                  break;
+                }
+                case 'star': {
+                  const inset = cellSize * 0.3;
+                  svg += `<polygon points="${cx},${y} ${x + cellSize - inset},${y + inset} ${x + cellSize},${cy} ${x + cellSize - inset},${y + cellSize - inset} ${cx},${y + cellSize} ${x + inset},${y + cellSize - inset} ${x},${cy} ${x + inset},${y + inset}"/>`;
+                  break;
+                }
+                case 'cross': {
+                  const w = cellSize * 0.35;
+                  const o = (cellSize - w) / 2;
+                  svg += `<path d="M ${x + o} ${y} h ${w} v ${o} h ${o} v ${w} h -${o} v ${o} h -${w} v -${o} h -${o} v -${w} h ${o} z"/>`;
+                  break;
+                }
+                case 'pill': {
+                  svg += `<rect x="${(x + cellSize * 0.1).toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${(cellSize * 0.8).toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.25).toFixed(2)}"/>`;
+                  break;
+                }
                 case 'vertical': {
-                  svg += `<rect x="${(x + cellSize*0.15).toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize*0.7).toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize*0.2).toFixed(2)}"/>`;
+                  svg += `<rect x="${(x + cellSize * 0.15).toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize * 0.7).toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.2).toFixed(2)}"/>`;
                   break;
                 }
                 case 'horizontal': {
-                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize*0.15).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize*0.7).toFixed(2)}" rx="${(cellSize*0.2).toFixed(2)}"/>`;
+                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.25).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.5).toFixed(2)}" rx="${(cellSize * 0.15).toFixed(2)}"/>`;
+                  break;
+                }
+                case 'horizontal-bold': {
+                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize * 0.1).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize * 0.8).toFixed(2)}"/>`;
                   break;
                 }
                 case 'fluid': {
-                  // Fusionne les bords arrondis si les voisins sont actifs
                   let top = (r > 0) && qr.isDark(r - 1, c);
                   let bottom = (r < count - 1) && qr.isDark(r + 1, c);
                   let left = (c > 0) && qr.isDark(r, c - 1);
                   let right = (c < count - 1) && qr.isDark(r, c + 1);
                   
-                  let rxTop = (!top && !left) ? cellSize * 0.4 : 0;
-                  let rxBot = (!bottom && !right) ? cellSize * 0.4 : 0;
+                  let rxTop = (!top && !left) ? cellSize * 0.45 : 0;
+                  let rxBot = (!bottom && !right) ? cellSize * 0.45 : 0;
 
                   svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${rxTop || rxBot}"/>`;
                   break;
@@ -458,7 +519,7 @@
         }
         svg += `</g>`;
 
-        // DESSIN DES YEUX (CADRANS)
+        // DESSIN DES YEUX (8 STYLES)
         const renderEye = (x, y) => {
           const eyeSize = 7 * cellSize;
           const innerSize = eyeSize - (2 * cellSize);
@@ -483,7 +544,7 @@
             case 'shield':
               return `
                 <g>
-                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" rx="${cellSize}" fill="${options.color}"/>
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" fill="${options.color}"/>
                   <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize * 1.5}" fill="${options.bgColor}"/>
                   <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize}" fill="${options.color}"/>
                 </g>`;
@@ -493,6 +554,30 @@
                   <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize*3.5} 0 ${cellSize*3.5} 0" fill="${options.color}"/>
                   <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize*2} 0 ${cellSize*2} 0" fill="${options.bgColor}"/>
                   <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize} 0 ${cellSize} 0" fill="${options.color}"/>
+                </g>`;
+            case 'diamond':
+              return `
+                <g>
+                  <polygon points="${center},${y} ${x + eyeSize},${centerY} ${center},${y + eyeSize} ${x},${centerY}" fill="${options.color}"/>
+                  <polygon points="${center},${y + cellSize*1.5} ${x + eyeSize - cellSize*1.5},${centerY} ${center},${y + eyeSize - cellSize*1.5} ${x + cellSize*1.5},${centerY}" fill="${options.bgColor}"/>
+                  <polygon points="${center},${y + cellSize*2.5} ${x + eyeSize - cellSize*2.5},${centerY} ${center},${y + eyeSize - cellSize*2.5} ${x + cellSize*2.5},${centerY}" fill="${options.color}"/>
+                </g>`;
+            case 'target':
+              return `
+                <g>
+                  <circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.8}" fill="${options.color}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 0.8}" fill="${options.bgColor}"/>
+                </g>`;
+            case 'bars':
+              return `
+                <g fill="${options.color}">
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${cellSize}"/>
+                  <rect x="${x}" y="${y + eyeSize - cellSize}" width="${eyeSize}" height="${cellSize}"/>
+                  <rect x="${x}" y="${y}" width="${cellSize}" height="${eyeSize}"/>
+                  <rect x="${x + eyeSize - cellSize}" y="${y}" width="${cellSize}" height="${eyeSize}"/>
+                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}"/>
                 </g>`;
             default: // square
               return `
@@ -522,10 +607,31 @@
       }
     }
 
+    function toggleCustomUrlInput() {
+      const selectedValue = document.getElementById('icon-select').value;
+      const customWrapper = document.getElementById('custom-url-wrapper');
+      
+      if (selectedValue === 'custom') {
+        customWrapper.classList.remove('hidden');
+      } else {
+        customWrapper.classList.add('hidden');
+      }
+      renderUI();
+    }
+
     function getOptions() {
       let rawText = document.getElementById('qr-text').value.trim();
       if (currentPrefix && !rawText.startsWith(currentPrefix) && !rawText.startsWith('http')) {
         rawText = currentPrefix + rawText;
+      }
+
+      const iconChoice = document.getElementById('icon-select').value;
+      let finalLogoUrl = '';
+
+      if (iconChoice === 'custom') {
+        finalLogoUrl = document.getElementById('logo-url').value.trim();
+      } else if (iconChoice !== 'none') {
+        finalLogoUrl = ICON_CATALOG[iconChoice] || '';
       }
 
       return {
@@ -534,7 +640,7 @@
         bgColor: document.getElementById('bg-color').value,
         moduleStyle: document.getElementById('module-style').value,
         eyeStyle: document.getElementById('eye-style').value,
-        logoUrl: document.getElementById('logo-url').value.trim()
+        logoUrl: finalLogoUrl
       };
     }
 
@@ -545,18 +651,20 @@
       document.getElementById('qr-frame').style.boxShadow = `0 0 30px ${options.color}66`;
     }
 
-    function selectPreset(type, defaultValue, logo, prefix = '') {
+    function selectPreset(type, defaultValue, iconKey, prefix = '') {
       currentPrefix = prefix;
       document.getElementById('qr-text').value = defaultValue;
-      document.getElementById('logo-url').value = logo;
       
+      const iconSelect = document.getElementById('icon-select');
+      iconSelect.value = iconKey;
+
       const label = document.getElementById('input-label');
       label.innerText = `🔗 ${type.toUpperCase()} CIBLE`;
 
       document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       event.currentTarget.classList.add('active');
 
-      renderUI();
+      toggleCustomUrlInput();
     }
 
     function downloadFile(content, fileName, contentType) {
@@ -629,7 +737,9 @@
       document.getElementById(id).addEventListener('input', renderUI);
     });
 
-    window.onload = renderUI;
+    window.onload = () => {
+      toggleCustomUrlInput();
+    };
   </script>
 </body>
 </html>
