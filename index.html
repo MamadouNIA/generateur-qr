@@ -1,81 +1,174 @@
-const { jsPDF } = window.jspdf;
+<!-- Dépendances nécessaires -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+// Initialisation de jsPDF
+const { jsPDF } = window.jspdf || {};
+
+// ==========================================
+// UTILITAIRES & VALIDATION
+// ==========================================
+
+// Nettoyage et formatage du nom de fichier à partir de l'URL/Texte
+const getSafeFileName = (text, extension) => {
+  try {
+    const url = new URL(text);
+    // Extrait le dernier segment de l'URL ou le nom du chemin (ex: 'generateur-qr')
+    const pathSegments = url.pathname.split('/').filter(Boolean);
+    const name = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : url.hostname;
+    return `qrcode-${name}.${extension}`;
+  } catch (e) {
+    // Si ce n'est pas une URL valide, simplifie la chaîne de texte
+    const sanitized = text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 20);
+    return `qrcode-${sanitized || 'export'}.${extension}`;
+  }
+};
+
+// Récupération sécurisée des valeurs du formulaire
+const getFormValues = () => {
+  const textInput = document.getElementById('qr-text');
+  const colorInput = document.getElementById('qr-color');
+  const bgInput = document.getElementById('bg-color');
+  const logoInput = document.getElementById('logo-url');
+
+  // URL GitHub Pages par défaut si le champ est vide
+  const defaultUrl = 'https://mamadounia.github.io/generateur-qr/';
+  const text = textInput && textInput.value.trim() ? textInput.value.trim() : defaultUrl;
+
+  return {
+    text,
+    color: colorInput ? colorInput.value : '#0277bd',
+    bgColor: bgInput ? bgInput.value : '#ffffff',
+    logoUrl: logoInput ? logoInput.value.trim() : ''
+  };
+};
+
+// Fonction universelle d'assistance au téléchargement
+const triggerDownload = (href, fileName) => {
+  const link = document.createElement('a');
+  link.download = fileName;
+  link.href = href;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 // ==========================================
 // 1. TÉLÉCHARGEMENT PNG
 // ==========================================
-document.getElementById('dl-png').addEventListener('click', () => {
-  const canvas = document.getElementById('qr-canvas');
-  const link = document.createElement('a');
-  link.download = 'qrcode.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-});
+const btnPng = document.getElementById('dl-png');
+if (btnPng) {
+  btnPng.addEventListener('click', () => {
+    try {
+      const values = getFormValues();
+      const canvas = document.getElementById('qr-canvas');
+      if (!canvas) throw new Error("Élément Canvas introuvable dans le DOM.");
+
+      const dataUrl = canvas.toDataURL('image/png');
+      const fileName = getSafeFileName(values.text, 'png');
+      
+      triggerDownload(dataUrl, fileName);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement PNG:', error);
+      alert('Impossible de générer le fichier PNG.');
+    }
+  });
+}
 
 // ==========================================
 // 2. TÉLÉCHARGEMENT SVG (VECTORIEL)
 // ==========================================
-document.getElementById('dl-svg').addEventListener('click', () => {
-  const text = document.getElementById('qr-text').value;
-  const qr = qrcode(0, 'H');
-  qr.addData(text);
-  qr.make();
+const btnSvg = document.getElementById('dl-svg');
+if (btnSvg) {
+  btnSvg.addEventListener('click', () => {
+    try {
+      const values = getFormValues();
 
-  // Génération du SVG sous forme de String
-  const svgData = generateSVG(qr, {
-    color: document.getElementById('qr-color').value,
-    bgColor: document.getElementById('bg-color').value,
-    logoUrl: document.getElementById('logo-url').value
+      if (typeof qrcode === 'undefined' || typeof generateSVG === 'undefined') {
+        throw new Error("Librairies de génération SVG non chargées.");
+      }
+
+      const qr = qrcode(0, 'H');
+      qr.addData(values.text);
+      qr.make();
+
+      const svgData = generateSVG(qr, {
+        color: values.color,
+        bgColor: values.bgColor,
+        logoUrl: values.logoUrl
+      });
+
+      const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const fileName = getSafeFileName(values.text, 'svg');
+
+      triggerDownload(url, fileName);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement SVG:', error);
+      alert('Impossible de générer le fichier SVG.');
+    }
   });
-
-  // Création du Blob et lien de téléchargement
-  const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  
-  const link = document.createElement('a');
-  link.download = 'qrcode.svg';
-  link.href = url;
-  link.click();
-  
-  URL.revokeObjectURL(url); // Libération de la mémoire
-});
+}
 
 // ==========================================
-// 3. TÉLÉCHARGEMENT PDF (A4 CENTRÉ)
+// 3. TÉLÉCHARGEMENT PDF (A4 STRUCTURÉ)
 // ==========================================
-document.getElementById('dl-pdf').addEventListener('click', () => {
-  const canvas = document.getElementById('qr-canvas');
-  const text = document.getElementById('qr-text').value;
+const btnPdf = document.getElementById('dl-pdf');
+if (btnPdf) {
+  btnPdf.addEventListener('click', () => {
+    try {
+      const values = getFormValues();
 
-  // Création du document PDF (A4 Portrait, unités en mm)
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4'
+      if (!jsPDF) {
+        throw new Error("La bibliothèque jsPDF est introuvable.");
+      }
+
+      const canvas = document.getElementById('qr-canvas');
+      if (!canvas) throw new Error("Élément Canvas introuvable.");
+
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+
+      // En-tête du document
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.setTextColor(2, 119, 189);
+      doc.text('Fiche QR Code', 105, 25, { align: 'center' });
+
+      // Affichage sécurisé de l'URL (gestion des lignes multiples)
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(80);
+      
+      const splitText = doc.splitTextToSize(`Cible : ${values.text}`, 160);
+      doc.text(splitText, 105, 35, { align: 'center' });
+
+      // Rendu du QR Code centré
+      const qrSize = 90;
+      const xPos = (210 - qrSize) / 2;
+      const yPos = 35 + (splitText.length * 5) + 10;
+
+      doc.addImage(imgData, 'PNG', xPos, yPos, qrSize, qrSize);
+
+      // Pied de page
+      doc.setFontSize(9);
+      doc.setTextColor(150);
+      doc.text('Généré via https://mamadounia.github.io/generateur-qr/', 105, yPos + qrSize + 20, { align: 'center' });
+
+      // Sauvegarde du fichier PDF
+      const fileName = getSafeFileName(values.text, 'pdf');
+      doc.save(fileName);
+    } catch (error) {
+      console.error('Erreur lors de la création du PDF:', error);
+      alert('Impossible de générer le document PDF.');
+    }
   });
-
-  const imgData = canvas.toDataURL('image/png');
-  
-  // 1. Entête du document
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
-  doc.setTextColor(2, 119, 189);
-  doc.text('Fiche QR Code', 105, 30, { align: 'center' });
-
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100);
-  doc.text(`URL Cible : ${text}`, 105, 40, { align: 'center' });
-
-  // 2. Insertion et centrage du QR Code (Taille 100x100 mm)
-  const qrSize = 100;
-  const xPos = (210 - qrSize) / 2; // Largeur A4 = 210mm
-  doc.addImage(imgData, 'PNG', xPos, 60, qrSize, qrSize);
-
-  // 3. Pied de page
-  doc.setFontSize(9);
-  doc.setTextColor(150);
-  doc.text('Généré automatiquement via QR Code Engine', 105, 175, { align: 'center' });
-
-  // Téléchargement du fichier PDF
-  doc.save('qrcode-document.pdf');
-});
+}
+</script>
