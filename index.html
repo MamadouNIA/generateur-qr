@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberBio Studio — Bio-Link Generator Pro</title>
+  <title>CyberBio Studio — Bio-Link & QR Code Generator</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bibliothèque QR Code intégrée via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     :root {
@@ -46,7 +49,7 @@
       border-radius: 20px;
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
       width: 100%;
-      max-width: 1100px;
+      max-width: 1150px;
       padding: 35px;
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -85,7 +88,7 @@
       margin-bottom: 8px;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="file"] {
       width: 100%;
       padding: 11px 14px;
       background: rgba(3, 7, 18, 0.7);
@@ -98,6 +101,12 @@
       transition: all 0.3s;
     }
 
+    input[type="file"] {
+      padding: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
     input[type="text"]:focus {
       border-color: var(--neon-cyan);
       box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
@@ -106,7 +115,7 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .multi-social-container {
-      max-height: 380px;
+      max-height: 340px;
       overflow-y: auto;
       padding-right: 8px;
       display: flex;
@@ -168,12 +177,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
 
     .preview-phone-frame {
       width: 100%;
       max-width: 320px;
-      min-height: 480px;
+      min-height: 460px;
       background: #030712;
       border: 2px solid var(--border-glow);
       border-radius: 24px;
@@ -186,8 +196,8 @@
     }
 
     .preview-avatar {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--neon-cyan), #000);
       display: flex;
@@ -199,12 +209,15 @@
       color: #000;
       margin-bottom: 12px;
       box-shadow: 0 0 15px var(--neon-cyan);
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
     }
 
     .preview-title { font-family: var(--font-title); font-size: 1.1rem; text-align: center; margin-bottom: 4px; }
-    .preview-sub { font-size: 0.85rem; color: #9ca3af; text-align: center; margin-bottom: 20px; }
+    .preview-sub { font-size: 0.85rem; color: #9ca3af; text-align: center; margin-bottom: 15px; }
 
-    .preview-links { width: 100%; display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+    .preview-links { width: 100%; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
     
     .preview-btn {
       display: flex;
@@ -212,7 +225,7 @@
       gap: 10px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 14px;
+      padding: 9px 12px;
       border-radius: 10px;
       color: #fff;
       font-family: var(--font-title);
@@ -222,27 +235,49 @@
 
     .preview-btn img { width: 16px; height: 16px; }
 
-    .btn-cyber-primary {
+    /* QR CODE STYLING */
+    .qr-box {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+
+    .btn-cyber-primary, .btn-cyber-secondary {
       width: 100%;
-      margin-top: 15px;
-      padding: 14px;
-      background: linear-gradient(90deg, #00f3ff, #0066ff);
-      color: #000;
+      padding: 12px;
       border: none;
       border-radius: 10px;
       font-family: var(--font-title);
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
     }
 
-    .btn-cyber-primary:hover {
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
+    .btn-cyber-primary {
+      background: linear-gradient(90deg, #00f3ff, #0066ff);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
+
+    .btn-cyber-secondary {
+      background: linear-gradient(90deg, #ff0055, #ff5500);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+    }
+
+    .btn-cyber-primary:hover, .btn-cyber-secondary:hover {
       transform: translateY(-2px);
+      filter: brightness(1.2);
     }
   </style>
 </head>
@@ -250,12 +285,22 @@
 
   <div class="cyber-card">
     <div class="title-zone">
-      <h1>CyberBio Studio</h1>
-      <p>// Générateur Indépendant de Page Bio-Link Multi-Réseaux</p>
+      <h1>CyberBio Studio Pro</h1>
+      <p>// Bio-Link, Image de Profil & Générateur QR Code Intégré</p>
     </div>
 
     <!-- Controls Panel -->
     <div class="controls-panel">
+      
+      <!-- Profile Image Control -->
+      <div class="control-group">
+        <label>🖼️ Image de Profil (Fichier Local ou URL)</label>
+        <div class="grid-2">
+          <input type="file" id="avatar-file" accept="image/*">
+          <input type="text" id="avatar-url" placeholder="https://domaine.com/photo.jpg">
+        </div>
+      </div>
+
       <div class="grid-2 control-group">
         <div>
           <label>👤 Nom du Profil</label>
@@ -267,11 +312,17 @@
         </div>
       </div>
 
-      <div class="control-group">
-        <label>🎨 Thème Accent Néon</label>
-        <div class="color-input-wrapper">
-          <input type="color" id="theme-color" value="#00f3ff">
-          <span style="font-size:0.85rem; color:#aaa;">Couleur des bordures & lueurs</span>
+      <div class="grid-2 control-group">
+        <div>
+          <label>🎨 Thème Neon Accent</label>
+          <div class="color-input-wrapper">
+            <input type="color" id="theme-color" value="#00f3ff">
+            <span style="font-size:0.85rem; color:#aaa;">Couleur accent</span>
+          </div>
+        </div>
+        <div>
+          <label>🔗 URL Cible QR Code</label>
+          <input type="text" id="qr-target-url" placeholder="https://votre-site.com/bio" value="https://instagram.com/votre_pseudo">
         </div>
       </div>
 
@@ -345,20 +396,51 @@
 
     <!-- Live Preview Stage -->
     <div class="preview-stage">
-      <label>📱 Aperçu en Temps Réel</label>
+      <label>📱 Aperçu & Générateur QR</label>
       
       <div class="preview-phone-frame" id="phone-frame">
         <div class="preview-avatar" id="prev-avatar">A</div>
         <div class="preview-title" id="prev-title">Alex Cyber</div>
         <div class="preview-sub" id="prev-sub">Créateur Digital & Designer</div>
         <div class="preview-links" id="prev-links"></div>
+
+        <!-- Generated QR Code Wrapper -->
+        <div class="qr-box" id="qrcode"></div>
       </div>
 
-      <button class="btn-cyber-primary" onclick="exportBioLinkPage()">🚀 Télécharger la Page (.HTML)</button>
+      <div class="actions-grid">
+        <button class="btn-cyber-primary" onclick="exportBioLinkPage()">📄 Export Page (.HTML)</button>
+        <button class="btn-cyber-secondary" onclick="downloadQRCode()">📷 Télécharger QR Code</button>
+      </div>
     </div>
   </div>
 
   <script>
+    let currentAvatarBase64 = '';
+    let qrcodeObj = null;
+
+    // Handle Profile Image Upload (File or URL)
+    document.getElementById('avatar-file').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentAvatarBase64 = evt.target.result;
+          document.getElementById('avatar-url').value = '';
+          updatePreview();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('avatar-url').addEventListener('input', function(e) {
+      if (e.target.value.trim() !== '') {
+        currentAvatarBase64 = e.target.value.trim();
+        document.getElementById('avatar-file').value = '';
+        updatePreview();
+      }
+    });
+
     function updatePreview() {
       const title = document.getElementById('bio-title').value.trim() || 'Mon Profil';
       const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Bienvenue sur mes liens';
@@ -366,14 +448,21 @@
 
       document.getElementById('prev-title').innerText = title;
       document.getElementById('prev-sub').innerText = subtitle;
-      document.getElementById('prev-avatar').innerText = title.charAt(0).toUpperCase();
+
+      const avatarElem = document.getElementById('prev-avatar');
+      if (currentAvatarBase64) {
+        avatarElem.style.backgroundImage = `url('${currentAvatarBase64}')`;
+        avatarElem.innerText = '';
+      } else {
+        avatarElem.style.backgroundImage = 'none';
+        avatarElem.innerText = title.charAt(0).toUpperCase();
+      }
 
       // Update phone styling
       const frame = document.getElementById('phone-frame');
       frame.style.borderColor = color;
       frame.style.boxShadow = `0 0 25px ${color}33`;
-      document.getElementById('prev-avatar').style.background = `linear-gradient(135deg, ${color}, #000)`;
-      document.getElementById('prev-avatar').style.boxShadow = `0 0 15px ${color}`;
+      avatarElem.style.boxShadow = `0 0 15px ${color}`;
 
       // Render links
       const linksContainer = document.getElementById('prev-links');
@@ -393,6 +482,38 @@
           linksContainer.appendChild(a);
         }
       });
+
+      // Update QR Code
+      const qrTarget = document.getElementById('qr-target-url').value.trim() || window.location.href;
+      const qrContainer = document.getElementById('qrcode');
+      qrContainer.innerHTML = '';
+      qrcodeObj = new QRCode(qrContainer, {
+        text: qrTarget,
+        width: 100,
+        height: 100,
+        colorDark : "#030712",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    }
+
+    function downloadQRCode() {
+      const img = document.querySelector('#qrcode img');
+      const canvas = document.querySelector('#qrcode canvas');
+      
+      let imageURI = '';
+      if (img && img.src) {
+        imageURI = img.src;
+      } else if (canvas) {
+        imageURI = canvas.toDataURL("image/png");
+      }
+
+      if (imageURI) {
+        const a = document.createElement('a');
+        a.href = imageURI;
+        a.download = 'bio-link-qrcode.png';
+        a.click();
+      }
     }
 
     function exportBioLinkPage() {
@@ -415,6 +536,10 @@
             </a>`;
         }
       });
+
+      const avatarMarkup = currentAvatarBase64 
+        ? `<div class="avatar" style="background-image: url('${currentAvatarBase64}'); text-indent:-9999px;">${title.charAt(0)}</div>`
+        : `<div class="avatar">${title.charAt(0).toUpperCase()}</div>`;
 
       const pageHTML = `<!DOCTYPE html>
 <html lang="fr">
@@ -461,6 +586,9 @@
       font-weight: bold;
       color: #000;
       box-shadow: 0 0 20px ${color}66;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
     }
     h1 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 1.5px; margin-bottom: 6px; }
     p { color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px; }
@@ -491,7 +619,7 @@
 </head>
 <body>
   <div class="bio-card">
-    <div class="avatar">${title.charAt(0).toUpperCase()}</div>
+    ${avatarMarkup}
     <h1>${title}</h1>
     <p>${subtitle}</p>
     <div class="links-container">
@@ -509,7 +637,7 @@
       URL.revokeObjectURL(a.href);
     }
 
-    // Dynamic listeners
+    // Dynamic Listeners
     document.querySelectorAll('input').forEach(input => {
       input.addEventListener('input', updatePreview);
     });
