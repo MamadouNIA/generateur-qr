@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberQR — Générateur Universal & Réseaux</title>
+  <title>CyberQR Studio — Extended Styles</title>
 
-  <!-- Moteur QR & PDF -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- Polices Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,9 +17,8 @@
       --neon-cyan: #00f3ff;
       --neon-magenta: #ff0055;
       --bg-dark: #030712;
-      --panel-bg: rgba(15, 23, 42, 0.7);
+      --panel-bg: rgba(15, 23, 42, 0.75);
       --border-glow: rgba(0, 243, 255, 0.25);
-      --text-glow: 0 0 10px rgba(0, 243, 255, 0.5);
       --font-title: 'Orbitron', sans-serif;
       --font-body: 'Rajdhani', sans-serif;
     }
@@ -48,10 +45,9 @@
     .cyber-card {
       background: var(--panel-bg);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-glow);
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+      box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
       width: 100%;
       max-width: 1150px;
       padding: 35px;
@@ -64,11 +60,7 @@
       .cyber-card { grid-template-columns: 1fr; padding: 20px; }
     }
 
-    .title-zone {
-      grid-column: 1 / -1;
-      text-align: center;
-      margin-bottom: 5px;
-    }
+    .title-zone { grid-column: 1 / -1; text-align: center; margin-bottom: 5px; }
 
     .title-zone h1 {
       font-family: var(--font-title);
@@ -78,7 +70,6 @@
       background: linear-gradient(90deg, #ffffff, var(--neon-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: var(--text-glow);
     }
 
     .title-zone p { color: #9ca3af; font-size: 1rem; }
@@ -117,7 +108,6 @@
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    /* Grille des Réseaux Sociaux */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -268,60 +258,49 @@
       color: var(--neon-cyan);
     }
 
-    .btn-cyber-outline:hover {
-      background: rgba(0, 243, 255, 0.1);
-    }
+    .btn-cyber-outline:hover { background: rgba(0, 243, 255, 0.1); }
   </style>
 </head>
 <body>
 
   <div class="cyber-card">
     <div class="title-zone">
-      <h1>CyberQR Studio</h1>
-      <p>// Générateur Omnicanal & Multi-Réseaux</p>
+      <h1>CyberQR Studio Pro</h1>
+      <p>// Modules Avancés & Moteur Vectoriel</p>
     </div>
 
     <!-- Controls -->
     <div class="controls-panel">
       <div class="control-group">
-        <label>⚡ Sélectionner un Média / Canal</label>
+        <label>⚡ Sélectionner un Canal</label>
         <div class="preset-grid">
           <button class="preset-btn active" onclick="selectPreset('email', 'contact@domaine.com', 'https://cdn-icons-png.flaticon.com/512/732/732200.png', 'mailto:')">
             <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email
           </button>
-
           <button class="preset-btn" onclick="selectPreset('whatsapp', 'https://wa.me/33600000000', 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp
           </button>
-
           <button class="preset-btn" onclick="selectPreset('instagram', 'https://instagram.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3938/3938036.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Instagram"> Insta
           </button>
-
           <button class="preset-btn" onclick="selectPreset('linkedin', 'https://linkedin.com/in/votre_profil', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn
           </button>
-
           <button class="preset-btn" onclick="selectPreset('facebook', 'https://facebook.com/votre_page', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook
           </button>
-
           <button class="preset-btn" onclick="selectPreset('x', 'https://x.com/votre_profil', 'https://cdn-icons-png.flaticon.com/512/5969/5968830.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X/Twitter"> X / Twitter
           </button>
-
           <button class="preset-btn" onclick="selectPreset('youtube', 'https://youtube.com/@votre_chaine', 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube
           </button>
-
           <button class="preset-btn" onclick="selectPreset('tiktok', 'https://tiktok.com/@votre_compte', 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok
           </button>
-
           <button class="preset-btn" onclick="selectPreset('telegram', 'https://t.me/votre_nom', 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png')">
             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram
           </button>
-
           <button class="preset-btn" onclick="selectPreset('phone', '+33600000000', 'https://cdn-icons-png.flaticon.com/512/126/126509.png', 'tel:')">
             <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Téléphone
           </button>
@@ -330,24 +309,30 @@
 
       <div class="control-group">
         <label for="qr-text" id="input-label">🔗 Adresse Email Cible</label>
-        <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez le lien ou la donnée">
+        <input type="text" id="qr-text" value="contact@domaine.com" placeholder="Entrez la donnée cible">
       </div>
 
       <div class="grid-2 control-group">
         <div>
-          <label for="module-style">📐 Style Modules</label>
+          <label for="module-style">📐 Style Modules (7)</label>
           <select id="module-style">
-            <option value="dots">Dots (Arrondis)</option>
-            <option value="smooth">Gouttes (Smooth)</option>
-            <option value="square">Matrice Brut</option>
+            <option value="dots">Dots (Circulaires)</option>
+            <option value="smooth">Gouttes (Rounded)</option>
+            <option value="diamonds">Étoiles / Losanges</option>
+            <option value="vertical">Barres Verticales</option>
+            <option value="horizontal">Lignes Horizontales</option>
+            <option value="fluid">Fluide Connecté</option>
+            <option value="square">Carré Brut</option>
           </select>
         </div>
         <div>
-          <label for="eye-style">👁️ Cadran Yeux</label>
+          <label for="eye-style">👁️ Style Yeux (5)</label>
           <select id="eye-style">
             <option value="rounded">Cyber Rounded</option>
             <option value="circle">Orbital Circle</option>
             <option value="square">Square Tech</option>
+            <option value="shield">Bouclier / Hexagone</option>
+            <option value="leaf">Feuille / Goutte</option>
           </select>
         </div>
       </div>
@@ -379,7 +364,7 @@
     <div class="preview-stage">
       <div class="status-badge">
         <div class="status-dot"></div>
-        SYSTEM ACTIVE
+        ENGINE READY
       </div>
 
       <div class="qr-holo-frame" id="qr-frame">
@@ -413,58 +398,109 @@
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
         svg += `<rect width="100%" height="100%" fill="${options.bgColor}"/>`;
 
-        // Draw Modules
+        // DESSIN DES MODULES
         svg += `<g fill="${options.color}">`;
         for (let r = 0; r < count; r++) {
           for (let c = 0; c < count; c++) {
+            // Ignorer les yeux (7x7 dans chaque coin)
             if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
 
             if (qr.isDark(r, c)) {
               const x = c * cellSize;
               const y = r * cellSize;
 
-              if (options.moduleStyle === 'dots') {
-                const cx = x + cellSize / 2;
-                const cy = y + cellSize / 2;
-                svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.3).toFixed(2)}"/>`;
-              } else if (options.moduleStyle === 'smooth') {
-                svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize / 2).toFixed(2)}"/>`;
-              } else {
-                svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}"/>`;
+              switch(options.moduleStyle) {
+                case 'dots': {
+                  const cx = x + cellSize / 2;
+                  const cy = y + cellSize / 2;
+                  svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(cellSize / 2.3).toFixed(2)}"/>`;
+                  break;
+                }
+                case 'smooth': {
+                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize / 2.2).toFixed(2)}"/>`;
+                  break;
+                }
+                case 'diamonds': {
+                  const cx = x + cellSize / 2;
+                  const cy = y + cellSize / 2;
+                  const h = cellSize / 2;
+                  svg += `<polygon points="${cx},${y} ${x + cellSize},${cy} ${cx},${y + cellSize} ${x},${cy}"/>`;
+                  break;
+                }
+                case 'vertical': {
+                  svg += `<rect x="${(x + cellSize*0.15).toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize*0.7).toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize*0.2).toFixed(2)}"/>`;
+                  break;
+                }
+                case 'horizontal': {
+                  svg += `<rect x="${x.toFixed(2)}" y="${(y + cellSize*0.15).toFixed(2)}" width="${cellSize.toFixed(2)}" height="${(cellSize*0.7).toFixed(2)}" rx="${(cellSize*0.2).toFixed(2)}"/>`;
+                  break;
+                }
+                case 'fluid': {
+                  // Fusionne les bords arrondis si les voisins sont actifs
+                  let top = (r > 0) && qr.isDark(r - 1, c);
+                  let bottom = (r < count - 1) && qr.isDark(r + 1, c);
+                  let left = (c > 0) && qr.isDark(r, c - 1);
+                  let right = (c < count - 1) && qr.isDark(r, c + 1);
+                  
+                  let rxTop = (!top && !left) ? cellSize * 0.4 : 0;
+                  let rxBot = (!bottom && !right) ? cellSize * 0.4 : 0;
+
+                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${rxTop || rxBot}"/>`;
+                  break;
+                }
+                default: { // square
+                  svg += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}"/>`;
+                  break;
+                }
               }
             }
           }
         }
         svg += `</g>`;
 
-        // Draw Eyes
+        // DESSIN DES YEUX (CADRANS)
         const renderEye = (x, y) => {
           const eyeSize = 7 * cellSize;
           const innerSize = eyeSize - (2 * cellSize);
+          const center = x + eyeSize / 2;
+          const centerY = y + eyeSize / 2;
 
-          if (options.eyeStyle === 'circle') {
-            const center = x + eyeSize / 2;
-            const centerY = y + eyeSize / 2;
-            return `
-              <g>
-                <circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/>
-                <circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/>
-                <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/>
-              </g>`;
-          } else if (options.eyeStyle === 'rounded') {
-            return `
-              <g>
-                <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 2}" fill="${options.color}"/>
-                <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/>
-                <circle cx="${x + eyeSize/2}" cy="${y + eyeSize/2}" r="${cellSize * 1.5}" fill="${options.color}"/>
-              </g>`;
-          } else {
-            return `
-              <g>
-                <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" fill="${options.color}"/>
-                <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" fill="${options.bgColor}"/>
-                <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" fill="${options.color}"/>
-              </g>`;
+          switch(options.eyeStyle) {
+            case 'circle':
+              return `
+                <g>
+                  <circle cx="${center}" cy="${centerY}" r="${eyeSize / 2}" fill="${options.color}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${innerSize / 2}" fill="${options.bgColor}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/>
+                </g>`;
+            case 'rounded':
+              return `
+                <g>
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 2}" fill="${options.color}"/>
+                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize}" fill="${options.bgColor}"/>
+                  <circle cx="${center}" cy="${centerY}" r="${cellSize * 1.5}" fill="${options.color}"/>
+                </g>`;
+            case 'shield':
+              return `
+                <g>
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize * 3}" rx="${cellSize}" fill="${options.color}"/>
+                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize * 1.5}" fill="${options.bgColor}"/>
+                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize}" fill="${options.color}"/>
+                </g>`;
+            case 'leaf':
+              return `
+                <g>
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" rx="${cellSize*3.5} 0 ${cellSize*3.5} 0" fill="${options.color}"/>
+                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" rx="${cellSize*2} 0 ${cellSize*2} 0" fill="${options.bgColor}"/>
+                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" rx="${cellSize} 0 ${cellSize} 0" fill="${options.color}"/>
+                </g>`;
+            default: // square
+              return `
+                <g>
+                  <rect x="${x}" y="${y}" width="${eyeSize}" height="${eyeSize}" fill="${options.color}"/>
+                  <rect x="${x + cellSize}" y="${y + cellSize}" width="${innerSize}" height="${innerSize}" fill="${options.bgColor}"/>
+                  <rect x="${x + 2*cellSize}" y="${y + 2*cellSize}" width="${3*cellSize}" height="${3*cellSize}" fill="${options.color}"/>
+                </g>`;
           }
         };
 
@@ -472,7 +508,7 @@
         svg += renderEye((count - 7) * cellSize, 0);
         svg += renderEye(0, (count - 7) * cellSize);
 
-        // Overlay Logo
+        // LOGO CENTRAL
         if (options.logoUrl) {
           const logoSize = size * 0.22;
           const center = (size - logoSize) / 2;
@@ -575,7 +611,7 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(22);
         doc.setTextColor(0, 243, 255);
-        doc.text('CyberQR Omnichannel Export', 105, 25, { align: 'center' });
+        doc.text('CyberQR Extended Style Export', 105, 25, { align: 'center' });
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
