@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>qrcodephoenix — Studio QR Code & Bio-Link Pro</title>
   
-  <!-- Fonts & Icons -->
+  <!-- Typography & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,31 +18,31 @@
   <style>
     :root[data-theme="dark"] {
       --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 100%);
-      --card-bg: rgba(17, 24, 39, 0.85);
-      --card-border: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
       --text-main: #f9fafb;
       --text-muted: #9ca3af;
       --input-bg: rgba(31, 41, 55, 0.6);
       --accent-color: #f97316;
       --accent-hover: #ea580c;
-      --focus-ring: rgba(249, 115, 22, 0.35);
+      --focus-ring: rgba(249, 115, 22, 0.3);
     }
 
     :root[data-theme="light"] {
       --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      --card-bg: rgba(255, 255, 255, 0.9);
-      --card-border: rgba(0, 0, 0, 0.1);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.08);
       --text-main: #0f172a;
       --text-muted: #64748b;
       --input-bg: #ffffff;
       --accent-color: #ea580c;
       --accent-hover: #c2410c;
-      --focus-ring: rgba(234, 88, 12, 0.25);
+      --focus-ring: rgba(234, 88, 12, 0.2);
     }
 
     :root[data-theme="cyberpunk"] {
       --bg-gradient: linear-gradient(135deg, #0d0221 0%, #0f051d 100%);
-      --card-bg: rgba(25, 10, 45, 0.85);
+      --card-bg: rgba(25, 10, 45, 0.8);
       --card-border: #facc15;
       --text-main: #00f6ff;
       --text-muted: #ff007f;
@@ -54,14 +54,14 @@
 
     :root[data-theme="sunset"] {
       --bg-gradient: linear-gradient(135deg, #4c1d95 0%, #c2410c 100%);
-      --card-bg: rgba(88, 28, 135, 0.65);
-      --card-border: rgba(255, 255, 255, 0.2);
+      --card-bg: rgba(88, 28, 135, 0.5);
+      --card-border: rgba(255, 255, 255, 0.18);
       --text-main: #fff7ed;
       --text-muted: #fed7aa;
-      --input-bg: rgba(67, 20, 96, 0.6);
+      --input-bg: rgba(67, 20, 96, 0.55);
       --accent-color: #fb923c;
       --accent-hover: #f97316;
-      --focus-ring: rgba(251, 146, 60, 0.35);
+      --focus-ring: rgba(251, 146, 60, 0.3);
     }
 
     * {
@@ -69,19 +69,19 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       width: 100%;
-      min-height: 100vh;
       overflow-x: hidden;
     }
 
     body {
       background: var(--bg-gradient);
       color: var(--text-main);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -135,7 +135,7 @@
       font-size: 1.05rem;
       font-weight: 700;
       margin-bottom: 16px;
-      margin-top: 20px;
+      margin-top: 18px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -158,7 +158,7 @@
       padding: 10px 4px;
       cursor: pointer;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       display: flex;
       flex-direction: column;
@@ -268,7 +268,7 @@
     textarea {
       padding-left: 44px;
       resize: vertical;
-      min-height: 70px;
+      min-height: 65px;
     }
 
     input[type="text"]:focus, input[type="url"]:focus, select:focus, textarea:focus {
@@ -305,10 +305,25 @@
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
 
+    /* ACTION BAR VALIDATION ET EXPORT */
+    .validation-box {
+      margin-top: 24px;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid var(--accent-color);
+      padding: 16px;
+      border-radius: 16px;
+    }
+
+    .export-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
     .btn-validate {
       width: 100%;
       padding: 16px;
-      margin-top: 20px;
       background: linear-gradient(135deg, var(--accent-color) 0%, #ff007f 100%);
       color: white;
       border: none;
@@ -321,6 +336,7 @@
       justify-content: center;
       gap: 10px;
       box-shadow: 0 8px 20px rgba(249, 115, 22, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .btn-validate:hover {
@@ -385,7 +401,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       margin-top: 18px;
     }
 
@@ -400,25 +416,28 @@
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 600;
-      word-break: break-all;
+      word-break: break-word;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .social-link-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent-color);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.25);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
 
     .social-icon-badge {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 12px;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: #ffffff;
       flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .icon-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
@@ -468,6 +487,7 @@
       .card { padding: 20px; }
       .theme-selector { grid-template-columns: repeat(2, 1fr); }
       .preview-card { position: relative; top: 0; }
+      .export-options-grid { grid-template-columns: 1fr; }
     }
 
     .app-footer {
@@ -480,14 +500,14 @@
 </head>
 <body>
 
-  <header class="app-header">
+  <header class="app-header" id="app-header">
     <div class="brand-logo">
       <i class="fa-solid fa-fire-flame-curved"></i> qrcodephoenix
     </div>
     <div class="brand-subtitle">Studio d'Édition QR Code Vectoriel & Bio-Link Pro</div>
   </header>
 
-  <div class="container">
+  <div class="container" id="editor-container">
     <!-- Panneau de Formulaire -->
     <div class="card">
       <div class="card-title">
@@ -509,7 +529,7 @@
         </div>
       </div>
 
-      <!-- RÉGLAGES DU QR CODE -->
+      <!-- REGLAGES DU QR CODE -->
       <div class="card-title">
         <i class="fa-solid fa-sliders"></i> Apparence du QR Code
       </div>
@@ -583,7 +603,7 @@
         <label for="profile-title">Titre / Profession</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-briefcase"></i>
-          <input type="text" id="profile-title" value="Développeur & Designer" placeholder="Ex: Designer & Développeur">
+          <input type="text" id="profile-title" value="Développeur & Graphic Designer" placeholder="Ex: Designer & Développeur">
         </div>
       </div>
 
@@ -679,10 +699,24 @@
         </div>
       </div>
 
-      <!-- BOUTON EXPLICITE DE VALIDATION -->
-      <button type="button" class="btn-validate" id="btn-submit-data">
-        <i class="fa-solid fa-circle-check"></i> Valider et Générer le QR Code
-      </button>
+      <!-- BOUTON DE VALIDATION DE SAISIE ET EXPORT CHOISI -->
+      <div class="validation-box">
+        <div class="export-options-grid">
+          <div>
+            <label for="export-format">Format d'export</label>
+            <select id="export-format">
+              <option value="png" selected>PNG Haute Définition</option>
+              <option value="pdf">PDF Fiche Pro (A4)</option>
+              <option value="svg">SVG Vectoriel</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: flex-end;">
+            <button type="button" class="btn-validate" id="btn-submit-data">
+              <i class="fa-solid fa-circle-check"></i> Valider & Générer
+            </button>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -697,10 +731,10 @@
         <!-- Mode QR -->
         <div id="view-qr-container">
           <div class="qr-container-box">
-            <canvas id="modern-qr" width="280" height="280"></canvas>
+            <canvas id="modern-qr" width="300" height="300"></canvas>
             <div id="raw-qr" style="display:none;"></div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Immuable & Validé</p>
+          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Généré & Validé</p>
         </div>
 
         <!-- Mode Smartphone Bio-Link -->
@@ -713,11 +747,11 @@
         </div>
       </div>
 
-      <!-- Actions Téléchargement -->
+      <!-- Actions Téléchargement Direct -->
       <div class="btn-group">
         <button id="download-png" class="btn btn-png" type="button"><i class="fa-solid fa-image"></i> Exporter PNG HD</button>
-        <button id="download-svg" class="btn btn-svg" type="button"><i class="fa-solid fa-vector-square"></i> Exporter SVG Vectoriel</button>
         <button id="download-pdf" class="btn btn-pdf" type="button"><i class="fa-solid fa-file-pdf"></i> Exporter PDF HD</button>
+        <button id="download-svg" class="btn btn-svg" type="button"><i class="fa-solid fa-vector-square"></i> Exporter SVG</button>
       </div>
     </div>
   </div>
@@ -740,7 +774,6 @@
       website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    // Identifiant de session fixe pour garder la cohérence du lien QR
     const FIXED_SESSION_ID = "hub-" + Math.floor(100000 + Math.random() * 900000);
     const FIXED_TARGET_URL = window.location.origin + window.location.pathname + "?id=" + FIXED_SESSION_ID;
 
@@ -765,6 +798,7 @@
     const qrColorLight = document.getElementById('qr-color-light');
 
     const btnSubmitData = document.getElementById('btn-submit-data');
+    const exportFormatSelect = document.getElementById('export-format');
 
     const themeOptions = document.querySelectorAll('.theme-option');
     const btnModeQr = document.getElementById('btn-mode-qr');
@@ -772,6 +806,7 @@
     const viewQrContainer = document.getElementById('view-qr-container');
     const viewPhoneContainer = document.getElementById('view-phone-container');
 
+    let selectedTheme = 'dark';
     let currentQRMatrix = [];
 
     btnModeQr.addEventListener('click', () => {
@@ -792,7 +827,8 @@
       opt.addEventListener('click', () => {
         themeOptions.forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
-        document.documentElement.setAttribute('data-theme', opt.dataset.theme);
+        selectedTheme = opt.dataset.theme;
+        document.documentElement.setAttribute('data-theme', selectedTheme);
       });
     });
 
@@ -819,40 +855,32 @@
       return active;
     }
 
-    function extractMatrixFromCanvas(sourceCanvas) {
+    function getMatrixFromCanvas(sourceCanvas) {
       const ctx = sourceCanvas.getContext('2d');
       const size = sourceCanvas.width;
       const imgData = ctx.getImageData(0, 0, size, size);
 
-      let firstBlackPixel = -1;
-      for (let i = 0; i < size * size; i++) {
-        if (imgData.data[i * 4] < 127) {
-          firstBlackPixel = i;
+      let firstBlackPixelWidth = 0;
+      for (let x = 0; x < size; x++) {
+        if (imgData.data[x * 4] < 127) {
+          firstBlackPixelWidth++;
+        } else if (firstBlackPixelWidth > 0) {
           break;
         }
       }
 
-      if (firstBlackPixel === -1) return [];
+      if (firstBlackPixelWidth === 0) return [];
 
-      let modulePixelCount = 0;
-      for (let x = firstBlackPixel % size; x < size; x++) {
-        if (imgData.data[(Math.floor(firstBlackPixel / size) * size + x) * 4] < 127) {
-          modulePixelCount++;
-        } else {
-          break;
-        }
-      }
-
-      const moduleSize = modulePixelCount / 7;
-      const matrixCount = Math.round(size / moduleSize);
-      const cellSize = size / matrixCount;
+      const moduleSizeEstimate = firstBlackPixelWidth / 7;
+      const count = Math.round(size / moduleSizeEstimate);
+      const cellSize = size / count;
 
       const matrix = [];
-      for (let r = 0; r < matrixCount; r++) {
+      for (let r = 0; r < count; r++) {
         const row = [];
-        for (let c = 0; c < matrixCount; c++) {
-          const sampleX = Math.floor((c + 0.5) * cellSize);
-          const sampleY = Math.floor((r + 0.5) * cellSize);
+        for (let c = 0; c < count; c++) {
+          const sampleX = Math.floor(c * cellSize + cellSize / 2);
+          const sampleY = Math.floor(r * cellSize + cellSize / 2);
           const idx = (sampleY * size + sampleX) * 4;
           row.push(imgData.data[idx] < 127 ? 1 : 0);
         }
@@ -861,10 +889,10 @@
       return matrix;
     }
 
-    function isFinderPattern(r, c, count) {
+    function isFinderPattern(r, c, baseCount) {
       if (r < 7 && c < 7) return true;
-      if (r < 7 && c >= count - 7) return true;
-      if (r >= count - 7 && c < 7) return true;
+      if (r < 7 && c >= baseCount - 7) return true;
+      if (r >= baseCount - 7 && c < 7) return true;
       return false;
     }
 
@@ -875,7 +903,7 @@
       const margin = parseInt(qrMargin.value, 10);
       const totalCount = baseCount + margin * 2;
 
-      const canvasSize = 320;
+      const canvasSize = 600; // Haute Résolution
       modernCanvas.width = canvasSize;
       modernCanvas.height = canvasSize;
 
@@ -889,7 +917,7 @@
       ctx.fillStyle = qrColorDark.value;
 
       const centerText = qrCenterText.value.trim();
-      const centerBoxSize = centerText ? Math.floor(totalCount * 0.26) : 0;
+      const centerBoxSize = centerText ? Math.floor(totalCount * 0.28) : 0;
       const centerStart = Math.floor((totalCount - centerBoxSize) / 2);
       const centerEnd = centerStart + centerBoxSize;
 
@@ -924,7 +952,7 @@
               ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2.2, 0, Math.PI * 2);
               ctx.fill();
             } else if (shapeStyle === 'rounded') {
-              const rRadius = cellSize * 0.35;
+              const rRadius = cellSize * 0.3;
               ctx.beginPath();
               ctx.roundRect(x, y, cellSize, cellSize, rRadius);
               ctx.fill();
@@ -941,11 +969,11 @@
 
         ctx.fillStyle = qrColorLight.value;
         ctx.beginPath();
-        ctx.roundRect(badgeX + 2, badgeY + 2, badgeWidth - 4, badgeWidth - 4, 8);
+        ctx.roundRect(badgeX + 2, badgeY + 2, badgeWidth - 4, badgeWidth - 4, 12);
         ctx.fill();
 
         ctx.strokeStyle = qrColorDark.value;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 4;
         ctx.stroke();
 
         ctx.fillStyle = qrColorDark.value;
@@ -958,7 +986,7 @@
 
     function generateQR() {
       rawQrContainer.innerHTML = '';
-
+      
       const eccMap = {
         'L': QRCode.CorrectLevel.L,
         'M': QRCode.CorrectLevel.M,
@@ -968,20 +996,19 @@
 
       new QRCode(rawQrContainer, {
         text: FIXED_TARGET_URL,
-        width: 280,
-        height: 280,
+        width: 300,
+        height: 300,
         correctLevel: eccMap[qrEccLevel.value] || QRCode.CorrectLevel.M
       });
 
       setTimeout(() => {
         const sourceCanvas = rawQrContainer.querySelector('canvas');
         if (!sourceCanvas) return;
-        const rawMatrix = extractMatrixFromCanvas(sourceCanvas);
+        const rawMatrix = getMatrixFromCanvas(sourceCanvas);
         renderCustomQR(rawMatrix);
-      }, 60);
+      }, 50);
     }
 
-    // FONCTION PRINCIPALE DE VALIDATION
     function validateAndApplyData() {
       prevName.textContent = profileNameInput.value.trim() || "Alexandre Pro";
       prevTitle.textContent = profileTitleInput.value.trim();
@@ -1015,76 +1042,15 @@
       generateQR();
     }
 
-    // ÉCOUTEUR PRINCIPAL DU BOUTON VALIDATION
-    btnSubmitData.addEventListener('click', validateAndApplyData);
-
-    // EXPORTS
-    document.getElementById('download-png').addEventListener('click', () => {
+    // FONCTIONS D'EXPORTATION
+    function exportPNG() {
       const link = document.createElement('a');
       link.download = 'qrcodephoenix.png';
       link.href = modernCanvas.toDataURL('image/png');
       link.click();
-    });
+    }
 
-    document.getElementById('download-svg').addEventListener('click', () => {
-      if (!currentQRMatrix || currentQRMatrix.length === 0) return;
-
-      const totalCount = currentQRMatrix.length;
-      const margin = parseInt(qrMargin.value, 10);
-      const baseCount = totalCount - margin * 2;
-      const svgSize = 500;
-      const cellSize = svgSize / totalCount;
-      const shapeStyle = qrDotsStyle.value;
-
-      let shapesSVG = "";
-
-      for (let r = 0; r < totalCount; r++) {
-        for (let c = 0; c < totalCount; c++) {
-          if (currentQRMatrix[r][c] === 1) {
-            const x = c * cellSize;
-            const y = r * cellSize;
-            const origR = r - margin;
-            const origC = c - margin;
-            const isFinder = isFinderPattern(origR, origC, baseCount);
-
-            if (shapeStyle === 'square' || isFinder) {
-              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize + 0.3).toFixed(2)}" height="${(cellSize + 0.3).toFixed(2)}" fill="${qrColorDark.value}"/>`;
-            } else if (shapeStyle === 'dots') {
-              const cx = (x + cellSize / 2).toFixed(2);
-              const cy = (y + cellSize / 2).toFixed(2);
-              const radius = (cellSize / 2.2).toFixed(2);
-              shapesSVG += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${qrColorDark.value}"/>`;
-            } else if (shapeStyle === 'rounded') {
-              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.35).toFixed(2)}" fill="${qrColorDark.value}"/>`;
-            }
-          }
-        }
-      }
-
-      const centerText = qrCenterText.value.trim();
-      let textSVG = "";
-      if (centerText) {
-        const centerBoxSize = Math.floor(totalCount * 0.26);
-        const centerStart = Math.floor((totalCount - centerBoxSize) / 2);
-        const badgeX = centerStart * cellSize;
-        const badgeY = centerStart * cellSize;
-        const badgeWidth = centerBoxSize * cellSize;
-
-        textSVG = `
-          <rect x="${badgeX + 2}" y="${badgeY + 2}" width="${badgeWidth - 4}" height="${badgeWidth - 4}" rx="8" fill="${qrColorLight.value}" stroke="${qrColorDark.value}" stroke-width="2"/>
-          <text x="${badgeX + badgeWidth / 2}" y="${badgeY + badgeWidth / 2 + 5}" fill="${qrColorDark.value}" font-size="${Math.floor(badgeWidth * 0.35)}" font-weight="800" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" dominant-baseline="middle">${centerText.toUpperCase()}</text>
-        `;
-      }
-
-      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="${qrColorLight.value}"/>${shapesSVG}${textSVG}</svg>`;
-      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'qrcodephoenix.svg';
-      link.click();
-    });
-
-    document.getElementById('download-pdf').addEventListener('click', () => {
+    function exportPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
       const name = profileNameInput.value.trim() || "qrcodephoenix Hub";
@@ -1113,9 +1079,84 @@
       doc.text("Scannez pour ouvrir le hub mobile officiel", 105, 185, { align: 'center' });
 
       doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
+    }
+
+    function exportSVG() {
+      if (!currentQRMatrix || currentQRMatrix.length === 0) return;
+
+      const totalCount = currentQRMatrix.length;
+      const margin = parseInt(qrMargin.value, 10);
+      const baseCount = totalCount - margin * 2;
+      const svgSize = 600;
+      const cellSize = svgSize / totalCount;
+      const shapeStyle = qrDotsStyle.value;
+
+      let shapesSVG = "";
+
+      for (let r = 0; r < totalCount; r++) {
+        for (let c = 0; c < totalCount; c++) {
+          if (currentQRMatrix[r][c] === 1) {
+            const x = c * cellSize;
+            const y = r * cellSize;
+            const origR = r - margin;
+            const origC = c - margin;
+            const isFinder = isFinderPattern(origR, origC, baseCount);
+
+            if (shapeStyle === 'square' || isFinder) {
+              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize + 0.3).toFixed(2)}" height="${(cellSize + 0.3).toFixed(2)}" fill="${qrColorDark.value}"/>`;
+            } else if (shapeStyle === 'dots') {
+              const cx = (x + cellSize / 2).toFixed(2);
+              const cy = (y + cellSize / 2).toFixed(2);
+              const radius = (cellSize / 2.2).toFixed(2);
+              shapesSVG += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${qrColorDark.value}"/>`;
+            } else if (shapeStyle === 'rounded') {
+              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.3).toFixed(2)}" fill="${qrColorDark.value}"/>`;
+            }
+          }
+        }
+      }
+
+      const centerText = qrCenterText.value.trim();
+      let textSVG = "";
+      if (centerText) {
+        const centerBoxSize = Math.floor(totalCount * 0.28);
+        const centerStart = Math.floor((totalCount - centerBoxSize) / 2);
+        const badgeX = centerStart * cellSize;
+        const badgeY = centerStart * cellSize;
+        const badgeWidth = centerBoxSize * cellSize;
+
+        textSVG = `
+          <rect x="${badgeX + 2}" y="${badgeY + 2}" width="${badgeWidth - 4}" height="${badgeWidth - 4}" rx="12" fill="${qrColorLight.value}" stroke="${qrColorDark.value}" stroke-width="4"/>
+          <text x="${badgeX + badgeWidth / 2}" y="${badgeY + badgeWidth / 2 + 5}" fill="${qrColorDark.value}" font-size="${Math.floor(badgeWidth * 0.35)}" font-weight="800" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" dominant-baseline="middle">${centerText.toUpperCase()}</text>
+        `;
+      }
+
+      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="${qrColorLight.value}"/>${shapesSVG}${textSVG}</svg>`;
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'qrcodephoenix.svg';
+      link.click();
+    }
+
+    // ÉCOUTEUR PRINCIPAL DU BOUTON "VALIDER & GÉNÉRER"
+    btnSubmitData.addEventListener('click', () => {
+      validateAndApplyData();
+
+      setTimeout(() => {
+        const format = exportFormatSelect.value;
+        if (format === 'png') exportPNG();
+        else if (format === 'pdf') exportPDF();
+        else if (format === 'svg') exportSVG();
+      }, 100);
     });
 
-    // Génération initiale au chargement
+    // ÉCOUTEURS DES BOUTONS DE TÉLÉCHARGEMENT DIRECT
+    document.getElementById('download-png').addEventListener('click', exportPNG);
+    document.getElementById('download-pdf').addEventListener('click', exportPDF);
+    document.getElementById('download-svg').addEventListener('click', exportSVG);
+
+    // Initialisation au chargement
     validateAndApplyData();
   </script>
 </body>
