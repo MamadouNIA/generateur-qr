@@ -16,7 +16,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* DEFINITION SYSTEME DES THEMES */
     :root[data-theme="dark"] {
       --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 100%);
       --card-bg: rgba(17, 24, 39, 0.75);
@@ -306,6 +305,34 @@
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
 
+    .btn-validate {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, var(--accent-color) 0%, #ff007f 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-validate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(249, 115, 22, 0.5);
+    }
+
+    .btn-validate:active {
+      transform: translateY(0);
+    }
+
     .preview-card {
       display: flex;
       flex-direction: column;
@@ -447,14 +474,6 @@
       .preview-card { position: relative; top: 0; }
     }
 
-    body.hub-view { padding: 20px 16px; }
-    .hub-card {
-      max-width: 480px;
-      width: 100%;
-      margin: 0 auto;
-      text-align: center;
-    }
-
     .app-footer {
       margin-top: 24px;
       font-size: 0.75rem;
@@ -473,7 +492,7 @@
   </header>
 
   <div class="container" id="editor-container">
-    <!-- Panneau de Configuration -->
+    <!-- Panneau de Formulaire -->
     <div class="card">
       <div class="card-title">
         <i class="fa-solid fa-palette"></i> Style & Thèmes
@@ -494,26 +513,26 @@
         </div>
       </div>
 
-      <!-- REGLAGES STANDARD DU QR CODE -->
+      <!-- REGLAGES DU QR CODE -->
       <div class="card-title">
-        <i class="fa-solid fa-sliders"></i> Personnalisation du QR Code
+        <i class="fa-solid fa-sliders"></i> Apparence du QR Code
       </div>
 
       <div class="form-grid-2">
         <div class="form-group">
-          <label for="qr-dots-style">Style du QR Code</label>
+          <label for="qr-dots-style">Style des modules</label>
           <select id="qr-dots-style">
-            <option value="square" selected>Carré Classique (Normal / Standard)</option>
-            <option value="dots">Arrondi (Dots Modernes)</option>
-            <option value="rounded">Lisse (Rounded Soft)</option>
+            <option value="square" selected>Carré Classique</option>
+            <option value="dots">Arrondi (Dots)</option>
+            <option value="rounded">Lisse (Rounded)</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="qr-ecc-level">Correction d'erreur</label>
           <select id="qr-ecc-level">
-            <option value="M" selected>Moyenne (Standard 15%)</option>
-            <option value="H">Haute (30% - Recommandé)</option>
+            <option value="M" selected>Moyenne (15%)</option>
+            <option value="H">Haute (30%)</option>
             <option value="Q">Élevée (25%)</option>
             <option value="L">Faible (7%)</option>
           </select>
@@ -522,7 +541,7 @@
 
       <div class="form-grid-2">
         <div class="form-group">
-          <label for="qr-margin">Marge (Zone Quiet)</label>
+          <label for="qr-margin">Marge (Quiet Zone)</label>
           <select id="qr-margin">
             <option value="2" selected>Standard (2)</option>
             <option value="1">Ajustée (1)</option>
@@ -546,18 +565,18 @@
           </div>
           <div class="color-picker-wrapper">
             <input type="color" id="qr-color-light" value="#ffffff">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Arrière-plan</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Fond</span>
           </div>
         </div>
       </div>
 
-      <!-- INFORMATIONS PROFIL -->
+      <!-- INFORMATIONS DU PROFIL -->
       <div class="card-title">
-        <i class="fa-solid fa-id-card"></i> Profil & Bio-Link
+        <i class="fa-solid fa-id-card"></i> Informations du Profil
       </div>
 
       <div class="form-group">
-        <label for="profile-name">Nom du profil</label>
+        <label for="profile-name">Nom complet ou Marque</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-user"></i>
           <input type="text" id="profile-name" value="Alexandre Pro" placeholder="Votre nom / marque">
@@ -573,22 +592,22 @@
       </div>
 
       <div class="form-group">
-        <label for="profile-bio">Brève Description / Bio</label>
+        <label for="profile-bio">Description / Bio</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-align-left" style="top: 14px;"></i>
-          <textarea id="profile-bio" placeholder="Bienvenue sur mon hub officiel. Retrouvez tous mes réseaux ci-dessous !">Bienvenue sur mon hub officiel. Retrouvez tous mes liens ci-dessous !</textarea>
+          <textarea id="profile-bio" placeholder="Description courte...">Bienvenue sur mon hub officiel. Retrouvez tous mes liens ci-dessous !</textarea>
         </div>
       </div>
 
       <div class="card-title">
-        <i class="fa-solid fa-share-nodes"></i> Réseaux Sociaux & Liens
+        <i class="fa-solid fa-share-nodes"></i> Liens Réseaux Sociaux
       </div>
 
       <div class="form-group">
         <label for="input-whatsapp">WhatsApp</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-whatsapp"></i>
-          <input type="text" id="input-whatsapp" class="social-input" data-platform="whatsapp" placeholder="Numéro avec indicatif (ex: 221770000000)">
+          <input type="text" id="input-whatsapp" class="social-input" data-platform="whatsapp" placeholder="Ex: 221770000000">
         </div>
       </div>
 
@@ -596,7 +615,7 @@
         <label for="input-instagram">Instagram</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-instagram"></i>
-          <input type="text" id="input-instagram" class="social-input" data-platform="instagram" placeholder="Nom d'utilisateur (ex: alex_design)">
+          <input type="text" id="input-instagram" class="social-input" data-platform="instagram" placeholder="Nom d'utilisateur">
         </div>
       </div>
 
@@ -604,7 +623,7 @@
         <label for="input-linkedin">LinkedIn</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-linkedin"></i>
-          <input type="text" id="input-linkedin" class="social-input" data-platform="linkedin" placeholder="ID Profil / Lien">
+          <input type="text" id="input-linkedin" class="social-input" data-platform="linkedin" placeholder="Identifiant / URL">
         </div>
       </div>
 
@@ -612,7 +631,7 @@
         <label for="input-facebook">Facebook</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-facebook"></i>
-          <input type="text" id="input-facebook" class="social-input" data-platform="facebook" placeholder="Nom de page ou profil">
+          <input type="text" id="input-facebook" class="social-input" data-platform="facebook" placeholder="Profil ou page">
         </div>
       </div>
 
@@ -628,7 +647,7 @@
         <label for="input-tiktok">TikTok</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-tiktok"></i>
-          <input type="text" id="input-tiktok" class="social-input" data-platform="tiktok" placeholder="Nom d'utilisateur (@ex)">
+          <input type="text" id="input-tiktok" class="social-input" data-platform="tiktok" placeholder="Nom d'utilisateur">
         </div>
       </div>
 
@@ -636,7 +655,7 @@
         <label for="input-youtube">YouTube</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-youtube"></i>
-          <input type="text" id="input-youtube" class="social-input" data-platform="youtube" placeholder="Nom de chaîne (@chaine)">
+          <input type="text" id="input-youtube" class="social-input" data-platform="youtube" placeholder="Nom de chaîne">
         </div>
       </div>
 
@@ -644,7 +663,7 @@
         <label for="input-telegram">Telegram</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-telegram"></i>
-          <input type="text" id="input-telegram" class="social-input" data-platform="telegram" placeholder="Nom d'utilisateur ou canal">
+          <input type="text" id="input-telegram" class="social-input" data-platform="telegram" placeholder="Pseudo Telegram">
         </div>
       </div>
 
@@ -652,7 +671,7 @@
         <label for="input-github">GitHub</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-github"></i>
-          <input type="text" id="input-github" class="social-input" data-platform="github" placeholder="Nom d'utilisateur">
+          <input type="text" id="input-github" class="social-input" data-platform="github" placeholder="Pseudo GitHub">
         </div>
       </div>
 
@@ -663,9 +682,15 @@
           <input type="url" id="input-website" class="social-input" data-platform="website" placeholder="https://votre-site.com">
         </div>
       </div>
+
+      <!-- BOUTON DE VALIDATION DE SAISIE -->
+      <button type="button" class="btn-validate" id="btn-submit-data">
+        <i class="fa-solid fa-circle-check"></i> Valider et Générer le QR Code
+      </button>
+
     </div>
 
-    <!-- Panneau de Prévisualisation -->
+    <!-- Panneau de Prévisualisation & Exporter -->
     <div class="card preview-card">
       <div style="width: 100%;">
         <div class="preview-mode-toggle">
@@ -679,10 +704,10 @@
             <canvas id="modern-qr" width="260" height="260"></canvas>
             <div id="raw-qr" style="display:none;"></div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Fixe & Permanent</p>
+          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Immuable & Validé</p>
         </div>
 
-        <!-- Mode Smartphone -->
+        <!-- Mode Smartphone Bio-Link -->
         <div class="phone-mockup" id="view-phone-container">
           <div class="phone-notch"></div>
           <h4 id="prev-name" style="font-weight:700; font-size:1.1rem;">Alexandre Pro</h4>
@@ -692,7 +717,7 @@
         </div>
       </div>
 
-      <!-- Actions Exporter -->
+      <!-- Actions Téléchargement -->
       <div class="btn-group">
         <button id="download-png" class="btn btn-png" type="button"><i class="fa-solid fa-image"></i> Exporter PNG HD</button>
         <button id="download-svg" class="btn btn-svg" type="button"><i class="fa-solid fa-vector-square"></i> Exporter SVG Vectoriel</button>
@@ -719,7 +744,7 @@
       website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    // Identifiant de session fixe pour préserver le même QR Code en permanence
+    // Ancre unique permanente pour maintenir le QR Code totalement fixe
     const FIXED_SESSION_ID = "hub-" + Math.floor(100000 + Math.random() * 900000);
     const FIXED_TARGET_URL = window.location.origin + window.location.pathname + "?id=" + FIXED_SESSION_ID;
 
@@ -743,6 +768,8 @@
     const qrColorDark = document.getElementById('qr-color-dark');
     const qrColorLight = document.getElementById('qr-color-light');
 
+    const btnSubmitData = document.getElementById('btn-submit-data');
+
     const themeOptions = document.querySelectorAll('.theme-option');
     const btnModeQr = document.getElementById('btn-mode-qr');
     const btnModePhone = document.getElementById('btn-mode-phone');
@@ -751,7 +778,6 @@
 
     let selectedTheme = 'dark';
     let currentQRMatrix = [];
-    let isQRGenerated = false;
 
     btnModeQr.addEventListener('click', () => {
       btnModeQr.classList.add('active');
@@ -773,7 +799,6 @@
         opt.classList.add('active');
         selectedTheme = opt.dataset.theme;
         document.documentElement.setAttribute('data-theme', selectedTheme);
-        updateApp(false);
       });
     });
 
@@ -929,16 +954,7 @@
       }
     }
 
-    function renderModernQR(text, forceRebuild = false) {
-      if (isQRGenerated && !forceRebuild) {
-        // Redessiner uniquement le style graphique sans modifier la matrice originale
-        if (rawQrContainer.querySelector('canvas')) {
-          const rawMatrix = getMatrixFromCanvas(rawQrContainer.querySelector('canvas'));
-          renderCustomQR(rawMatrix);
-        }
-        return;
-      }
-
+    function generateQR() {
       rawQrContainer.innerHTML = '';
       
       const eccMap = {
@@ -949,7 +965,7 @@
       };
 
       new QRCode(rawQrContainer, {
-        text: text,
+        text: FIXED_TARGET_URL,
         width: 240,
         height: 240,
         correctLevel: eccMap[qrEccLevel.value] || QRCode.CorrectLevel.M
@@ -960,12 +976,12 @@
         if (!sourceCanvas) return;
         const rawMatrix = getMatrixFromCanvas(sourceCanvas);
         renderCustomQR(rawMatrix);
-        isQRGenerated = true;
       }, 50);
     }
 
-    function updateApp(shouldRebuildQR = false) {
-      // 1. Mise à jour dynamique de l'aperçu Bio-Link
+    // Fonction de validation explicite déclenchée sur clic
+    function validateAndApplyData() {
+      // 1. Appliquer les textes et la bio sur la maquette mobile
       prevName.textContent = profileNameInput.value.trim() || "Alexandre Pro";
       prevTitle.textContent = profileTitleInput.value.trim();
       prevBio.textContent = profileBioInput.value.trim();
@@ -973,11 +989,12 @@
       prevTitle.style.display = profileTitleInput.value.trim() ? "block" : "none";
       prevBio.style.display = profileBioInput.value.trim() ? "block" : "none";
 
+      // 2. Générer les liens dans la maquette mobile
       const links = getActiveLinks();
       linksPreview.innerHTML = '';
 
       if (links.length === 0) {
-        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.75rem;">Ajoutez des liens pour construire votre Hub.</p>';
+        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.75rem;">Aucun lien renseigné.</p>';
       } else {
         links.forEach(item => {
           const a = document.createElement('a');
@@ -995,9 +1012,14 @@
         });
       }
 
-      // 2. Maintien du QR Code FIXE avec l'URL cible permanente
-      renderModernQR(FIXED_TARGET_URL, shouldRebuildQR);
+      // 3. Génération unique et stable du QR Code
+      generateQR();
     }
+
+    // Écouteur de validation uniquement lors du clic sur le bouton "Valider"
+    btnSubmitData.addEventListener('click', () => {
+      validateAndApplyData();
+    });
 
     document.getElementById('download-svg').addEventListener('click', () => {
       if (!currentQRMatrix || currentQRMatrix.length === 0) return;
@@ -1095,20 +1117,8 @@
       doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    // Écouteurs pour mettre à jour l'affichage dynamique SANS regénérer le QR code
-    const profileControls = [profileNameInput, profileTitleInput, profileBioInput];
-    profileControls.forEach(ctrl => ctrl.addEventListener('input', () => updateApp(false)));
-    socialInputs.forEach(i => i.addEventListener('input', () => updateApp(false)));
-
-    // Écouteurs pour ajuster uniquement le style du QR code si l'utilisateur modifie ses options d'apparence
-    const qrStyleControls = [qrDotsStyle, qrMargin, qrCenterText, qrColorDark, qrColorLight];
-    qrStyleControls.forEach(ctrl => ctrl.addEventListener('input', () => updateApp(false)));
-
-    // La correction d'erreur est la seule option qui exige une nouvelle matrice
-    qrEccLevel.addEventListener('change', () => updateApp(true));
-
-    // Initialisation
-    updateApp(true);
+    // Génération initiale au chargement de la page
+    validateAndApplyData();
   </script>
 </body>
 </html>
