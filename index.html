@@ -70,7 +70,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -116,7 +116,7 @@
 
     .container {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 24px;
       max-width: 1100px;
       width: 100%;
@@ -133,15 +133,16 @@
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 18px;
-      margin-top: 10px;
+      margin-bottom: 16px;
+      margin-top: 18px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
+    .card-title:first-child { margin-top: 0; }
     .card-title i { color: var(--accent-color); }
 
     .theme-selector {
@@ -204,6 +205,11 @@
     }
 
     .form-group { margin-bottom: 14px; }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
     label {
       display: block;
@@ -240,15 +246,25 @@
     .input-with-icon i.fa-github { color: #a855f7; }
     .input-with-icon i.fa-globe { color: #3b82f6; }
 
-    input[type="text"], input[type="url"], textarea {
+    input[type="text"], input[type="url"], select, textarea {
       width: 100%;
       padding: 12px 14px 12px 44px;
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       color: var(--text-main);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       outline: none;
+    }
+
+    select {
+      padding-left: 14px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
     }
 
     textarea {
@@ -257,7 +273,7 @@
       min-height: 65px;
     }
 
-    input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
+    input[type="text"]:focus, input[type="url"]:focus, select:focus, textarea:focus {
       border-color: var(--accent-color);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
@@ -297,9 +313,11 @@
       align-items: center;
       justify-content: space-between;
       text-align: center;
+      position: sticky;
+      top: 24px;
     }
 
-    .qr-modern-wrapper {
+    .qr-container-box {
       background: #ffffff;
       padding: 20px;
       border-radius: 24px;
@@ -311,6 +329,8 @@
     canvas#modern-qr {
       display: block;
       border-radius: 8px;
+      max-width: 100%;
+      height: auto;
     }
 
     .phone-mockup {
@@ -366,7 +386,6 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
 
-    /* BADGE D'ICÔNE STYLISÉ */
     .social-icon-badge {
       width: 38px;
       height: 38px;
@@ -381,7 +400,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    /* DESIGN DU BADGE PAR PLATEFORME */
     .icon-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
     .icon-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
     .icon-linkedin { background: linear-gradient(135deg, #0A66C2, #004182); }
@@ -428,6 +446,7 @@
       .container { grid-template-columns: 1fr; gap: 16px; }
       .card { padding: 20px; }
       .theme-selector { grid-template-columns: repeat(2, 1fr); }
+      .preview-card { position: relative; top: 0; }
     }
 
     body.hub-view { padding: 20px 16px; }
@@ -452,7 +471,7 @@
     <div class="brand-logo">
       <i class="fa-solid fa-fire-flame-curved"></i> qrcodephoenix
     </div>
-    <div class="brand-subtitle">Générateur de QR Code Moderne & Page Bio-Link Pro</div>
+    <div class="brand-subtitle">Studio d'Édition QR Code Vectoriel & Bio-Link Pro</div>
   </header>
 
   <div class="container" id="editor-container">
@@ -477,8 +496,66 @@
         </div>
       </div>
 
+      <!-- REGLAGES TYPIQUES AVANCÉS QR CODE -->
       <div class="card-title">
-        <i class="fa-solid fa-id-card"></i> Profil & Informations
+        <i class="fa-solid fa-sliders"></i> Personnalisation du QR Code
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="qr-dots-style">Forme des Modules</label>
+          <select id="qr-dots-style">
+            <option value="dots">Arrondi (Dots)</option>
+            <option value="square">Carré Classique</option>
+            <option value="rounded">Lisse (Rounded)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="qr-ecc-level">Correction d'erreur</label>
+          <select id="qr-ecc-level">
+            <option value="H" selected>Haute (30% - Recommandé)</option>
+            <option value="Q">Élevée (25%)</option>
+            <option value="M">Moyenne (15%)</option>
+            <option value="L">Faible (7%)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="qr-margin">Marge extérieure</label>
+          <select id="qr-margin">
+            <option value="0">Sans Marge (0)</option>
+            <option value="1">Petite (1)</option>
+            <option value="2" selected>Standard (2)</option>
+            <option value="4">Large (4)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="qr-center-text">Texte Central (Badge)</label>
+          <input type="text" id="qr-center-text" maxlength="4" placeholder="Ex: PRO" style="padding-left:14px;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Couleurs du QR Code</label>
+        <div class="color-picker-grid">
+          <div class="color-picker-wrapper">
+            <input type="color" id="qr-color-dark" value="#0f172a">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Points</span>
+          </div>
+          <div class="color-picker-wrapper">
+            <input type="color" id="qr-color-light" value="#ffffff">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Fond</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFORMATIONS PROFIL -->
+      <div class="card-title">
+        <i class="fa-solid fa-id-card"></i> Profil & Bio-Link
       </div>
 
       <div class="form-group">
@@ -588,18 +665,6 @@
           <input type="url" id="input-website" class="social-input" data-platform="website" placeholder="https://votre-site.com">
         </div>
       </div>
-
-      <label style="margin-top: 18px;">Couleurs du QR Code</label>
-      <div class="color-picker-grid">
-        <div class="color-picker-wrapper">
-          <input type="color" id="qr-color-dark" value="#0f172a">
-          <span style="font-size: 0.8rem; color: var(--text-muted);">Points</span>
-        </div>
-        <div class="color-picker-wrapper">
-          <input type="color" id="qr-color-light" value="#ffffff">
-          <span style="font-size: 0.8rem; color: var(--text-muted);">Fond</span>
-        </div>
-      </div>
     </div>
 
     <!-- Panneau de Prévisualisation -->
@@ -612,8 +677,8 @@
 
         <!-- Mode QR -->
         <div id="view-qr-container">
-          <div class="qr-modern-wrapper">
-            <canvas id="modern-qr" width="200" height="200"></canvas>
+          <div class="qr-container-box">
+            <canvas id="modern-qr" width="260" height="260"></canvas>
             <div id="raw-qr" style="display:none;"></div>
           </div>
           <p style="font-size:0.8rem; color:var(--text-muted);">Scannez le QR Code pour tester en direct</p>
@@ -643,7 +708,7 @@
   </footer>
 
   <script>
-    // Configuration complète des réseaux sociaux et styles associées
+    // Configuration complète des réseaux sociaux
     const PLATFORMS = {
       whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", badgeClass: "icon-whatsapp", name: "WhatsApp" },
       instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", badgeClass: "icon-instagram", name: "Instagram" },
@@ -657,7 +722,7 @@
       website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    // Helper Encodage / Décodage UTF-8 Sécurisé pour Base64
+    // Helper Encodage / Décodage UTF-8 Sécurisé
     function utf8ToBase64(str) {
       return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => 
         String.fromCharCode('0x' + p1)
@@ -670,7 +735,7 @@
       ).join(''));
     }
 
-    // Eléments DOM
+    // Éléments DOM
     const profileNameInput = document.getElementById('profile-name');
     const profileTitleInput = document.getElementById('profile-title');
     const profileBioInput = document.getElementById('profile-bio');
@@ -683,10 +748,16 @@
     const linksPreview = document.getElementById('links-preview');
     const rawQrContainer = document.getElementById('raw-qr');
     const modernCanvas = document.getElementById('modern-qr');
+
+    // Éléments Réglages QR
+    const qrDotsStyle = document.getElementById('qr-dots-style');
+    const qrEccLevel = document.getElementById('qr-ecc-level');
+    const qrMargin = document.getElementById('qr-margin');
+    const qrCenterText = document.getElementById('qr-center-text');
     const qrColorDark = document.getElementById('qr-color-dark');
     const qrColorLight = document.getElementById('qr-color-light');
-    const themeOptions = document.querySelectorAll('.theme-option');
 
+    const themeOptions = document.querySelectorAll('.theme-option');
     const btnModeQr = document.getElementById('btn-mode-qr');
     const btnModePhone = document.getElementById('btn-mode-phone');
     const viewQrContainer = document.getElementById('view-qr-container');
@@ -695,7 +766,7 @@
     let selectedTheme = 'dark';
     let currentQRMatrix = [];
 
-    // Toggle Mode Aperçu
+    // Toggles de Vue
     btnModeQr.addEventListener('click', () => {
       btnModeQr.classList.add('active');
       btnModePhone.classList.remove('active');
@@ -710,7 +781,7 @@
       viewPhoneContainer.classList.add('active');
     });
 
-    // Switcher de Thème
+    // Thèmes
     themeOptions.forEach(opt => {
       opt.addEventListener('click', () => {
         themeOptions.forEach(o => o.classList.remove('active'));
@@ -755,71 +826,157 @@
       return `${baseUrl}?hub=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}&bio=${encodeURIComponent(bio)}&theme=${selectedTheme}&data=${utf8ToBase64(payload)}`;
     }
 
-    // Moteur Dynamique de Rendu QR Code
+    // Extraire la matrice pure depuis le Canvas qrcode.js
+    function getMatrixFromCanvas(sourceCanvas) {
+      const ctx = sourceCanvas.getContext('2d');
+      const size = sourceCanvas.width;
+      const imgData = ctx.getImageData(0, 0, size, size);
+
+      // Trouver la taille du premier module noir
+      let firstBlackPixelWidth = 0;
+      for (let x = 0; x < size; x++) {
+        if (imgData.data[x * 4] < 127) {
+          firstBlackPixelWidth++;
+        } else if (firstBlackPixelWidth > 0) {
+          break;
+        }
+      }
+
+      if (firstBlackPixelWidth === 0) return [];
+
+      const moduleSizeEstimate = firstBlackPixelWidth / 7;
+      const count = Math.round(size / moduleSizeEstimate);
+      const cellSize = size / count;
+
+      const matrix = [];
+      for (let r = 0; r < count; r++) {
+        const row = [];
+        for (let c = 0; c < count; c++) {
+          const sampleX = Math.floor(c * cellSize + cellSize / 2);
+          const sampleY = Math.floor(r * cellSize + cellSize / 2);
+          const idx = (sampleY * size + sampleX) * 4;
+          row.push(imgData.data[idx] < 127 ? 1 : 0);
+        }
+        matrix.push(row);
+      }
+      return matrix;
+    }
+
+    // Fonction de dessin personnalisée
+    function renderCustomQR(matrix) {
+      if (!matrix || matrix.length === 0) return;
+
+      const baseCount = matrix.length;
+      const margin = parseInt(qrMargin.value, 10);
+      const totalCount = baseCount + margin * 2;
+
+      const canvasSize = 260;
+      modernCanvas.width = canvasSize;
+      modernCanvas.height = canvasSize;
+
+      const ctx = modernCanvas.getContext('2d');
+      const cellSize = canvasSize / totalCount;
+      const shapeStyle = qrDotsStyle.value;
+
+      // Fond
+      ctx.fillStyle = qrColorLight.value;
+      ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+      ctx.fillStyle = qrColorDark.value;
+
+      // Zone d'exclusion du texte central
+      const centerText = qrCenterText.value.trim();
+      const centerBoxSize = centerText ? Math.floor(totalCount * 0.28) : 0;
+      const centerStart = Math.floor((totalCount - centerBoxSize) / 2);
+      const centerEnd = centerStart + centerBoxSize;
+
+      currentQRMatrix = [];
+
+      for (let r = 0; r < totalCount; r++) {
+        const matrixRow = [];
+        for (let c = 0; c < totalCount; c++) {
+          let isDark = 0;
+          const origR = r - margin;
+          const origC = c - margin;
+
+          if (origR >= 0 && origR < baseCount && origC >= 0 && origC < baseCount) {
+            isDark = matrix[origR][origC];
+          }
+
+          // Effacer le centre pour le texte
+          if (centerText && r >= centerStart && r < centerEnd && c >= centerStart && c < centerEnd) {
+            isDark = 0;
+          }
+
+          matrixRow.push(isDark);
+
+          if (isDark) {
+            const x = c * cellSize;
+            const y = r * cellSize;
+
+            if (shapeStyle === 'dots') {
+              ctx.beginPath();
+              ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2.3, 0, Math.PI * 2);
+              ctx.fill();
+            } else if (shapeStyle === 'rounded') {
+              const rRadius = cellSize * 0.35;
+              ctx.beginPath();
+              ctx.roundRect(x + 0.5, y + 0.5, cellSize - 1, cellSize - 1, rRadius);
+              ctx.fill();
+            } else {
+              ctx.fillRect(x, y, cellSize + 0.2, cellSize + 0.2);
+            }
+          }
+        }
+        currentQRMatrix.push(matrixRow);
+      }
+
+      // Dessiner le badge central avec le texte
+      if (centerText) {
+        const badgeX = centerStart * cellSize;
+        const badgeY = centerStart * cellSize;
+        const badgeWidth = centerBoxSize * cellSize;
+
+        ctx.fillStyle = qrColorLight.value;
+        ctx.beginPath();
+        ctx.roundRect(badgeX + 2, badgeY + 2, badgeWidth - 4, badgeWidth - 4, 8);
+        ctx.fill();
+
+        ctx.strokeStyle = qrColorDark.value;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = qrColorDark.value;
+        ctx.font = `800 ${Math.floor(badgeWidth * 0.35)}px 'Plus Jakarta Sans', sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(centerText.toUpperCase(), badgeX + badgeWidth / 2, badgeY + badgeWidth / 2);
+      }
+    }
+
     function renderModernQR(text) {
       rawQrContainer.innerHTML = '';
       
+      const eccMap = {
+        'L': QRCode.CorrectLevel.L,
+        'M': QRCode.CorrectLevel.M,
+        'Q': QRCode.CorrectLevel.Q,
+        'H': QRCode.CorrectLevel.H
+      };
+
       new QRCode(rawQrContainer, {
         text: text,
         width: 200,
         height: 200,
-        correctLevel: QRCode.CorrectLevel.H
+        correctLevel: eccMap[qrEccLevel.value] || QRCode.CorrectLevel.H
       });
 
       setTimeout(() => {
         const sourceCanvas = rawQrContainer.querySelector('canvas');
         if (!sourceCanvas) return;
-
-        const srcCtx = sourceCanvas.getContext('2d');
-        const size = 200;
-        modernCanvas.width = size;
-        modernCanvas.height = size;
-
-        const ctx = modernCanvas.getContext('2d');
-        const imgData = srcCtx.getImageData(0, 0, size, size);
-
-        let firstBlackPixelWidth = 0;
-        for (let x = 0; x < size; x++) {
-          if (imgData.data[x * 4] < 127) {
-            firstBlackPixelWidth++;
-          } else if (firstBlackPixelWidth > 0) {
-            break;
-          }
-        }
-        
-        const calculatedModuleSize = firstBlackPixelWidth / 7;
-        const moduleCount = Math.round(size / calculatedModuleSize);
-        const cellSize = size / moduleCount;
-
-        currentQRMatrix = [];
-
-        ctx.fillStyle = qrColorLight.value;
-        ctx.fillRect(0, 0, size, size);
-        ctx.fillStyle = qrColorDark.value;
-
-        for (let row = 0; row < moduleCount; row++) {
-          const matrixRow = [];
-          for (let col = 0; col < moduleCount; col++) {
-            const sampleX = Math.floor(col * cellSize + cellSize / 2);
-            const sampleY = Math.floor(row * cellSize + cellSize / 2);
-            const pixelIndex = (sampleY * size + sampleX) * 4;
-            const isDark = imgData.data[pixelIndex] < 127;
-
-            matrixRow.push(isDark ? 1 : 0);
-
-            if (isDark) {
-              const cx = col * cellSize + cellSize / 2;
-              const cy = row * cellSize + cellSize / 2;
-              const radius = cellSize / 2.3;
-
-              ctx.beginPath();
-              ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-          currentQRMatrix.push(matrixRow);
-        }
-      }, 40);
+        const rawMatrix = getMatrixFromCanvas(sourceCanvas);
+        renderCustomQR(rawMatrix);
+      }, 50);
     }
 
     function updateApp() {
@@ -856,27 +1013,53 @@
       renderModernQR(targetUrl);
     }
 
-    // Export SVG Vectoriel
+    // Export SVG Vectoriel Révisé
     document.getElementById('download-svg').addEventListener('click', () => {
       if (!currentQRMatrix || currentQRMatrix.length === 0) return;
 
-      const moduleCount = currentQRMatrix.length;
+      const totalCount = currentQRMatrix.length;
       const svgSize = 500;
-      const cellSize = svgSize / moduleCount;
-      const radius = cellSize / 2.3;
+      const cellSize = svgSize / totalCount;
+      const shapeStyle = qrDotsStyle.value;
 
-      let circlesSVG = "";
-      for (let r = 0; r < moduleCount; r++) {
-        for (let c = 0; c < moduleCount; c++) {
+      let shapesSVG = "";
+
+      for (let r = 0; r < totalCount; r++) {
+        for (let c = 0; c < totalCount; c++) {
           if (currentQRMatrix[r][c] === 1) {
-            const cx = (c * cellSize + cellSize / 2).toFixed(2);
-            const cy = (r * cellSize + cellSize / 2).toFixed(2);
-            circlesSVG += `<circle cx="${cx}" cy="${cy}" r="${radius.toFixed(2)}" fill="${qrColorDark.value}"/>`;
+            const x = c * cellSize;
+            const y = r * cellSize;
+
+            if (shapeStyle === 'dots') {
+              const cx = (x + cellSize / 2).toFixed(2);
+              const cy = (y + cellSize / 2).toFixed(2);
+              const radius = (cellSize / 2.3).toFixed(2);
+              shapesSVG += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${qrColorDark.value}"/>`;
+            } else if (shapeStyle === 'rounded') {
+              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" rx="${(cellSize * 0.35).toFixed(2)}" fill="${qrColorDark.value}"/>`;
+            } else {
+              shapesSVG += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(cellSize + 0.3).toFixed(2)}" height="${(cellSize + 0.3).toFixed(2)}" fill="${qrColorDark.value}"/>`;
+            }
           }
         }
       }
 
-      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="${qrColorLight.value}"/>${circlesSVG}</svg>`;
+      const centerText = qrCenterText.value.trim();
+      let textSVG = "";
+      if (centerText) {
+        const centerBoxSize = Math.floor(totalCount * 0.28);
+        const centerStart = Math.floor((totalCount - centerBoxSize) / 2);
+        const badgeX = centerStart * cellSize;
+        const badgeY = centerStart * cellSize;
+        const badgeWidth = centerBoxSize * cellSize;
+
+        textSVG = `
+          <rect x="${badgeX + 2}" y="${badgeY + 2}" width="${badgeWidth - 4}" height="${badgeWidth - 4}" rx="8" fill="${qrColorLight.value}" stroke="${qrColorDark.value}" stroke-width="2"/>
+          <text x="${badgeX + badgeWidth / 2}" y="${badgeY + badgeWidth / 2 + 5}" fill="${qrColorDark.value}" font-size="${Math.floor(badgeWidth * 0.35)}" font-weight="800" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" dominant-baseline="middle">${centerText.toUpperCase()}</text>
+        `;
+      }
+
+      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="${qrColorLight.value}"/>${shapesSVG}${textSVG}</svg>`;
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
@@ -924,7 +1107,7 @@
       doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    // Mode Visiteur (Quand un smartphone scanne le QR Code)
+    // Mode Visiteur (Mobile Hub direct)
     function checkVisitorMode() {
       const params = new URLSearchParams(window.location.search);
       if (params.has('hub') && params.has('data')) {
@@ -979,14 +1162,17 @@
       return false;
     }
 
-    // Initialisation
+    // Attacher les écouteurs d'événements
     if (!checkVisitorMode()) {
+      const allControls = [
+        profileNameInput, profileTitleInput, profileBioInput,
+        qrDotsStyle, qrEccLevel, qrMargin, qrCenterText, qrColorDark, qrColorLight
+      ];
+      
+      allControls.forEach(ctrl => ctrl.addEventListener('input', updateApp));
+      allControls.forEach(ctrl => ctrl.addEventListener('change', updateApp));
       socialInputs.forEach(i => i.addEventListener('input', updateApp));
-      profileNameInput.addEventListener('input', updateApp);
-      profileTitleInput.addEventListener('input', updateApp);
-      profileBioInput.addEventListener('input', updateApp);
-      qrColorDark.addEventListener('input', updateApp);
-      qrColorLight.addEventListener('input', updateApp);
+
       updateApp();
     }
   </script>
