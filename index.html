@@ -3,646 +3,485 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberBio Studio — Bio-Link & QR Code Generator</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Bibliothèque QR Code intégrée via CDN -->
+  <title>Hub Multi-Réseaux & Générateur de QR Code (PNG, SVG, PDF)</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- QRCode.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+  <!-- jsPDF Library pour la génération PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
-      --neon-cyan: #00f3ff;
-      --neon-magenta: #ff0055;
-      --bg-dark: #030712;
-      --panel-bg: rgba(15, 23, 42, 0.85);
-      --border-glow: rgba(0, 243, 255, 0.25);
-      --font-title: 'Orbitron', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
+      --bg-primary: #0f172a;
+      --card-bg: #1e293b;
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
 
     body {
-      background: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 10% 10%, rgba(0, 243, 255, 0.08) 0px, transparent 50%),
-        radial-gradient(at 90% 90%, rgba(255, 0, 85, 0.08) 0px, transparent 50%),
-        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-      color: #f3f4f6;
-      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 30px 15px;
+      padding: 20px;
     }
 
-    .cyber-card {
-      background: var(--panel-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-glow);
-      border-radius: 20px;
-      box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
-      width: 100%;
-      max-width: 1150px;
-      padding: 35px;
+    .container {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 35px;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      max-width: 1000px;
+      width: 100%;
     }
 
-    @media (max-width: 900px) {
-      .cyber-card { grid-template-columns: 1fr; padding: 20px; }
+    @media (max-width: 850px) {
+      .container { grid-template-columns: 1fr; }
     }
 
-    .title-zone { grid-column: 1 / -1; text-align: center; margin-bottom: 10px; }
-
-    .title-zone h1 {
-      font-family: var(--font-title);
-      font-size: 2.2rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      background: linear-gradient(90deg, #ffffff, var(--neon-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
-    .title-zone p { color: #9ca3af; font-size: 1rem; }
+    h1, h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    .control-group { margin-bottom: 18px; }
+    .form-group { margin-bottom: 16px; }
 
     label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--neon-cyan);
-      margin-bottom: 8px;
-    }
-
-    input[type="text"], input[type="file"] {
-      width: 100%;
-      padding: 11px 14px;
-      background: rgba(3, 7, 18, 0.7);
-      border: 1px solid var(--border-glow);
-      border-radius: 8px;
-      color: #ffffff;
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      outline: none;
-      transition: all 0.3s;
-    }
-
-    input[type="file"] {
-      padding: 8px;
-      cursor: pointer;
+      display: block;
       font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
 
-    input[type="text"]:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
-    }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    .multi-social-container {
-      max-height: 340px;
-      overflow-y: auto;
-      padding-right: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .multi-social-container::-webkit-scrollbar { width: 6px; }
-    .multi-social-container::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 4px; }
-
-    .social-input-card {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-left: 3px solid var(--neon-cyan);
-      padding: 10px 14px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .social-card-header {
+    .input-with-icon {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      color: #fff;
     }
 
-    .social-card-header img { width: 18px; height: 18px; }
+    .input-with-icon i {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
 
-    .color-input-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(3, 7, 18, 0.7);
-      border: 1px solid var(--border-glow);
-      padding: 6px 12px;
+    input[type="text"], input[type="url"] {
+      width: 100%;
+      padding: 10px 12px 10px 40px;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    .color-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     input[type="color"] {
+      width: 100%;
+      height: 40px;
       border: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
-      background: transparent;
+      background: none;
     }
 
-    /* PREVIEW CONTAINER */
-    .preview-stage {
-      background: rgba(3, 7, 18, 0.85);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      border-radius: 16px;
-      padding: 20px;
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover { opacity: 0.9; }
+
+    .btn-png { background-color: #10b981; }
+    .btn-svg { background-color: #f59e0b; }
+    .btn-pdf { background-color: #ef4444; }
+
+    .preview-card {
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
     }
 
-    .preview-phone-frame {
+    .social-links-list {
       width: 100%;
-      max-width: 320px;
-      min-height: 460px;
-      background: #030712;
-      border: 2px solid var(--border-glow);
-      border-radius: 24px;
-      padding: 25px 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
-      transition: all 0.3s;
+      gap: 8px;
+      margin: 15px 0;
+      max-height: 180px;
+      overflow-y: auto;
     }
 
-    .preview-avatar {
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--neon-cyan), #000);
+    .social-link-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: var(--font-title);
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #000;
-      margin-bottom: 12px;
-      box-shadow: 0 0 15px var(--neon-cyan);
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-    }
-
-    .preview-title { font-family: var(--font-title); font-size: 1.1rem; text-align: center; margin-bottom: 4px; }
-    .preview-sub { font-size: 0.85rem; color: #9ca3af; text-align: center; margin-bottom: 15px; }
-
-    .preview-links { width: 100%; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
-    
-    .preview-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 9px 12px;
-      border-radius: 10px;
-      color: #fff;
-      font-family: var(--font-title);
-      font-size: 0.7rem;
+      padding: 10px 14px;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
       text-decoration: none;
+      font-size: 0.9rem;
+      transition: transform 0.2s, border-color 0.2s;
     }
 
-    .preview-btn img { width: 16px; height: 16px; }
-
-    /* QR CODE STYLING */
-    .qr-box {
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 12px;
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    .social-link-item:hover {
+      transform: translateX(4px);
+      border-color: var(--accent-color);
     }
 
-    .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .social-link-item i {
+      font-size: 1.2rem;
+      margin-right: 12px;
+      width: 24px;
+      text-align: center;
+    }
 
-    .btn-cyber-primary, .btn-cyber-secondary {
-      width: 100%;
+    /* Brand Colors */
+    .fa-whatsapp { color: #25D366; }
+    .fa-instagram { color: #E4405F; }
+    .fa-linkedin { color: #0A66C2; }
+    .fa-facebook { color: #1877F2; }
+    .fa-tiktok { color: #EE1D52; }
+    .fa-x-twitter { color: #ffffff; }
+    .fa-globe { color: #3b82f6; }
+
+    #qr-output {
+      background: white;
       padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .btn-cyber-primary {
-      background: linear-gradient(90deg, #00f3ff, #0066ff);
-      color: #000;
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-    }
-
-    .btn-cyber-secondary {
-      background: linear-gradient(90deg, #ff0055, #ff5500);
-      color: #fff;
-      box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
-    }
-
-    .btn-cyber-primary:hover, .btn-cyber-secondary:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.2);
+      border-radius: 12px;
+      margin: 15px 0;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
 
-  <div class="cyber-card">
-    <div class="title-zone">
-      <h1>CyberBio Studio Pro</h1>
-      <p>// Bio-Link, Image de Profil & Générateur QR Code Intégré</p>
-    </div>
+  <div class="container">
+    <!-- Form Side -->
+    <div class="card">
+      <h1><i class="fa-solid fa-share-nodes"></i> Configuration du Hub</h1>
 
-    <!-- Controls Panel -->
-    <div class="controls-panel">
-      
-      <!-- Profile Image Control -->
-      <div class="control-group">
-        <label>🖼️ Image de Profil (Fichier Local ou URL)</label>
-        <div class="grid-2">
-          <input type="file" id="avatar-file" accept="image/*">
-          <input type="text" id="avatar-url" placeholder="https://domaine.com/photo.jpg">
+      <div class="form-group">
+        <label>Nom du profil / Titre</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="profile-name" value="Mon Profil Social" placeholder="Ex: Jean Dupont">
         </div>
       </div>
 
-      <div class="grid-2 control-group">
-        <div>
-          <label>👤 Nom du Profil</label>
-          <input type="text" id="bio-title" value="Alex Cyber" placeholder="Votre Nom / Marque">
-        </div>
-        <div>
-          <label>💬 Bio / Sous-titre</label>
-          <input type="text" id="bio-subtitle" value="Créateur Digital & Designer" placeholder="Une courte description">
+      <div class="form-group">
+        <label>WhatsApp (Numéro complet)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-whatsapp"></i>
+          <input type="text" class="social-input" data-platform="whatsapp" placeholder="Ex: 221770000000">
         </div>
       </div>
 
-      <div class="grid-2 control-group">
-        <div>
-          <label>🎨 Thème Neon Accent</label>
-          <div class="color-input-wrapper">
-            <input type="color" id="theme-color" value="#00f3ff">
-            <span style="font-size:0.85rem; color:#aaa;">Couleur accent</span>
-          </div>
-        </div>
-        <div>
-          <label>🔗 URL Cible QR Code</label>
-          <input type="text" id="qr-target-url" placeholder="https://votre-site.com/bio" value="https://instagram.com/votre_pseudo">
+      <div class="form-group">
+        <label>Instagram (Nom d'utilisateur)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-instagram"></i>
+          <input type="text" class="social-input" data-platform="instagram" placeholder="Ex: mon_pseudo">
         </div>
       </div>
 
-      <div class="control-group">
-        <label>🌐 Vos Réseaux Sociaux (12 Canaux)</label>
-        <div class="multi-social-container">
-          
-          <div class="social-input-card" style="border-left-color: #E1306C;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" alt="Insta"> Instagram</div>
-            <input type="text" class="multi-social-link" data-name="Instagram" data-icon="https://cdn-icons-png.flaticon.com/512/3938/3938036.png" value="https://instagram.com/votre_pseudo" placeholder="https://instagram.com/votre_pseudo">
-          </div>
+      <div class="form-group">
+        <label>LinkedIn (URL ou Identifiant)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-linkedin"></i>
+          <input type="text" class="social-input" data-platform="linkedin" placeholder="Ex: in/mon-profil">
+        </div>
+      </div>
 
-          <div class="social-input-card" style="border-left-color: #25D366;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp"> WhatsApp</div>
-            <input type="text" class="multi-social-link" data-name="WhatsApp" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" value="https://wa.me/33600000000" placeholder="https://wa.me/33600000000">
-          </div>
+      <div class="form-group">
+        <label>TikTok (Nom d'utilisateur)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-tiktok"></i>
+          <input type="text" class="social-input" data-platform="tiktok" placeholder="Ex: @mon_pseudo">
+        </div>
+      </div>
 
-          <div class="social-input-card" style="border-left-color: #0A66C2;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn"> LinkedIn</div>
-            <input type="text" class="multi-social-link" data-name="LinkedIn" data-icon="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" placeholder="https://linkedin.com/in/votre_profil">
-          </div>
+      <div class="form-group">
+        <label>Facebook (Page / Profil)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-facebook"></i>
+          <input type="text" class="social-input" data-platform="facebook" placeholder="Ex: ma.page">
+        </div>
+      </div>
 
-          <div class="social-input-card" style="border-left-color: #1877F2;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook"> Facebook</div>
-            <input type="text" class="multi-social-link" data-name="Facebook" data-icon="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" placeholder="https://facebook.com/votre_page">
-          </div>
+      <div class="form-group">
+        <label>X / Twitter (Nom d'utilisateur)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-x-twitter"></i>
+          <input type="text" class="social-input" data-platform="x" placeholder="Ex: mon_pseudo">
+        </div>
+      </div>
 
-          <div class="social-input-card" style="border-left-color: #ffffff;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" alt="X"> X / Twitter</div>
-            <input type="text" class="multi-social-link" data-name="X / Twitter" data-icon="https://cdn-icons-png.flaticon.com/512/5969/5968830.png" placeholder="https://x.com/votre_profil">
-          </div>
+      <div class="form-group">
+        <label>Site Web / Portfolio</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-globe"></i>
+          <input type="url" class="social-input" data-platform="website" placeholder="Ex: https://mon-site.com">
+        </div>
+      </div>
 
-          <div class="social-input-card" style="border-left-color: #FF0000;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"> YouTube</div>
-            <input type="text" class="multi-social-link" data-name="YouTube" data-icon="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" placeholder="https://youtube.com/@votre_chaine">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #fe2c55;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok"> TikTok</div>
-            <input type="text" class="multi-social-link" data-name="TikTok" data-icon="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" placeholder="https://tiktok.com/@votre_compte">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #0088cc;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> Telegram</div>
-            <input type="text" class="multi-social-link" data-name="Telegram" data-icon="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" placeholder="https://t.me/votre_nom">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #FFFC00;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" alt="Snapchat"> Snapchat</div>
-            <input type="text" class="multi-social-link" data-name="Snapchat" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670013.png" placeholder="https://snapchat.com/add/votre_pseudo">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #5865F2;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"> Discord</div>
-            <input type="text" class="multi-social-link" data-name="Discord" data-icon="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" placeholder="https://discord.gg/votre_serveur">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #EA4335;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"> Email Direct</div>
-            <input type="text" class="multi-social-link" data-name="Email" data-icon="https://cdn-icons-png.flaticon.com/512/732/732200.png" placeholder="mailto:contact@domaine.com">
-          </div>
-
-          <div class="social-input-card" style="border-left-color: #34A853;">
-            <div class="social-card-header"><img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone"> Appel Téléphonique</div>
-            <input type="text" class="multi-social-link" data-name="Téléphone" data-icon="https://cdn-icons-png.flaticon.com/512/126/126509.png" placeholder="tel:+33600000000">
-          </div>
-
+      <div class="color-picker-grid">
+        <div class="form-group">
+          <label>Couleur QR Code</label>
+          <input type="color" id="qr-color-dark" value="#0f172a">
+        </div>
+        <div class="form-group">
+          <label>Fond QR Code</label>
+          <input type="color" id="qr-color-light" value="#ffffff">
         </div>
       </div>
     </div>
 
-    <!-- Live Preview Stage -->
-    <div class="preview-stage">
-      <label>📱 Aperçu & Générateur QR</label>
-      
-      <div class="preview-phone-frame" id="phone-frame">
-        <div class="preview-avatar" id="prev-avatar">A</div>
-        <div class="preview-title" id="prev-title">Alex Cyber</div>
-        <div class="preview-sub" id="prev-sub">Créateur Digital & Designer</div>
-        <div class="preview-links" id="prev-links"></div>
-
-        <!-- Generated QR Code Wrapper -->
-        <div class="qr-box" id="qrcode"></div>
+    <!-- Preview & Export Side -->
+    <div class="card preview-card">
+      <div style="width: 100%;">
+        <h2><i class="fa-solid fa-qrcode"></i> Aperçu & QR Code</h2>
+        <div id="qr-output"></div>
+        <div class="social-links-list" id="links-preview"></div>
       </div>
 
-      <div class="actions-grid">
-        <button class="btn-cyber-primary" onclick="exportBioLinkPage()">📄 Export Page (.HTML)</button>
-        <button class="btn-cyber-secondary" onclick="downloadQRCode()">📷 Télécharger QR Code</button>
+      <!-- Boutons d'exportation PNG / SVG / PDF -->
+      <div class="btn-group">
+        <button id="download-png" class="btn btn-png">
+          <i class="fa-solid fa-file-image"></i> Télécharger en PNG
+        </button>
+        <button id="download-svg" class="btn btn-svg">
+          <i class="fa-solid fa-vector-square"></i> Télécharger en SVG (Vectoriel)
+        </button>
+        <button id="download-pdf" class="btn btn-pdf">
+          <i class="fa-solid fa-file-pdf"></i> Télécharger en PDF (Impression)
+        </button>
       </div>
     </div>
   </div>
 
   <script>
-    let currentAvatarBase64 = '';
-    let qrcodeObj = null;
+    const profileNameInput = document.getElementById('profile-name');
+    const socialInputs = document.querySelectorAll('.social-input');
+    const linksPreview = document.getElementById('links-preview');
+    const qrOutput = document.getElementById('qr-output');
+    const qrColorDark = document.getElementById('qr-color-dark');
+    const qrColorLight = document.getElementById('qr-color-light');
 
-    // Handle Profile Image Upload (File or URL)
-    document.getElementById('avatar-file').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          currentAvatarBase64 = evt.target.result;
-          document.getElementById('avatar-url').value = '';
-          updatePreview();
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+    const config = {
+      whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", name: "WhatsApp" },
+      instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", name: "Instagram" },
+      linkedin: { prefix: "https://linkedin.com/", icon: "fa-brands fa-linkedin", name: "LinkedIn" },
+      tiktok: { prefix: "https://tiktok.com/", icon: "fa-brands fa-tiktok", name: "TikTok" },
+      facebook: { prefix: "https://facebook.com/", icon: "fa-brands fa-facebook", name: "Facebook" },
+      x: { prefix: "https://x.com/", icon: "fa-brands fa-x-twitter", name: "X (Twitter)" },
+      website: { prefix: "", icon: "fa-solid fa-globe", name: "Site Web" }
+    };
 
-    document.getElementById('avatar-url').addEventListener('input', function(e) {
-      if (e.target.value.trim() !== '') {
-        currentAvatarBase64 = e.target.value.trim();
-        document.getElementById('avatar-file').value = '';
-        updatePreview();
-      }
-    });
-
-    function updatePreview() {
-      const title = document.getElementById('bio-title').value.trim() || 'Mon Profil';
-      const subtitle = document.getElementById('bio-subtitle').value.trim() || 'Bienvenue sur mes liens';
-      const color = document.getElementById('theme-color').value;
-
-      document.getElementById('prev-title').innerText = title;
-      document.getElementById('prev-sub').innerText = subtitle;
-
-      const avatarElem = document.getElementById('prev-avatar');
-      if (currentAvatarBase64) {
-        avatarElem.style.backgroundImage = `url('${currentAvatarBase64}')`;
-        avatarElem.innerText = '';
-      } else {
-        avatarElem.style.backgroundImage = 'none';
-        avatarElem.innerText = title.charAt(0).toUpperCase();
-      }
-
-      // Update phone styling
-      const frame = document.getElementById('phone-frame');
-      frame.style.borderColor = color;
-      frame.style.boxShadow = `0 0 25px ${color}33`;
-      avatarElem.style.boxShadow = `0 0 15px ${color}`;
-
-      // Render links
-      const linksContainer = document.getElementById('prev-links');
-      linksContainer.innerHTML = '';
-
-      const inputs = document.querySelectorAll('.multi-social-link');
-      inputs.forEach(input => {
+    function buildProfileData() {
+      const activeLinks = [];
+      socialInputs.forEach(input => {
         const val = input.value.trim();
-        const name = input.dataset.name;
-        const icon = input.dataset.icon;
-
         if (val) {
-          const a = document.createElement('div');
-          a.className = 'preview-btn';
-          a.style.borderColor = `${color}44`;
-          a.innerHTML = `<img src="${icon}" alt="${name}"> <span>${name}</span>`;
-          linksContainer.appendChild(a);
+          const platform = input.dataset.platform;
+          let url = val;
+          if (platform !== 'website') {
+            const cleanVal = val.replace(/^https?:\/\/(www\.)?/, '').replace(/^@/, '');
+            url = config[platform].prefix + cleanVal;
+          }
+          activeLinks.push({
+            platform: platform,
+            url: url,
+            name: config[platform].name,
+            icon: config[platform].icon
+          });
         }
       });
+      return activeLinks;
+    }
 
-      // Update QR Code
-      const qrTarget = document.getElementById('qr-target-url').value.trim() || window.location.href;
-      const qrContainer = document.getElementById('qrcode');
-      qrContainer.innerHTML = '';
-      qrcodeObj = new QRCode(qrContainer, {
+    function updateApp() {
+      const links = buildProfileData();
+      linksPreview.innerHTML = '';
+
+      if (links.length === 0) {
+        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Remplissez au moins un champ pour voir l\'aperçu.</p>';
+      } else {
+        links.forEach(item => {
+          const a = document.createElement('a');
+          a.className = 'social-link-item';
+          a.href = item.url;
+          a.target = '_blank';
+          a.innerHTML = `<i class="${item.icon}"></i> ${item.name}`;
+          linksPreview.appendChild(a);
+        });
+      }
+
+      const qrTarget = links.length > 0 ? links[0].url : "https://github.com";
+
+      qrOutput.innerHTML = '';
+      new QRCode(qrOutput, {
         text: qrTarget,
-        width: 100,
-        height: 100,
-        colorDark : "#030712",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        width: 200,
+        height: 200,
+        colorDark: qrColorDark.value,
+        colorLight: qrColorLight.value,
+        correctLevel: QRCode.CorrectLevel.H
       });
     }
 
-    function downloadQRCode() {
-      const img = document.querySelector('#qrcode img');
-      const canvas = document.querySelector('#qrcode canvas');
-      
-      let imageURI = '';
-      if (img && img.src) {
-        imageURI = img.src;
-      } else if (canvas) {
-        imageURI = canvas.toDataURL("image/png");
-      }
+    // --- LOGIQUE DE TÉLÉCHARGEMENT ---
 
-      if (imageURI) {
+    // 1. Export PNG
+    document.getElementById('download-png').addEventListener('click', () => {
+      const img = qrOutput.querySelector('img');
+      const canvas = qrOutput.querySelector('canvas');
+      let imageSrc = img && img.src ? img.src : (canvas ? canvas.toDataURL("image/png") : null);
+
+      if (imageSrc) {
         const a = document.createElement('a');
-        a.href = imageURI;
-        a.download = 'bio-link-qrcode.png';
+        a.href = imageSrc;
+        a.download = 'qrcode_reseaux.png';
         a.click();
       }
-    }
-
-    function exportBioLinkPage() {
-      const title = document.getElementById('bio-title').value.trim() || 'Mon Profil';
-      const subtitle = document.getElementById('bio-subtitle').value.trim() || '';
-      const color = document.getElementById('theme-color').value;
-
-      const inputs = document.querySelectorAll('.multi-social-link');
-      let linksHTML = '';
-
-      inputs.forEach(input => {
-        const val = input.value.trim();
-        const name = input.dataset.name;
-        const icon = input.dataset.icon;
-        if (val) {
-          linksHTML += `
-            <a href="${val}" target="_blank" class="bio-btn">
-              <img src="${icon}" alt="${name}">
-              <span>${name}</span>
-            </a>`;
-        }
-      });
-
-      const avatarMarkup = currentAvatarBase64 
-        ? `<div class="avatar" style="background-image: url('${currentAvatarBase64}'); text-indent:-9999px;">${title.charAt(0)}</div>`
-        : `<div class="avatar">${title.charAt(0).toUpperCase()}</div>`;
-
-      const pageHTML = `<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} — Bio Link</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #030712;
-      background-image: radial-gradient(circle at 50% 0%, ${color}22 0%, transparent 70%);
-      color: #fff;
-      font-family: 'Rajdhani', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .bio-card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid ${color}44;
-      border-radius: 24px;
-      padding: 35px 25px;
-      text-align: center;
-      box-shadow: 0 0 40px ${color}22;
-    }
-    .avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, ${color}, #000);
-      margin: 0 auto 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      font-weight: bold;
-      color: #000;
-      box-shadow: 0 0 20px ${color}66;
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-    }
-    h1 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 1.5px; margin-bottom: 6px; }
-    p { color: #9ca3af; font-size: 0.95rem; margin-bottom: 25px; }
-    .links-container { display: flex; flex-direction: column; gap: 12px; }
-    .bio-btn {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 14px 20px;
-      border-radius: 14px;
-      color: #fff;
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .bio-btn:hover {
-      background: ${color}22;
-      border-color: ${color};
-      transform: translateY(-3px);
-      box-shadow: 0 5px 20px ${color}44;
-    }
-    .bio-btn img { width: 24px; height: 24px; }
-  </style>
-</head>
-<body>
-  <div class="bio-card">
-    ${avatarMarkup}
-    <h1>${title}</h1>
-    <p>${subtitle}</p>
-    <div class="links-container">
-      ${linksHTML || '<p style="color:#aaa;">Aucun lien renseigné.</p>'}
-    </div>
-  </div>
-</body>
-</html>`;
-
-      const a = document.createElement('a');
-      const file = new Blob([pageHTML], { type: 'text/html' });
-      a.href = URL.createObjectURL(file);
-      a.download = 'index.html';
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    // Dynamic Listeners
-    document.querySelectorAll('input').forEach(input => {
-      input.addEventListener('input', updatePreview);
     });
 
-    window.onload = updatePreview;
+    // 2. Export SVG (Convertit le Canvas en élément SVG vectoriel)
+    document.getElementById('download-svg').addEventListener('click', () => {
+      const canvas = qrOutput.querySelector('canvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const imgData = ctx.getImageData(0, 0, width, height);
+
+      let svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+      svgString += `<rect width="${width}" height="${height}" fill="${qrColorLight.value}"/>`;
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const index = (y * width + x) * 4;
+          const alpha = imgData.data[index + 3];
+          if (alpha > 0) {
+            const r = imgData.data[index];
+            const g = imgData.data[index + 1];
+            const b = imgData.data[index + 2];
+            // Si la couleur n'est pas blanche
+            if (!(r > 240 && g > 240 && b > 240)) {
+              svgString += `<rect x="${x}" y="${y}" width="1" height="1" fill="${qrColorDark.value}"/>`;
+            }
+          }
+        }
+      }
+      svgString += '</svg>';
+
+      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'qrcode_vectoriel.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // 3. Export PDF (Utilise jsPDF pour créer une fiche prête pour l'impression)
+    document.getElementById('download-pdf').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const canvas = qrOutput.querySelector('canvas');
+
+      if (!canvas) return;
+
+      const imgData = canvas.toDataURL('image/png');
+      const profileName = profileNameInput.value.trim() || "Mon Profil Social";
+
+      // Titre PDF
+      doc.setFontSize(22);
+      doc.setTextColor(15, 23, 42);
+      doc.text(profileName, 105, 30, { align: "center" });
+
+      doc.setFontSize(12);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Scannez le QR code pour accéder à tous mes profils sociaux", 105, 40, { align: "center" });
+
+      // Inserer l'image du QR code centrée
+      doc.addImage(imgData, 'PNG', 55, 55, 100, 100);
+
+      // Pied de page
+      doc.setFontSize(10);
+      doc.text("Généré via Hub QR Réseaux Sociaux", 105, 175, { align: "center" });
+
+      // Télécharger
+      doc.save('qrcode_impression.pdf');
+    });
+
+    // Écouteurs d'événements
+    socialInputs.forEach(input => input.addEventListener('input', updateApp));
+    profileNameInput.addEventListener('input', updateApp);
+    qrColorDark.addEventListener('input', updateApp);
+    qrColorLight.addEventListener('input', updateApp);
+
+    updateApp();
   </script>
 </body>
 </html>
