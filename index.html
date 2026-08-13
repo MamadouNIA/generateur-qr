@@ -16,15 +16,53 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    :root {
+    /* VARIABLES DE THÈMES DYNAMIQUES */
+    :root[data-theme="dark"] {
       --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #0d1322 100%);
       --card-bg: rgba(30, 41, 59, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --accent-color: #3b82f6;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --input-bg: rgba(15, 23, 42, 0.6);
       --focus-ring: rgba(59, 130, 246, 0.4);
+    }
+
+    :root[data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --accent-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      --accent-color: #2563eb;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: #ffffff;
+      --focus-ring: rgba(37, 99, 235, 0.25);
+    }
+
+    :root[data-theme="cyberpunk"] {
+      --bg-gradient: linear-gradient(135deg, #05050a 0%, #1a0b2e 100%);
+      --card-bg: rgba(20, 10, 35, 0.85);
+      --card-border: #facc15;
+      --accent-gradient: linear-gradient(135deg, #facc15 0%, #a855f7 100%);
+      --accent-color: #facc15;
+      --text-main: #f3e8ff;
+      --text-muted: #c084fc;
+      --input-bg: rgba(10, 5, 20, 0.8);
+      --focus-ring: rgba(250, 204, 21, 0.5);
+    }
+
+    :root[data-theme="sunset"] {
+      --bg-gradient: linear-gradient(135deg, #2e1065 0%, #7c2d12 100%);
+      --card-bg: rgba(88, 28, 135, 0.4);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --accent-gradient: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+      --accent-color: #f97316;
+      --text-main: #fff7ed;
+      --text-muted: #fdba74;
+      --input-bg: rgba(46, 16, 101, 0.5);
+      --focus-ring: rgba(249, 115, 22, 0.4);
     }
 
     * {
@@ -32,6 +70,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
     body {
@@ -63,7 +102,7 @@
       border: 1px solid var(--card-border);
       border-radius: 24px;
       padding: 32px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
     }
 
     .card-title {
@@ -81,6 +120,36 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    /* Theme Selector UI */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .theme-btn {
+      padding: 10px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .theme-btn.active {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px var(--focus-ring);
+    }
+
+    .theme-btn i { font-size: 1rem; color: var(--accent-color); }
 
     .form-group { margin-bottom: 16px; }
 
@@ -105,7 +174,6 @@
       left: 14px;
       color: var(--text-muted);
       font-size: 1rem;
-      transition: color 0.3s;
     }
 
     input[type="text"], input[type="url"] {
@@ -114,20 +182,16 @@
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      color: #fff;
+      color: var(--text-main);
       font-size: 0.9rem;
       font-weight: 500;
       outline: none;
-      transition: all 0.25s ease;
     }
 
     input[type="text"]:focus, input[type="url"]:focus {
-      border-color: #3b82f6;
+      border-color: var(--accent-color);
       box-shadow: 0 0 0 4px var(--focus-ring);
-      background: rgba(15, 23, 42, 0.85);
     }
-
-    .input-with-icon:focus-within i { color: #3b82f6; }
 
     .color-picker-grid {
       display: grid;
@@ -176,8 +240,8 @@
       padding: 4px 12px;
       border-radius: 20px;
       background: rgba(59, 130, 246, 0.15);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: var(--accent-color);
+      border: 1px solid var(--card-border);
       display: inline-block;
       margin-bottom: 20px;
     }
@@ -186,13 +250,10 @@
       background: #ffffff;
       padding: 20px;
       border-radius: 20px;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
       margin: 10px 0 20px 0;
       display: inline-block;
-      transition: transform 0.3s ease;
     }
-
-    .qr-container:hover { transform: scale(1.02); }
 
     .social-links-list {
       width: 100%;
@@ -205,9 +266,6 @@
       padding-right: 4px;
     }
 
-    .social-links-list::-webkit-scrollbar { width: 4px; }
-    .social-links-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
     .social-link-item {
       display: flex;
       align-items: center;
@@ -219,13 +277,11 @@
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 500;
-      transition: all 0.25s ease;
     }
 
     .social-link-item:hover {
       transform: translateY(-2px);
-      border-color: rgba(59, 130, 246, 0.5);
-      background: rgba(30, 41, 59, 0.9);
+      border-color: var(--accent-color);
     }
 
     .social-link-item i {
@@ -234,15 +290,6 @@
       width: 20px;
       text-align: center;
     }
-
-    /* Brand Colors */
-    .fa-whatsapp { color: #25D366; }
-    .fa-instagram { color: #E4405F; }
-    .fa-linkedin { color: #0A66C2; }
-    .fa-facebook { color: #1877F2; }
-    .fa-tiktok { color: #00f2fe; }
-    .fa-x-twitter { color: #ffffff; }
-    .fa-globe { color: #3b82f6; }
 
     /* Buttons */
     .btn-group {
@@ -261,7 +308,6 @@
       font-weight: 600;
       font-size: 0.88rem;
       cursor: pointer;
-      transition: all 0.25s ease;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -269,16 +315,13 @@
     }
 
     .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); }
 
     .btn-png { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
     .btn-svg { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
     .btn-pdf { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
 
-    /* Landing Mode pour les visiteurs du QR Code */
-    body.hub-view {
-      padding: 20px;
-    }
+    /* Mode Visiteur / Landing Hub */
+    body.hub-view { padding: 20px; }
     .hub-card {
       max-width: 480px;
       width: 100%;
@@ -287,14 +330,34 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
-  <!-- Mode Éditeur -->
   <div class="container" id="editor-container">
     <!-- Configuration -->
     <div class="card">
       <div class="card-title">
-        <i class="fa-solid fa-sliders"></i> Configuration Hub
+        <i class="fa-solid fa-palette"></i> Style & Thèmes
+      </div>
+
+      <!-- Thème Selector -->
+      <label>Choisir un Thème d'interface</label>
+      <div class="theme-grid">
+        <button class="theme-btn active" data-set-theme="dark">
+          <i class="fa-solid fa-moon"></i> Dark
+        </button>
+        <button class="theme-btn" data-set-theme="light">
+          <i class="fa-solid fa-sun"></i> Light
+        </button>
+        <button class="theme-btn" data-set-theme="cyberpunk">
+          <i class="fa-solid fa-bolt"></i> Cyber
+        </button>
+        <button class="theme-btn" data-set-theme="sunset">
+          <i class="fa-solid fa-mountain-sun"></i> Sunset
+        </button>
+      </div>
+
+      <div class="card-title" style="margin-top: 20px;">
+        <i class="fa-solid fa-sliders"></i> Informations Hub
       </div>
 
       <div class="form-group">
@@ -395,7 +458,6 @@
   </div>
 
   <script>
-    // Configuration des plateformes
     const PLATFORMS = {
       whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", name: "WhatsApp" },
       instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", name: "Instagram" },
@@ -406,17 +468,27 @@
       website: { prefix: "", icon: "fa-solid fa-globe", name: "Site Web" }
     };
 
-    // DOM Elements
     const profileNameInput = document.getElementById('profile-name');
     const socialInputs = document.querySelectorAll('.social-input');
     const linksPreview = document.getElementById('links-preview');
     const qrOutput = document.getElementById('qr-output');
     const qrColorDark = document.getElementById('qr-color-dark');
     const qrColorLight = document.getElementById('qr-color-light');
+    const themeButtons = document.querySelectorAll('.theme-btn');
 
-    let qrInstance = null;
+    let currentTheme = 'dark';
 
-    // Récupérer la liste des liens renseignés
+    // Gestion du changement de thème
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        themeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTheme = btn.dataset.setTheme;
+        document.body.setAttribute('data-theme', currentTheme);
+        updateApp();
+      });
+    });
+
     function getActiveLinks() {
       const active = [];
       socialInputs.forEach(input => {
@@ -439,15 +511,13 @@
       return active;
     }
 
-    // Encoder la configuration dans l'URL pour le QR Code
     function generateTargetURL(links) {
       const name = encodeURIComponent(profileNameInput.value.trim() || "Mon Hub Pro");
       const payload = links.map(l => `${l.platform}:${encodeURIComponent(l.url)}`).join('|');
       const baseUrl = window.location.origin + window.location.pathname;
-      return `${baseUrl}?hub=${name}&data=${btoa(payload)}`;
+      return `${baseUrl}?hub=${name}&theme=${currentTheme}&data=${btoa(payload)}`;
     }
 
-    // Mise à jour temps réel
     function updateApp() {
       const links = getActiveLinks();
       linksPreview.innerHTML = '';
@@ -468,7 +538,7 @@
       const targetUrl = links.length > 0 ? generateTargetURL(links) : window.location.href;
 
       qrOutput.innerHTML = '';
-      qrInstance = new QRCode(qrOutput, {
+      new QRCode(qrOutput, {
         text: targetUrl,
         width: 180,
         height: 180,
@@ -478,24 +548,19 @@
       });
     }
 
-    // --- LOGIQUES D'EXPORTATION AVANCÉES ---
-
-    // 1. Export PNG
+    // Export Logic
     document.getElementById('download-png').addEventListener('click', () => {
       const canvas = qrOutput.querySelector('canvas');
       if (!canvas) return;
-      
       const link = document.createElement('a');
       link.download = 'qrcode-hub.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
 
-    // 2. Export SVG Vectoriel Pur (Vrai Vectoriel via Path)
     document.getElementById('download-svg').addEventListener('click', () => {
       const canvas = qrOutput.querySelector('canvas');
       if (!canvas) return;
-
       const ctx = canvas.getContext('2d');
       const size = canvas.width;
       const imgData = ctx.getImageData(0, 0, size, size);
@@ -504,63 +569,47 @@
       for (let y = 0; y < size; y++) {
         for (let x = 0; x < size; x++) {
           const idx = (y * size + x) * 4;
-          // Si le pixel est sombre (code QR)
-          if (imgData.data[idx] < 127) {
-            pathData += `M${x},${y}h1v1h-1z `;
-          }
+          if (imgData.data[idx] < 127) pathData += `M${x},${y}h1v1h-1z `;
         }
       }
 
-      const svgContent = `<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="500" height="500">
-  <rect width="100%" height="100%" fill="${qrColorLight.value}"/>
-  <path d="${pathData}" fill="${qrColorDark.value}"/>
-</svg>`;
-
+      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="500" height="500"><rect width="100%" height="100%" fill="${qrColorLight.value}"/><path d="${pathData}" fill="${qrColorDark.value}"/></svg>`;
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'qrcode-vectoriel.svg';
       link.click();
-      URL.revokeObjectURL(link.href);
     });
 
-    // 3. Export PDF
     document.getElementById('download-pdf').addEventListener('click', () => {
       const canvas = qrOutput.querySelector('canvas');
       if (!canvas) return;
-
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
       const name = profileNameInput.value.trim() || "Mon Hub Pro";
 
-      // Design du document
       doc.setFillColor(15, 23, 42);
       doc.rect(0, 0, 210, 297, 'F');
-
       doc.setFontSize(24);
       doc.setTextColor(248, 250, 252);
       doc.text(name, 105, 45, { align: 'center' });
-
       doc.setFontSize(11);
       doc.setTextColor(148, 163, 184);
-      doc.text("Scannez ce QR Code pour accéder à mes liens professionnels", 105, 55, { align: 'center' });
-
-      // Image QR
-      const imgData = canvas.toDataURL('image/png');
-      doc.addImage(imgData, 'PNG', 55, 75, 100, 100);
-
-      doc.setFontSize(9);
-      doc.text("Généré par Studio QR Code", 105, 270, { align: 'center' });
-
+      doc.text("Scannez ce QR Code pour accéder à mes liens", 105, 55, { align: 'center' });
+      doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 75, 100, 100);
       doc.save(`QRCode_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    // MODE ROUTEUR : Si le QR Code est scanné par un visiteur
+    // Check Visitor Mode
     function checkVisitorMode() {
       const params = new URLSearchParams(window.location.search);
       if (params.has('hub') && params.has('data')) {
         document.body.classList.add('hub-view');
+        
+        // Appliquer le thème sauvegardé
+        const activeTheme = params.get('theme') || 'dark';
+        document.body.setAttribute('data-theme', activeTheme);
+
         const hubName = decodeURIComponent(params.get('hub'));
         const rawData = atob(params.get('data')).split('|');
 
@@ -570,7 +619,7 @@
           const decodedUrl = decodeURIComponent(url);
           if (PLATFORMS[platform]) {
             linksHTML += `
-              <a href="${decodedUrl}" target="_blank" class="social-link-item" style="margin-bottom:10px;">
+              <a href="${decodedUrl}" target="_blank" class="social-link-item" style="margin-bottom:12px;">
                 <i class="${PLATFORMS[platform].icon}"></i> ${PLATFORMS[platform].name}
               </a>`;
           }
@@ -579,7 +628,7 @@
         document.getElementById('editor-container').innerHTML = `
           <div class="card hub-card">
             <h1 style="font-size:1.8rem; margin-bottom:10px;">${hubName}</h1>
-            <p style="color:var(--text-muted); margin-bottom:24px; font-size:0.9rem;">Retrouvez tous mes liens officiels ci-dessous</p>
+            <p style="color:var(--text-muted); margin-bottom:24px; font-size:0.9rem;">Mes liens officiels</p>
             <div style="text-align:left;">${linksHTML}</div>
           </div>
         `;
@@ -588,7 +637,6 @@
       return false;
     }
 
-    // Init App
     if (!checkVisitorMode()) {
       socialInputs.forEach(i => i.addEventListener('input', updateApp));
       profileNameInput.addEventListener('input', updateApp);
