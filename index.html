@@ -494,7 +494,7 @@
         </div>
       </div>
 
-      <!-- REGLAGES STANDARD ET OPTIMISES POUR LE QR CODE -->
+      <!-- REGLAGES STANDARD DU QR CODE -->
       <div class="card-title">
         <i class="fa-solid fa-sliders"></i> Personnalisation du QR Code
       </div>
@@ -679,7 +679,7 @@
             <canvas id="modern-qr" width="260" height="260"></canvas>
             <div id="raw-qr" style="display:none;"></div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text-muted);">Scannez le QR Code pour tester en direct</p>
+          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Fixe & Permanent</p>
         </div>
 
         <!-- Mode Smartphone -->
@@ -719,17 +719,9 @@
       website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    function utf8ToBase64(str) {
-      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => 
-        String.fromCharCode('0x' + p1)
-      ));
-    }
-
-    function base64ToUtf8(str) {
-      return decodeURIComponent(Array.prototype.map.call(atob(str), c => 
-        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-      ).join(''));
-    }
+    // Identifiant de session fixe pour préserver le même QR Code en permanence
+    const FIXED_SESSION_ID = "hub-" + Math.floor(100000 + Math.random() * 900000);
+    const FIXED_TARGET_URL = window.location.origin + window.location.pathname + "?id=" + FIXED_SESSION_ID;
 
     const profileNameInput = document.getElementById('profile-name');
     const profileTitleInput = document.getElementById('profile-title');
@@ -759,6 +751,7 @@
 
     let selectedTheme = 'dark';
     let currentQRMatrix = [];
+    let isQRGenerated = false;
 
     btnModeQr.addEventListener('click', () => {
       btnModeQr.classList.add('active');
@@ -780,7 +773,7 @@
         opt.classList.add('active');
         selectedTheme = opt.dataset.theme;
         document.documentElement.setAttribute('data-theme', selectedTheme);
-        updateApp();
+        updateApp(false);
       });
     });
 
@@ -805,17 +798,6 @@
         }
       });
       return active;
-    }
-
-    function generateTargetURL(links) {
-      const name = profileNameInput.value.trim() || "qrcodephoenix Hub";
-      const title = profileTitleInput.value.trim();
-      const bio = profileBioInput.value.trim();
-      
-      const payload = links.map(l => `${l.platform}:${l.url}`).join('|');
-      const baseUrl = window.location.origin + window.location.pathname;
-      
-      return `${baseUrl}?hub=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}&bio=${encodeURIComponent(bio)}&theme=${selectedTheme}&data=${utf8ToBase64(payload)}`;
     }
 
     function getMatrixFromCanvas(sourceCanvas) {
@@ -853,9 +835,9 @@
     }
 
     function isFinderPattern(r, c, baseCount) {
-      if (r < 7 && c < 7) return true; // Coin Supérieur Gauche
-      if (r < 7 && c >= baseCount - 7) return true; // Coin Supérieur Droit
-      if (r >= baseCount - 7 && c < 7) return true; // Coin Inférieur Gauche
+      if (r < 7 && c < 7) return true;
+      if (r < 7 && c >= baseCount - 7) return true;
+      if (r >= baseCount - 7 && c < 7) return true;
       return false;
     }
 
@@ -908,7 +890,6 @@
             const y = r * cellSize;
             const isFinder = isFinderPattern(origR, origC, baseCount);
 
-            // Pour un QR Code Standard, conserver les motifs carrés ou appliquer le style choisi
             if (shapeStyle === 'square' || isFinder) {
               ctx.fillRect(x, y, cellSize + 0.4, cellSize + 0.4);
             } else if (shapeStyle === 'dots') {
@@ -948,7 +929,16 @@
       }
     }
 
-    function renderModernQR(text) {
+    function renderModernQR(text, forceRebuild = false) {
+      if (isQRGenerated && !forceRebuild) {
+        // Redessiner uniquement le style graphique sans modifier la matrice originale
+        if (rawQrContainer.querySelector('canvas')) {
+          const rawMatrix = getMatrixFromCanvas(rawQrContainer.querySelector('canvas'));
+          renderCustomQR(rawMatrix);
+        }
+        return;
+      }
+
       rawQrContainer.innerHTML = '';
       
       const eccMap = {
@@ -970,10 +960,12 @@
         if (!sourceCanvas) return;
         const rawMatrix = getMatrixFromCanvas(sourceCanvas);
         renderCustomQR(rawMatrix);
+        isQRGenerated = true;
       }, 50);
     }
 
-    function updateApp() {
+    function updateApp(shouldRebuildQR = false) {
+      // 1. Mise à jour dynamique de l'aperçu Bio-Link
       prevName.textContent = profileNameInput.value.trim() || "Alexandre Pro";
       prevTitle.textContent = profileTitleInput.value.trim();
       prevBio.textContent = profileBioInput.value.trim();
@@ -1003,8 +995,8 @@
         });
       }
 
-      const targetUrl = links.length > 0 ? generateTargetURL(links) : window.location.href;
-      renderModernQR(targetUrl);
+      // 2. Maintien du QR Code FIXE avec l'URL cible permanente
+      renderModernQR(FIXED_TARGET_URL, shouldRebuildQR);
     }
 
     document.getElementById('download-svg').addEventListener('click', () => {
@@ -1103,72 +1095,20 @@
       doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    function checkVisitorMode() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('hub') && params.has('data')) {
-        document.body.classList.add('hub-view');
-        document.getElementById('app-header').style.display = 'none';
-        
-        const theme = params.get('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+    // Écouteurs pour mettre à jour l'affichage dynamique SANS regénérer le QR code
+    const profileControls = [profileNameInput, profileTitleInput, profileBioInput];
+    profileControls.forEach(ctrl => ctrl.addEventListener('input', () => updateApp(false)));
+    socialInputs.forEach(i => i.addEventListener('input', () => updateApp(false)));
 
-        try {
-          const hubName = decodeURIComponent(params.get('hub'));
-          const hubTitle = params.get('title') ? decodeURIComponent(params.get('title')) : '';
-          const hubBio = params.get('bio') ? decodeURIComponent(params.get('bio')) : '';
+    // Écouteurs pour ajuster uniquement le style du QR code si l'utilisateur modifie ses options d'apparence
+    const qrStyleControls = [qrDotsStyle, qrMargin, qrCenterText, qrColorDark, qrColorLight];
+    qrStyleControls.forEach(ctrl => ctrl.addEventListener('input', () => updateApp(false)));
 
-          const rawData = base64ToUtf8(params.get('data')).split('|');
+    // La correction d'erreur est la seule option qui exige une nouvelle matrice
+    qrEccLevel.addEventListener('change', () => updateApp(true));
 
-          let linksHTML = '';
-          rawData.forEach(entry => {
-            const separatorIndex = entry.indexOf(':');
-            if (separatorIndex !== -1) {
-              const platform = entry.substring(0, separatorIndex);
-              const url = entry.substring(separatorIndex + 1);
-              
-              if (PLATFORMS[platform]) {
-                linksHTML += `
-                  <a href="${url}" target="_blank" rel="noopener noreferrer" class="social-link-item" style="margin-bottom:12px;">
-                    <div class="social-icon-badge ${PLATFORMS[platform].badgeClass}">
-                      <i class="${PLATFORMS[platform].icon}"></i>
-                    </div>
-                    <span>${PLATFORMS[platform].name}</span>
-                  </a>`;
-              }
-            }
-          });
-
-          document.getElementById('editor-container').innerHTML = `
-            <div class="card hub-card">
-              <div class="brand-logo" style="font-size:1.2rem; margin-bottom:12px;">
-                <i class="fa-solid fa-fire-flame-curved"></i> qrcodephoenix
-              </div>
-              <h1 style="font-size:1.6rem; margin-bottom:4px;">${hubName}</h1>
-              ${hubTitle ? `<div style="color:var(--accent-color); font-weight:600; font-size:0.95rem; margin-bottom:10px;">${hubTitle}</div>` : ''}
-              ${hubBio ? `<p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; line-height:1.5;">${hubBio}</p>` : ''}
-              <div style="text-align:left;" class="social-links-list">${linksHTML}</div>
-            </div>
-          `;
-          return true;
-        } catch (e) {
-          console.error("Erreur lors de la lecture du hub :", e);
-        }
-      }
-      return false;
-    }
-
-    if (!checkVisitorMode()) {
-      const allControls = [
-        profileNameInput, profileTitleInput, profileBioInput,
-        qrDotsStyle, qrEccLevel, qrMargin, qrCenterText, qrColorDark, qrColorLight
-      ];
-      
-      allControls.forEach(ctrl => ctrl.addEventListener('input', updateApp));
-      allControls.forEach(ctrl => ctrl.addEventListener('change', updateApp));
-      socialInputs.forEach(i => i.addEventListener('input', updateApp));
-
-      updateApp();
-    }
+    // Initialisation
+    updateApp(true);
   </script>
 </body>
 </html>
