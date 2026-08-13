@@ -3,26 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hub Multi-Réseaux & QR Code Studio</title>
+  <title>Hub Multi-Réseaux & QR Code Studio Pro</title>
   
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Typography & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- QRCode.js Library -->
+  <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  
-  <!-- jsPDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root {
       --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #0d1322 100%);
-      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-bg: rgba(30, 41, 59, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       --text-main: #f8fafc;
@@ -78,7 +74,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      letter-spacing: -0.02em;
     }
 
     .card-title i {
@@ -87,14 +82,12 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
@@ -134,9 +127,7 @@
       background: rgba(15, 23, 42, 0.85);
     }
 
-    input:focus + i, .input-with-icon:focus-within i {
-      color: #3b82f6;
-    }
+    .input-with-icon:focus-within i { color: #3b82f6; }
 
     .color-picker-grid {
       display: grid;
@@ -168,14 +159,13 @@
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
 
-    /* Preview Side */
+    /* Preview Section */
     .preview-card {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       text-align: center;
-      position: relative;
     }
 
     .preview-badge {
@@ -197,27 +187,24 @@
       padding: 20px;
       border-radius: 20px;
       box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
-      margin: 15px 0;
+      margin: 10px 0 20px 0;
       display: inline-block;
       transition: transform 0.3s ease;
     }
 
-    .qr-container:hover {
-      transform: scale(1.02);
-    }
+    .qr-container:hover { transform: scale(1.02); }
 
     .social-links-list {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 20px 0;
-      max-height: 160px;
+      margin-bottom: 20px;
+      max-height: 180px;
       overflow-y: auto;
       padding-right: 4px;
     }
 
-    /* Custom scrollbar */
     .social-links-list::-webkit-scrollbar { width: 4px; }
     .social-links-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 
@@ -239,7 +226,6 @@
       transform: translateY(-2px);
       border-color: rgba(59, 130, 246, 0.5);
       background: rgba(30, 41, 59, 0.9);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .social-link-item i {
@@ -249,7 +235,7 @@
       text-align: center;
     }
 
-    /* Couleurs de marque */
+    /* Brand Colors */
     .fa-whatsapp { color: #25D366; }
     .fa-instagram { color: #E4405F; }
     .fa-linkedin { color: #0A66C2; }
@@ -258,58 +244,64 @@
     .fa-x-twitter { color: #ffffff; }
     .fa-globe { color: #3b82f6; }
 
-    /* Buttons Group */
+    /* Buttons */
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       width: 100%;
-      margin-top: 10px;
     }
 
     .btn {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       color: white;
       border: none;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       transition: all 0.25s ease;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-
+    .btn:hover { transform: translateY(-2px); }
     .btn:active { transform: translateY(0); }
 
     .btn-png { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
     .btn-svg { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
     .btn-pdf { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+    /* Landing Mode pour les visiteurs du QR Code */
+    body.hub-view {
+      padding: 20px;
+    }
+    .hub-card {
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Form Side -->
+  <!-- Mode Éditeur -->
+  <div class="container" id="editor-container">
+    <!-- Configuration -->
     <div class="card">
       <div class="card-title">
-        <i class="fa-solid fa-sliders"></i> Personnalisation
+        <i class="fa-solid fa-sliders"></i> Configuration Hub
       </div>
 
       <div class="form-group">
-        <label>Nom du profil / Entité</label>
+        <label>Nom ou Marque</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="profile-name" value="Mon Profil Hub" placeholder="Ex: Jean Dupont">
+          <input type="text" id="profile-name" value="Mon Hub Pro" placeholder="Ex: Jean Dupont">
         </div>
       </div>
 
@@ -325,7 +317,7 @@
         <label>Instagram</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-instagram"></i>
-          <input type="text" class="social-input" data-platform="instagram" placeholder="Ex: mon_pseudo">
+          <input type="text" class="social-input" data-platform="instagram" placeholder="Ex: pseudo">
         </div>
       </div>
 
@@ -333,7 +325,7 @@
         <label>LinkedIn</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-linkedin"></i>
-          <input type="text" class="social-input" data-platform="linkedin" placeholder="Ex: in/mon-profil">
+          <input type="text" class="social-input" data-platform="linkedin" placeholder="Ex: in/profil">
         </div>
       </div>
 
@@ -341,7 +333,7 @@
         <label>TikTok</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-tiktok"></i>
-          <input type="text" class="social-input" data-platform="tiktok" placeholder="Ex: @mon_pseudo">
+          <input type="text" class="social-input" data-platform="tiktok" placeholder="Ex: @pseudo">
         </div>
       </div>
 
@@ -349,7 +341,7 @@
         <label>Facebook</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-facebook"></i>
-          <input type="text" class="social-input" data-platform="facebook" placeholder="Ex: ma.page">
+          <input type="text" class="social-input" data-platform="facebook" placeholder="Ex: page">
         </div>
       </div>
 
@@ -357,7 +349,7 @@
         <label>X (Twitter)</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-x-twitter"></i>
-          <input type="text" class="social-input" data-platform="x" placeholder="Ex: mon_pseudo">
+          <input type="text" class="social-input" data-platform="x" placeholder="Ex: pseudo">
         </div>
       </div>
 
@@ -365,11 +357,11 @@
         <label>Site Web</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-globe"></i>
-          <input type="url" class="social-input" data-platform="website" placeholder="Ex: https://mon-site.com">
+          <input type="url" class="social-input" data-platform="website" placeholder="https://exemple.com">
         </div>
       </div>
 
-      <label style="margin-top: 20px;">Apparence du QR Code</label>
+      <label style="margin-top: 20px;">Style QR Code</label>
       <div class="color-picker-grid">
         <div class="color-picker-wrapper">
           <input type="color" id="qr-color-dark" value="#0f172a">
@@ -377,15 +369,15 @@
         </div>
         <div class="color-picker-wrapper">
           <input type="color" id="qr-color-light" value="#ffffff">
-          <span style="font-size: 0.8rem; color: var(--text-muted);">Arrière-plan</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Fond</span>
         </div>
       </div>
     </div>
 
-    <!-- Preview & Export Side -->
+    <!-- Aperçu & Exports -->
     <div class="card preview-card">
       <div style="width: 100%;">
-        <span class="preview-badge"><i class="fa-solid fa-bolt"></i> Aperçu en direct</span>
+        <span class="preview-badge"><i class="fa-solid fa-bolt"></i> Rendu Temps Réel</span>
         
         <div class="qr-container">
           <div id="qr-output"></div>
@@ -394,30 +386,17 @@
         <div class="social-links-list" id="links-preview"></div>
       </div>
 
-      <!-- Export Buttons -->
       <div class="btn-group">
-        <button id="download-png" class="btn btn-png">
-          <i class="fa-solid fa-file-image"></i> Télécharger en PNG
-        </button>
-        <button id="download-svg" class="btn btn-svg">
-          <i class="fa-solid fa-vector-square"></i> Télécharger en SVG (Vectoriel)
-        </button>
-        <button id="download-pdf" class="btn btn-pdf">
-          <i class="fa-solid fa-file-pdf"></i> Télécharger en PDF (Impression)
-        </button>
+        <button id="download-png" class="btn btn-png"><i class="fa-solid fa-file-image"></i> Télécharger PNG</button>
+        <button id="download-svg" class="btn btn-svg"><i class="fa-solid fa-vector-square"></i> Télécharger SVG (Vectoriel)</button>
+        <button id="download-pdf" class="btn btn-pdf"><i class="fa-solid fa-file-pdf"></i> Télécharger PDF (HD)</button>
       </div>
     </div>
   </div>
 
   <script>
-    const profileNameInput = document.getElementById('profile-name');
-    const socialInputs = document.querySelectorAll('.social-input');
-    const linksPreview = document.getElementById('links-preview');
-    const qrOutput = document.getElementById('qr-output');
-    const qrColorDark = document.getElementById('qr-color-dark');
-    const qrColorLight = document.getElementById('qr-color-light');
-
-    const config = {
+    // Configuration des plateformes
+    const PLATFORMS = {
       whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", name: "WhatsApp" },
       instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", name: "Instagram" },
       linkedin: { prefix: "https://linkedin.com/", icon: "fa-brands fa-linkedin", name: "LinkedIn" },
@@ -427,34 +406,54 @@
       website: { prefix: "", icon: "fa-solid fa-globe", name: "Site Web" }
     };
 
-    function buildProfileData() {
-      const activeLinks = [];
+    // DOM Elements
+    const profileNameInput = document.getElementById('profile-name');
+    const socialInputs = document.querySelectorAll('.social-input');
+    const linksPreview = document.getElementById('links-preview');
+    const qrOutput = document.getElementById('qr-output');
+    const qrColorDark = document.getElementById('qr-color-dark');
+    const qrColorLight = document.getElementById('qr-color-light');
+
+    let qrInstance = null;
+
+    // Récupérer la liste des liens renseignés
+    function getActiveLinks() {
+      const active = [];
       socialInputs.forEach(input => {
         const val = input.value.trim();
         if (val) {
           const platform = input.dataset.platform;
           let url = val;
           if (platform !== 'website') {
-            const cleanVal = val.replace(/^https?:\/\/(www\.)?/, '').replace(/^@/, '');
-            url = config[platform].prefix + cleanVal;
+            const clean = val.replace(/^https?:\/\/(www\.)?/, '').replace(/^@/, '');
+            url = PLATFORMS[platform].prefix + clean;
           }
-          activeLinks.push({
-            platform: platform,
-            url: url,
-            name: config[platform].name,
-            icon: config[platform].icon
+          active.push({
+            platform,
+            url,
+            name: PLATFORMS[platform].name,
+            icon: PLATFORMS[platform].icon
           });
         }
       });
-      return activeLinks;
+      return active;
     }
 
+    // Encoder la configuration dans l'URL pour le QR Code
+    function generateTargetURL(links) {
+      const name = encodeURIComponent(profileNameInput.value.trim() || "Mon Hub Pro");
+      const payload = links.map(l => `${l.platform}:${encodeURIComponent(l.url)}`).join('|');
+      const baseUrl = window.location.origin + window.location.pathname;
+      return `${baseUrl}?hub=${name}&data=${btoa(payload)}`;
+    }
+
+    // Mise à jour temps réel
     function updateApp() {
-      const links = buildProfileData();
+      const links = getActiveLinks();
       linksPreview.innerHTML = '';
 
       if (links.length === 0) {
-        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Complétez un champ pour générer l\'aperçu.</p>';
+        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Saisissez au moins un réseau social.</p>';
       } else {
         links.forEach(item => {
           const a = document.createElement('a');
@@ -466,11 +465,11 @@
         });
       }
 
-      const qrTarget = links.length > 0 ? links[0].url : "https://github.com";
+      const targetUrl = links.length > 0 ? generateTargetURL(links) : window.location.href;
 
       qrOutput.innerHTML = '';
-      new QRCode(qrOutput, {
-        text: qrTarget,
+      qrInstance = new QRCode(qrOutput, {
+        text: targetUrl,
         width: 180,
         height: 180,
         colorDark: qrColorDark.value,
@@ -479,90 +478,124 @@
       });
     }
 
-    // Export Logic
-    document.getElementById('download-png').addEventListener('click', () => {
-      const img = qrOutput.querySelector('img');
-      const canvas = qrOutput.querySelector('canvas');
-      let imageSrc = img && img.src ? img.src : (canvas ? canvas.toDataURL("image/png") : null);
+    // --- LOGIQUES D'EXPORTATION AVANCÉES ---
 
-      if (imageSrc) {
-        const a = document.createElement('a');
-        a.href = imageSrc;
-        a.download = 'qrcode.png';
-        a.click();
-      }
+    // 1. Export PNG
+    document.getElementById('download-png').addEventListener('click', () => {
+      const canvas = qrOutput.querySelector('canvas');
+      if (!canvas) return;
+      
+      const link = document.createElement('a');
+      link.download = 'qrcode-hub.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
     });
 
+    // 2. Export SVG Vectoriel Pur (Vrai Vectoriel via Path)
     document.getElementById('download-svg').addEventListener('click', () => {
       const canvas = qrOutput.querySelector('canvas');
       if (!canvas) return;
 
       const ctx = canvas.getContext('2d');
-      const width = canvas.width;
-      const height = canvas.height;
-      const imgData = ctx.getImageData(0, 0, width, height);
-
-      let svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
-      svgString += `<rect width="${width}" height="${height}" fill="${qrColorLight.value}"/>`;
-
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const index = (y * width + x) * 4;
-          const alpha = imgData.data[index + 3];
-          if (alpha > 0) {
-            const r = imgData.data[index];
-            const g = imgData.data[index + 1];
-            const b = imgData.data[index + 2];
-            if (!(r > 240 && g > 240 && b > 240)) {
-              svgString += `<rect x="${x}" y="${y}" width="1" height="1" fill="${qrColorDark.value}"/>`;
-            }
+      const size = canvas.width;
+      const imgData = ctx.getImageData(0, 0, size, size);
+      
+      let pathData = "";
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const idx = (y * size + x) * 4;
+          // Si le pixel est sombre (code QR)
+          if (imgData.data[idx] < 127) {
+            pathData += `M${x},${y}h1v1h-1z `;
           }
         }
       }
-      svgString += '</svg>';
 
-      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'qrcode.svg';
-      a.click();
-      URL.revokeObjectURL(url);
+      const svgContent = `<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="500" height="500">
+  <rect width="100%" height="100%" fill="${qrColorLight.value}"/>
+  <path d="${pathData}" fill="${qrColorDark.value}"/>
+</svg>`;
+
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'qrcode-vectoriel.svg';
+      link.click();
+      URL.revokeObjectURL(link.href);
     });
 
+    // 3. Export PDF
     document.getElementById('download-pdf').addEventListener('click', () => {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
       const canvas = qrOutput.querySelector('canvas');
-
       if (!canvas) return;
 
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+      const name = profileNameInput.value.trim() || "Mon Hub Pro";
+
+      // Design du document
+      doc.setFillColor(15, 23, 42);
+      doc.rect(0, 0, 210, 297, 'F');
+
+      doc.setFontSize(24);
+      doc.setTextColor(248, 250, 252);
+      doc.text(name, 105, 45, { align: 'center' });
+
+      doc.setFontSize(11);
+      doc.setTextColor(148, 163, 184);
+      doc.text("Scannez ce QR Code pour accéder à mes liens professionnels", 105, 55, { align: 'center' });
+
+      // Image QR
       const imgData = canvas.toDataURL('image/png');
-      const profileName = profileNameInput.value.trim() || "Mon Profil Hub";
+      doc.addImage(imgData, 'PNG', 55, 75, 100, 100);
 
-      doc.setFontSize(22);
-      doc.setTextColor(15, 23, 42);
-      doc.text(profileName, 105, 30, { align: "center" });
+      doc.setFontSize(9);
+      doc.text("Généré par Studio QR Code", 105, 270, { align: 'center' });
 
-      doc.setFontSize(12);
-      doc.setTextColor(100, 100, 100);
-      doc.text("Scannez le QR code pour accéder à tous mes réseaux", 105, 40, { align: "center" });
-
-      doc.addImage(imgData, 'PNG', 55, 55, 100, 100);
-
-      doc.setFontSize(10);
-      doc.text("Généré via QR Code Studio", 105, 175, { align: "center" });
-
-      doc.save('qrcode.pdf');
+      doc.save(`QRCode_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    // Event Listeners
-    socialInputs.forEach(input => input.addEventListener('input', updateApp));
-    profileNameInput.addEventListener('input', updateApp);
-    qrColorDark.addEventListener('input', updateApp);
-    qrColorLight.addEventListener('input', updateApp);
+    // MODE ROUTEUR : Si le QR Code est scanné par un visiteur
+    function checkVisitorMode() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('hub') && params.has('data')) {
+        document.body.classList.add('hub-view');
+        const hubName = decodeURIComponent(params.get('hub'));
+        const rawData = atob(params.get('data')).split('|');
 
-    updateApp();
+        let linksHTML = '';
+        rawData.forEach(entry => {
+          const [platform, url] = entry.split(/:(.+)/);
+          const decodedUrl = decodeURIComponent(url);
+          if (PLATFORMS[platform]) {
+            linksHTML += `
+              <a href="${decodedUrl}" target="_blank" class="social-link-item" style="margin-bottom:10px;">
+                <i class="${PLATFORMS[platform].icon}"></i> ${PLATFORMS[platform].name}
+              </a>`;
+          }
+        });
+
+        document.getElementById('editor-container').innerHTML = `
+          <div class="card hub-card">
+            <h1 style="font-size:1.8rem; margin-bottom:10px;">${hubName}</h1>
+            <p style="color:var(--text-muted); margin-bottom:24px; font-size:0.9rem;">Retrouvez tous mes liens officiels ci-dessous</p>
+            <div style="text-align:left;">${linksHTML}</div>
+          </div>
+        `;
+        return true;
+      }
+      return false;
+    }
+
+    // Init App
+    if (!checkVisitorMode()) {
+      socialInputs.forEach(i => i.addEventListener('input', updateApp));
+      profileNameInput.addEventListener('input', updateApp);
+      qrColorDark.addEventListener('input', updateApp);
+      qrColorLight.addEventListener('input', updateApp);
+      updateApp();
+    }
   </script>
 </body>
 </html>
