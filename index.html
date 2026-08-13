@@ -169,7 +169,7 @@
       color: var(--text-muted);
     }
 
-    input[type="text"], input[type="url"] {
+    input[type="text"], input[type="url"], textarea {
       width: 100%;
       padding: 12px 14px 12px 42px;
       background: var(--input-bg);
@@ -180,7 +180,13 @@
       outline: none;
     }
 
-    input[type="text"]:focus, input[type="url"]:focus {
+    textarea {
+      padding-left: 42px;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
       border-color: var(--accent-color);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
@@ -235,6 +241,30 @@
       margin-bottom: 16px;
     }
 
+    .profile-header-preview {
+      margin-bottom: 16px;
+    }
+
+    .profile-header-preview h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .profile-header-preview .title-tag {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      margin-top: 2px;
+    }
+
+    .profile-header-preview p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
     .qr-container {
       background: #ffffff;
       padding: 20px;
@@ -250,7 +280,7 @@
       flex-direction: column;
       gap: 10px;
       margin-bottom: 20px;
-      max-height: 200px;
+      max-height: 180px;
       overflow-y: auto;
     }
 
@@ -341,17 +371,35 @@
       </div>
 
       <div class="card-title">
-        <i class="fa-solid fa-id-card"></i> Informations
+        <i class="fa-solid fa-id-card"></i> Profil & Informations
       </div>
 
+      <!-- Informations Personnelles -->
       <div class="form-group">
         <label>Nom du profil</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="profile-name" value="Mon Hub Pro" placeholder="Votre nom / marque">
+          <input type="text" id="profile-name" value="Jean Dupont" placeholder="Votre nom / marque">
         </div>
       </div>
 
+      <div class="form-group">
+        <label>Titre / Profession</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-briefcase"></i>
+          <input type="text" id="profile-title" value="Designer & Développeur Front-End" placeholder="Ex: Designer & Développeur">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Brève Description / Bio</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-align-left" style="top: 14px;"></i>
+          <textarea id="profile-bio" placeholder="Créateur de contenus numériques et solutions web sur mesure.">Créateur de contenus numériques et solutions web sur mesure.</textarea>
+        </div>
+      </div>
+
+      <!-- Réseaux -->
       <div class="form-group">
         <label>WhatsApp</label>
         <div class="input-with-icon">
@@ -402,6 +450,13 @@
       <div style="width: 100%;">
         <span class="preview-badge"><i class="fa-solid fa-eye"></i> Aperçu Temps Réel</span>
         
+        <!-- En-tête profil dans l'aperçu -->
+        <div class="profile-header-preview">
+          <h3 id="prev-name">Jean Dupont</h3>
+          <div class="title-tag" id="prev-title">Designer & Développeur Front-End</div>
+          <p id="prev-bio">Créateur de contenus numériques et solutions web sur mesure.</p>
+        </div>
+
         <div class="qr-container">
           <div id="qr-output"></div>
         </div>
@@ -426,6 +481,13 @@
     };
 
     const profileNameInput = document.getElementById('profile-name');
+    const profileTitleInput = document.getElementById('profile-title');
+    const profileBioInput = document.getElementById('profile-bio');
+
+    const prevName = document.getElementById('prev-name');
+    const prevTitle = document.getElementById('prev-title');
+    const prevBio = document.getElementById('prev-bio');
+
     const socialInputs = document.querySelectorAll('.social-input');
     const linksPreview = document.getElementById('links-preview');
     const qrOutput = document.getElementById('qr-output');
@@ -435,7 +497,7 @@
 
     let selectedTheme = 'dark';
 
-    // Switcher de thème dynamique
+    // Switcher de thème
     themeOptions.forEach(opt => {
       opt.addEventListener('click', () => {
         themeOptions.forEach(o => o.classList.remove('active'));
@@ -465,12 +527,23 @@
 
     function generateTargetURL(links) {
       const name = encodeURIComponent(profileNameInput.value.trim() || "Mon Hub Pro");
+      const title = encodeURIComponent(profileTitleInput.value.trim());
+      const bio = encodeURIComponent(profileBioInput.value.trim());
+      
       const payload = links.map(l => `${l.platform}:${encodeURIComponent(l.url)}`).join('|');
       const baseUrl = window.location.origin + window.location.pathname;
-      return `${baseUrl}?hub=${name}&theme=${selectedTheme}&data=${btoa(payload)}`;
+      return `${baseUrl}?hub=${name}&title=${title}&bio=${bio}&theme=${selectedTheme}&data=${btoa(payload)}`;
     }
 
     function updateApp() {
+      // Mettre à jour l'aperçu du profil
+      prevName.textContent = profileNameInput.value.trim() || "Mon Hub Pro";
+      prevTitle.textContent = profileTitleInput.value.trim();
+      prevBio.textContent = profileBioInput.value.trim();
+
+      prevTitle.style.display = profileTitleInput.value.trim() ? "block" : "none";
+      prevBio.style.display = profileBioInput.value.trim() ? "block" : "none";
+
       const links = getActiveLinks();
       linksPreview.innerHTML = '';
 
@@ -525,7 +598,44 @@
       link.click();
     });
 
-    // Mode Visiteur (Quand le QR est scanné)
+    // Export PNG
+    document.getElementById('download-png').addEventListener('click', () => {
+      const canvas = qrOutput.querySelector('canvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = 'qrcode-hub.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    // Export PDF
+    document.getElementById('download-pdf').addEventListener('click', () => {
+      const canvas = qrOutput.querySelector('canvas');
+      if (!canvas) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+      const name = profileNameInput.value.trim() || "Mon Hub Pro";
+
+      doc.setFillColor(15, 23, 42);
+      doc.rect(0, 0, 210, 297, 'F');
+      doc.setFontSize(22);
+      doc.setTextColor(248, 250, 252);
+      doc.text(name, 105, 40, { align: 'center' });
+      
+      if(profileTitleInput.value.trim()) {
+        doc.setFontSize(12);
+        doc.setTextColor(59, 130, 246);
+        doc.text(profileTitleInput.value.trim(), 105, 48, { align: 'center' });
+      }
+
+      doc.setFontSize(10);
+      doc.setTextColor(148, 163, 184);
+      doc.text("Scannez ce QR Code pour accéder à mes liens officiels", 105, 58, { align: 'center' });
+      doc.addImage(canvas.toDataURL('image/png'), 'PNG', 55, 75, 100, 100);
+      doc.save(`QRCode_${name.replace(/\s+/g, '_')}.pdf`);
+    });
+
+    // Mode Visiteur (Affiche le Hub final)
     function checkVisitorMode() {
       const params = new URLSearchParams(window.location.search);
       if (params.has('hub') && params.has('data')) {
@@ -535,6 +645,9 @@
         document.documentElement.setAttribute('data-theme', theme);
 
         const hubName = decodeURIComponent(params.get('hub'));
+        const hubTitle = params.get('title') ? decodeURIComponent(params.get('title')) : '';
+        const hubBio = params.get('bio') ? decodeURIComponent(params.get('bio')) : '';
+
         const rawData = atob(params.get('data')).split('|');
 
         let linksHTML = '';
@@ -551,8 +664,9 @@
 
         document.getElementById('editor-container').innerHTML = `
           <div class="card hub-card">
-            <h1 style="font-size:1.8rem; margin-bottom:10px;">${hubName}</h1>
-            <p style="color:var(--text-muted); margin-bottom:24px; font-size:0.9rem;">Bienvenue sur mon hub officiel</p>
+            <h1 style="font-size:1.8rem; margin-bottom:4px;">${hubName}</h1>
+            ${hubTitle ? `<div style="color:var(--accent-color); font-weight:600; font-size:0.95rem; margin-bottom:10px;">${hubTitle}</div>` : ''}
+            ${hubBio ? `<p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; line-height:1.5;">${hubBio}</p>` : ''}
             <div style="text-align:left;">${linksHTML}</div>
           </div>
         `;
@@ -564,6 +678,8 @@
     if (!checkVisitorMode()) {
       socialInputs.forEach(i => i.addEventListener('input', updateApp));
       profileNameInput.addEventListener('input', updateApp);
+      profileTitleInput.addEventListener('input', updateApp);
+      profileBioInput.addEventListener('input', updateApp);
       qrColorDark.addEventListener('input', updateApp);
       qrColorLight.addEventListener('input', updateApp);
       updateApp();
