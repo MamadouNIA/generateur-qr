@@ -2,7 +2,7 @@
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Hub Multi-Réseaux & QR Code Studio Pro</title>
   
   <!-- Typography & Icons -->
@@ -69,8 +69,14 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -80,19 +86,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      padding: 20px 16px;
     }
 
     .container {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
-      gap: 32px;
+      gap: 24px;
       max-width: 1080px;
       width: 100%;
-    }
-
-    @media (max-width: 900px) {
-      .container { grid-template-columns: 1fr; }
     }
 
     .card {
@@ -100,15 +102,15 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 32px;
+      border-radius: 20px;
+      padding: 24px;
       box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
     }
 
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -116,27 +118,27 @@
 
     .card-title i { color: var(--accent-color); }
 
-    /* Theme Switcher UI */
+    /* Theme Switcher Responsive */
     .theme-selector {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 24px;
+      gap: 8px;
+      margin-bottom: 20px;
     }
 
     .theme-option {
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 10px;
+      padding: 10px 4px;
       cursor: pointer;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     .theme-option.active {
@@ -145,16 +147,16 @@
       color: var(--accent-color);
     }
 
-    .form-group { margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
 
     label {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .input-with-icon {
@@ -176,14 +178,14 @@
       border: 1px solid var(--card-border);
       border-radius: 12px;
       color: var(--text-main);
-      font-size: 0.9rem;
+      font-size: 0.95rem; /* Evite le zoom auto sur iOS */
       outline: none;
     }
 
     textarea {
       padding-left: 42px;
       resize: vertical;
-      min-height: 70px;
+      min-height: 65px;
     }
 
     input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
@@ -194,7 +196,7 @@
     .color-picker-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .color-picker-wrapper {
@@ -210,17 +212,17 @@
     input[type="color"] {
       -webkit-appearance: none;
       border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       cursor: pointer;
       background: none;
     }
 
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
+    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
 
-    /* Preview Section */
+    /* Preview Section Responsive */
     .preview-card {
       display: flex;
       flex-direction: column;
@@ -230,7 +232,7 @@
     }
 
     .preview-badge {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       padding: 4px 12px;
@@ -238,15 +240,16 @@
       background: rgba(59, 130, 246, 0.15);
       color: var(--accent-color);
       border: 1px solid var(--card-border);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      display: inline-block;
     }
 
     .profile-header-preview {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .profile-header-preview h3 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -267,11 +270,16 @@
 
     .qr-container {
       background: #ffffff;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);
-      margin-bottom: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      box-shadow: 0 15px 25px -10px rgba(0,0,0,0.3);
+      margin-bottom: 16px;
       display: inline-block;
+    }
+
+    .qr-container img, .qr-container canvas {
+      max-width: 100%;
+      height: auto !important;
     }
 
     .social-links-list {
@@ -279,33 +287,33 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 20px;
-      max-height: 180px;
+      margin-bottom: 16px;
+      max-height: 200px;
       overflow-y: auto;
     }
 
     .social-link-item {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
+      padding: 14px 16px; /* Tactile optimal */
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       color: var(--text-main);
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 600;
     }
 
-    .social-link-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent-color);
+    .social-link-item:active {
+      transform: scale(0.98);
     }
 
     .social-link-item i {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-right: 12px;
-      width: 20px;
+      width: 22px;
+      text-align: center;
     }
 
     .btn-group {
@@ -317,12 +325,12 @@
 
     .btn {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       color: white;
       border: none;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -333,12 +341,24 @@
     .btn-png { background: #10b981; }
     .btn-svg { background: #f59e0b; }
     .btn-pdf { background: #ef4444; }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    /* Dynamic Hub View Mode */
-    body.hub-view { padding: 20px; }
+    /* Media Queries pour Smartphones */
+    @media (max-width: 850px) {
+      body { padding: 12px; }
+      .container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .card { padding: 18px; }
+      .theme-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Dynamic Hub View Mode (Mobile-First) */
+    body.hub-view { padding: 16px; }
     .hub-card {
-      max-width: 480px;
+      max-width: 100%;
       width: 100%;
       margin: 0 auto;
       text-align: center;
@@ -432,7 +452,7 @@
         </div>
       </div>
 
-      <label style="margin-top: 20px;">Couleurs QR Code</label>
+      <label style="margin-top: 18px;">Couleurs QR Code</label>
       <div class="color-picker-grid">
         <div class="color-picker-wrapper">
           <input type="color" id="qr-color-dark" value="#0f172a">
@@ -450,7 +470,7 @@
       <div style="width: 100%;">
         <span class="preview-badge"><i class="fa-solid fa-eye"></i> Aperçu Temps Réel</span>
         
-        <!-- En-tête profil dans l'aperçu -->
+        <!-- En-tête profil -->
         <div class="profile-header-preview">
           <h3 id="prev-name">Jean Dupont</h3>
           <div class="title-tag" id="prev-title">Designer & Développeur Front-End</div>
@@ -536,7 +556,6 @@
     }
 
     function updateApp() {
-      // Mettre à jour l'aperçu du profil
       prevName.textContent = profileNameInput.value.trim() || "Mon Hub Pro";
       prevTitle.textContent = profileTitleInput.value.trim();
       prevBio.textContent = profileBioInput.value.trim();
@@ -565,8 +584,8 @@
       qrOutput.innerHTML = '';
       new QRCode(qrOutput, {
         text: targetUrl,
-        width: 180,
-        height: 180,
+        width: 160,
+        height: 160,
         colorDark: qrColorDark.value,
         colorLight: qrColorLight.value,
         correctLevel: QRCode.CorrectLevel.H
@@ -635,7 +654,7 @@
       doc.save(`QRCode_${name.replace(/\s+/g, '_')}.pdf`);
     });
 
-    // Mode Visiteur (Affiche le Hub final)
+    // Mode Visiteur (Affiche le Hub final sur Smartphone)
     function checkVisitorMode() {
       const params = new URLSearchParams(window.location.search);
       if (params.has('hub') && params.has('data')) {
@@ -664,7 +683,7 @@
 
         document.getElementById('editor-container').innerHTML = `
           <div class="card hub-card">
-            <h1 style="font-size:1.8rem; margin-bottom:4px;">${hubName}</h1>
+            <h1 style="font-size:1.6rem; margin-bottom:4px;">${hubName}</h1>
             ${hubTitle ? `<div style="color:var(--accent-color); font-weight:600; font-size:0.95rem; margin-bottom:10px;">${hubTitle}</div>` : ''}
             ${hubBio ? `<p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; line-height:1.5;">${hubBio}</p>` : ''}
             <div style="text-align:left;">${linksHTML}</div>
