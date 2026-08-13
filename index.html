@@ -305,25 +305,10 @@
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
 
-    /* ACTION BAR VALIDATION ET EXPORT */
-    .validation-box {
-      margin-top: 24px;
-      background: rgba(249, 115, 22, 0.08);
-      border: 1px solid var(--accent-color);
-      padding: 16px;
-      border-radius: 16px;
-    }
-
-    .export-options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
     .btn-validate {
       width: 100%;
       padding: 16px;
+      margin-top: 20px;
       background: linear-gradient(135deg, var(--accent-color) 0%, #ff007f 100%);
       color: white;
       border: none;
@@ -345,6 +330,32 @@
     }
 
     .btn-validate:active {
+      transform: translateY(0);
+    }
+
+    .toast-notif {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(16, 185, 129, 0.9);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast-notif.show {
+      opacity: 1;
       transform: translateY(0);
     }
 
@@ -451,6 +462,14 @@
     .icon-github { background: linear-gradient(135deg, #333333, #111111); }
     .icon-website { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
 
+    .export-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 16px;
+    }
+
     .btn-group {
       display: flex;
       flex-direction: column;
@@ -466,13 +485,21 @@
       border: none;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
+
+    .btn-export-main {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+    .btn-export-main:hover { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
 
     .btn-png { background: #10b981; }
     .btn-png:hover { background: #059669; }
@@ -487,7 +514,6 @@
       .card { padding: 20px; }
       .theme-selector { grid-template-columns: repeat(2, 1fr); }
       .preview-card { position: relative; top: 0; }
-      .export-options-grid { grid-template-columns: 1fr; }
     }
 
     .app-footer {
@@ -699,24 +725,10 @@
         </div>
       </div>
 
-      <!-- BOUTON DE VALIDATION DE SAISIE ET EXPORT CHOISI -->
-      <div class="validation-box">
-        <div class="export-options-grid">
-          <div>
-            <label for="export-format">Format d'export</label>
-            <select id="export-format">
-              <option value="png" selected>PNG Haute Définition</option>
-              <option value="pdf">PDF Fiche Pro (A4)</option>
-              <option value="svg">SVG Vectoriel</option>
-            </select>
-          </div>
-          <div style="display: flex; align-items: flex-end;">
-            <button type="button" class="btn-validate" id="btn-submit-data">
-              <i class="fa-solid fa-circle-check"></i> Valider & Générer
-            </button>
-          </div>
-        </div>
-      </div>
+      <!-- BOUTON DE VALIDATION ET GENERATION -->
+      <button type="button" class="btn-validate" id="btn-submit-data">
+        <i class="fa-solid fa-circle-check"></i> Valider, Sauvegarder & Générer QR Code
+      </button>
 
     </div>
 
@@ -731,10 +743,10 @@
         <!-- Mode QR -->
         <div id="view-qr-container">
           <div class="qr-container-box">
-            <canvas id="modern-qr" width="300" height="300"></canvas>
+            <canvas id="modern-qr" width="260" height="260"></canvas>
             <div id="raw-qr" style="display:none;"></div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Généré & Validé</p>
+          <p style="font-size:0.8rem; color:var(--text-muted);">QR Code Immuable & Validé</p>
         </div>
 
         <!-- Mode Smartphone Bio-Link -->
@@ -747,13 +759,32 @@
         </div>
       </div>
 
-      <!-- Actions Téléchargement Direct -->
+      <!-- Actions Téléchargement -->
       <div class="btn-group">
-        <button id="download-png" class="btn btn-png" type="button"><i class="fa-solid fa-image"></i> Exporter PNG HD</button>
-        <button id="download-pdf" class="btn btn-pdf" type="button"><i class="fa-solid fa-file-pdf"></i> Exporter PDF HD</button>
-        <button id="download-svg" class="btn btn-svg" type="button"><i class="fa-solid fa-vector-square"></i> Exporter SVG</button>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="export-format-select" style="text-align:left;">Format d'exportation au choix</label>
+          <select id="export-format-select">
+            <option value="png" selected>PNG HD (.png)</option>
+            <option value="pdf">Document PDF HD (.pdf)</option>
+            <option value="svg">Image Vectorielle SVG (.svg)</option>
+          </select>
+        </div>
+
+        <button id="download-selected" class="btn btn-export-main" type="button">
+          <i class="fa-solid fa-download"></i> Télécharger au format sélectionné
+        </button>
+
+        <div class="export-options-grid">
+          <button id="download-png" class="btn btn-png" type="button"><i class="fa-solid fa-image"></i> PNG</button>
+          <button id="download-pdf" class="btn btn-pdf" type="button"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        </div>
+        <button id="download-svg" class="btn btn-svg" type="button" style="margin-top:2px;"><i class="fa-solid fa-vector-square"></i> SVG Vectoriel</button>
       </div>
     </div>
+  </div>
+
+  <div class="toast-notif" id="toast-notif">
+    <i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Données enregistrées et QR Code généré !</span>
   </div>
 
   <footer class="app-footer">
@@ -761,6 +792,8 @@
   </footer>
 
   <script>
+    const STORAGE_KEY = 'qrcodephoenix_user_data_v2';
+
     const PLATFORMS = {
       whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", badgeClass: "icon-whatsapp", name: "WhatsApp" },
       instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", badgeClass: "icon-instagram", name: "Instagram" },
@@ -774,8 +807,13 @@
       website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    const FIXED_SESSION_ID = "hub-" + Math.floor(100000 + Math.random() * 900000);
-    const FIXED_TARGET_URL = window.location.origin + window.location.pathname + "?id=" + FIXED_SESSION_ID;
+    // Identifiant de session fixe / restauré
+    let sessionId = localStorage.getItem('qrcodephoenix_session_id');
+    if (!sessionId) {
+      sessionId = "hub-" + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('qrcodephoenix_session_id', sessionId);
+    }
+    const FIXED_TARGET_URL = window.location.origin + window.location.pathname + "?id=" + sessionId;
 
     const profileNameInput = document.getElementById('profile-name');
     const profileTitleInput = document.getElementById('profile-title');
@@ -798,16 +836,102 @@
     const qrColorLight = document.getElementById('qr-color-light');
 
     const btnSubmitData = document.getElementById('btn-submit-data');
-    const exportFormatSelect = document.getElementById('export-format');
+    const exportFormatSelect = document.getElementById('export-format-select');
+    const btnDownloadSelected = document.getElementById('download-selected');
 
     const themeOptions = document.querySelectorAll('.theme-option');
     const btnModeQr = document.getElementById('btn-mode-qr');
     const btnModePhone = document.getElementById('btn-mode-phone');
     const viewQrContainer = document.getElementById('view-qr-container');
     const viewPhoneContainer = document.getElementById('view-phone-container');
+    const toastNotif = document.getElementById('toast-notif');
+    const toastMsg = document.getElementById('toast-msg');
 
     let selectedTheme = 'dark';
     let currentQRMatrix = [];
+
+    function showToast(message) {
+      toastMsg.textContent = message;
+      toastNotif.classList.add('show');
+      setTimeout(() => {
+        toastNotif.classList.remove('show');
+      }, 3000);
+    }
+
+    // Sauvegarde permanente dans le localStorage
+    function saveUserDataToStorage() {
+      const socialData = {};
+      socialInputs.forEach(input => {
+        socialData[input.dataset.platform] = input.value;
+      });
+
+      const dataToSave = {
+        theme: selectedTheme,
+        profile: {
+          name: profileNameInput.value,
+          title: profileTitleInput.value,
+          bio: profileBioInput.value
+        },
+        qrSettings: {
+          dotsStyle: qrDotsStyle.value,
+          eccLevel: qrEccLevel.value,
+          margin: qrMargin.value,
+          centerText: qrCenterText.value,
+          colorDark: qrColorDark.value,
+          colorLight: qrColorLight.value
+        },
+        socials: socialData
+      };
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+      } catch (e) {
+        console.warn('Impossible de sauvegarder dans localStorage:', e);
+      }
+    }
+
+    // Restauration automatique au chargement
+    function loadSavedUserData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+
+        if (data.theme) {
+          selectedTheme = data.theme;
+          document.documentElement.setAttribute('data-theme', selectedTheme);
+          themeOptions.forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.theme === selectedTheme);
+          });
+        }
+
+        if (data.profile) {
+          if (data.profile.name !== undefined) profileNameInput.value = data.profile.name;
+          if (data.profile.title !== undefined) profileTitleInput.value = data.profile.title;
+          if (data.profile.bio !== undefined) profileBioInput.value = data.profile.bio;
+        }
+
+        if (data.qrSettings) {
+          if (data.qrSettings.dotsStyle) qrDotsStyle.value = data.qrSettings.dotsStyle;
+          if (data.qrSettings.eccLevel) qrEccLevel.value = data.qrSettings.eccLevel;
+          if (data.qrSettings.margin) qrMargin.value = data.qrSettings.margin;
+          if (data.qrSettings.centerText !== undefined) qrCenterText.value = data.qrSettings.centerText;
+          if (data.qrSettings.colorDark) qrColorDark.value = data.qrSettings.colorDark;
+          if (data.qrSettings.colorLight) qrColorLight.value = data.qrSettings.colorLight;
+        }
+
+        if (data.socials) {
+          socialInputs.forEach(input => {
+            const platform = input.dataset.platform;
+            if (data.socials[platform] !== undefined) {
+              input.value = data.socials[platform];
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Erreur chargement données enregistrées:', e);
+      }
+    }
 
     btnModeQr.addEventListener('click', () => {
       btnModeQr.classList.add('active');
@@ -829,6 +953,7 @@
         opt.classList.add('active');
         selectedTheme = opt.dataset.theme;
         document.documentElement.setAttribute('data-theme', selectedTheme);
+        saveUserDataToStorage();
       });
     });
 
@@ -903,7 +1028,7 @@
       const margin = parseInt(qrMargin.value, 10);
       const totalCount = baseCount + margin * 2;
 
-      const canvasSize = 600; // Haute Résolution
+      const canvasSize = 300;
       modernCanvas.width = canvasSize;
       modernCanvas.height = canvasSize;
 
@@ -969,11 +1094,11 @@
 
         ctx.fillStyle = qrColorLight.value;
         ctx.beginPath();
-        ctx.roundRect(badgeX + 2, badgeY + 2, badgeWidth - 4, badgeWidth - 4, 12);
+        ctx.roundRect(badgeX + 2, badgeY + 2, badgeWidth - 4, badgeWidth - 4, 8);
         ctx.fill();
 
         ctx.strokeStyle = qrColorDark.value;
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 2;
         ctx.stroke();
 
         ctx.fillStyle = qrColorDark.value;
@@ -996,8 +1121,8 @@
 
       new QRCode(rawQrContainer, {
         text: FIXED_TARGET_URL,
-        width: 300,
-        height: 300,
+        width: 240,
+        height: 240,
         correctLevel: eccMap[qrEccLevel.value] || QRCode.CorrectLevel.M
       });
 
@@ -1009,7 +1134,9 @@
       }, 50);
     }
 
-    function validateAndApplyData() {
+    // Validation des données + Sauvegarde localStorage + Génération QR Code
+    function validateAndApplyData(isSilent = false) {
+      // 1. Appliquer les textes et la bio sur la maquette mobile
       prevName.textContent = profileNameInput.value.trim() || "Alexandre Pro";
       prevTitle.textContent = profileTitleInput.value.trim();
       prevBio.textContent = profileBioInput.value.trim();
@@ -1017,6 +1144,7 @@
       prevTitle.style.display = profileTitleInput.value.trim() ? "block" : "none";
       prevBio.style.display = profileBioInput.value.trim() ? "block" : "none";
 
+      // 2. Générer les liens dans la maquette mobile
       const links = getActiveLinks();
       linksPreview.innerHTML = '';
 
@@ -1039,46 +1167,30 @@
         });
       }
 
+      // 3. Sauvegarde dans localStorage
+      saveUserDataToStorage();
+
+      // 4. Génération stable du QR Code
       generateQR();
+
+      if (!isSilent) {
+        showToast("Données validées & QR Code mis à jour !");
+      }
     }
 
-    // FONCTIONS D'EXPORTATION
+    // Écouteur du bouton de validation
+    btnSubmitData.addEventListener('click', () => {
+      validateAndApplyData(false);
+    });
+
+    // Fonctions d'exportation
     function exportPNG() {
       const link = document.createElement('a');
-      link.download = 'qrcodephoenix.png';
+      const cleanName = profileNameInput.value.trim().replace(/\s+/g, '_') || 'qrcodephoenix';
+      link.download = `QRCodePhoenix_${cleanName}.png`;
       link.href = modernCanvas.toDataURL('image/png');
       link.click();
-    }
-
-    function exportPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-      const name = profileNameInput.value.trim() || "qrcodephoenix Hub";
-
-      doc.setFillColor(15, 23, 42);
-      doc.rect(0, 0, 210, 297, 'F');
-      
-      doc.setFontSize(26);
-      doc.setTextColor(249, 115, 22);
-      doc.text("qrcodephoenix", 105, 35, { align: 'center' });
-
-      doc.setFontSize(18);
-      doc.setTextColor(248, 250, 252);
-      doc.text(name, 105, 48, { align: 'center' });
-      
-      if(profileTitleInput.value.trim()) {
-        doc.setFontSize(11);
-        doc.setTextColor(148, 163, 184);
-        doc.text(profileTitleInput.value.trim(), 105, 55, { align: 'center' });
-      }
-
-      doc.addImage(modernCanvas.toDataURL('image/png'), 'PNG', 55, 75, 100, 100);
-      
-      doc.setFontSize(10);
-      doc.setTextColor(100, 116, 139);
-      doc.text("Scannez pour ouvrir le hub mobile officiel", 105, 185, { align: 'center' });
-
-      doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
+      showToast("Téléchargement PNG démarré !");
     }
 
     function exportSVG() {
@@ -1087,7 +1199,7 @@
       const totalCount = currentQRMatrix.length;
       const margin = parseInt(qrMargin.value, 10);
       const baseCount = totalCount - margin * 2;
-      const svgSize = 600;
+      const svgSize = 500;
       const cellSize = svgSize / totalCount;
       const shapeStyle = qrDotsStyle.value;
 
@@ -1126,7 +1238,7 @@
         const badgeWidth = centerBoxSize * cellSize;
 
         textSVG = `
-          <rect x="${badgeX + 2}" y="${badgeY + 2}" width="${badgeWidth - 4}" height="${badgeWidth - 4}" rx="12" fill="${qrColorLight.value}" stroke="${qrColorDark.value}" stroke-width="4"/>
+          <rect x="${badgeX + 2}" y="${badgeY + 2}" width="${badgeWidth - 4}" height="${badgeWidth - 4}" rx="8" fill="${qrColorLight.value}" stroke="${qrColorDark.value}" stroke-width="2"/>
           <text x="${badgeX + badgeWidth / 2}" y="${badgeY + badgeWidth / 2 + 5}" fill="${qrColorDark.value}" font-size="${Math.floor(badgeWidth * 0.35)}" font-weight="800" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle" dominant-baseline="middle">${centerText.toUpperCase()}</text>
         `;
       }
@@ -1134,30 +1246,60 @@
       const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="${qrColorLight.value}"/>${shapesSVG}${textSVG}</svg>`;
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const link = document.createElement('a');
+      const cleanName = profileNameInput.value.trim().replace(/\s+/g, '_') || 'qrcodephoenix';
       link.href = URL.createObjectURL(blob);
-      link.download = 'qrcodephoenix.svg';
+      link.download = `QRCodePhoenix_${cleanName}.svg`;
       link.click();
+      showToast("Téléchargement SVG Vectoriel démarré !");
     }
 
-    // ÉCOUTEUR PRINCIPAL DU BOUTON "VALIDER & GÉNÉRER"
-    btnSubmitData.addEventListener('click', () => {
-      validateAndApplyData();
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+      const name = profileNameInput.value.trim() || "qrcodephoenix Hub";
 
-      setTimeout(() => {
-        const format = exportFormatSelect.value;
-        if (format === 'png') exportPNG();
-        else if (format === 'pdf') exportPDF();
-        else if (format === 'svg') exportSVG();
-      }, 100);
+      doc.setFillColor(15, 23, 42);
+      doc.rect(0, 0, 210, 297, 'F');
+      
+      doc.setFontSize(26);
+      doc.setTextColor(249, 115, 22);
+      doc.text("qrcodephoenix", 105, 35, { align: 'center' });
+
+      doc.setFontSize(18);
+      doc.setTextColor(248, 250, 252);
+      doc.text(name, 105, 48, { align: 'center' });
+      
+      if(profileTitleInput.value.trim()) {
+        doc.setFontSize(11);
+        doc.setTextColor(148, 163, 184);
+        doc.text(profileTitleInput.value.trim(), 105, 55, { align: 'center' });
+      }
+
+      doc.addImage(modernCanvas.toDataURL('image/png'), 'PNG', 55, 75, 100, 100);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(100, 116, 139);
+      doc.text("Scannez pour ouvrir le hub mobile officiel", 105, 185, { align: 'center' });
+
+      doc.save(`QRCodePhoenix_${name.replace(/\s+/g, '_')}.pdf`);
+      showToast("Téléchargement PDF HD démarré !");
+    }
+
+    // Déclencheurs de téléchargements
+    document.getElementById('download-png').addEventListener('click', exportPNG);
+    document.getElementById('download-svg').addEventListener('click', exportSVG);
+    document.getElementById('download-pdf').addEventListener('click', exportPDF);
+
+    btnDownloadSelected.addEventListener('click', () => {
+      const fmt = exportFormatSelect.value;
+      if (fmt === 'png') exportPNG();
+      else if (fmt === 'pdf') exportPDF();
+      else if (fmt === 'svg') exportSVG();
     });
 
-    // ÉCOUTEURS DES BOUTONS DE TÉLÉCHARGEMENT DIRECT
-    document.getElementById('download-png').addEventListener('click', exportPNG);
-    document.getElementById('download-pdf').addEventListener('click', exportPDF);
-    document.getElementById('download-svg').addEventListener('click', exportSVG);
-
-    // Initialisation au chargement
-    validateAndApplyData();
+    // Initialisation
+    loadSavedUserData();
+    validateAndApplyData(true);
   </script>
 </body>
 </html>
