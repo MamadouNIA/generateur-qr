@@ -136,6 +136,7 @@
       font-size: 1.1rem;
       font-weight: 700;
       margin-bottom: 18px;
+      margin-top: 10px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -223,22 +224,35 @@
     .input-with-icon i {
       position: absolute;
       left: 14px;
+      font-size: 1.1rem;
       color: var(--text-muted);
     }
 
+    /* Style spécifique des icônes dans les champs */
+    .input-with-icon i.fa-whatsapp { color: #25D366; }
+    .input-with-icon i.fa-instagram { color: #E4405F; }
+    .input-with-icon i.fa-linkedin { color: #0A66C2; }
+    .input-with-icon i.fa-facebook { color: #1877F2; }
+    .input-with-icon i.fa-x-twitter { color: #f9fafb; }
+    .input-with-icon i.fa-tiktok { color: #FE2C55; }
+    .input-with-icon i.fa-youtube { color: #FF0000; }
+    .input-with-icon i.fa-telegram { color: #229ED9; }
+    .input-with-icon i.fa-github { color: #a855f7; }
+    .input-with-icon i.fa-globe { color: #3b82f6; }
+
     input[type="text"], input[type="url"], textarea {
       width: 100%;
-      padding: 12px 14px 12px 42px;
+      padding: 12px 14px 12px 44px;
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       color: var(--text-main);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       outline: none;
     }
 
     textarea {
-      padding-left: 42px;
+      padding-left: 44px;
       resize: vertical;
       min-height: 65px;
     }
@@ -302,7 +316,7 @@
     .phone-mockup {
       display: none;
       width: 100%;
-      max-width: 310px;
+      max-width: 320px;
       background: var(--input-bg);
       border: 8px solid #1e293b;
       border-radius: 36px;
@@ -322,34 +336,62 @@
       margin: -24px auto 18px auto;
     }
 
+    /* LISTE DES LIENS SOCIAUX ET STYLISATION DES ICONES */
     .social-links-list {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
+      gap: 12px;
+      margin-top: 18px;
     }
 
     .social-link-item {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 14px;
       color: var(--text-main);
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 600;
       word-break: break-word;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
-    .social-link-item i {
-      font-size: 1.1rem;
-      margin-right: 12px;
-      width: 20px;
-      text-align: center;
+    .social-link-item:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.25);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
+
+    /* BADGE D'ICÔNE STYLISÉ */
+    .social-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 1.15rem;
+      color: #ffffff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* DESIGN DU BADGE PAR PLATEFORME */
+    .icon-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+    .icon-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .icon-linkedin { background: linear-gradient(135deg, #0A66C2, #004182); }
+    .icon-facebook { background: linear-gradient(135deg, #1877F2, #0d52a8); }
+    .icon-x-twitter { background: linear-gradient(135deg, #24292e, #000000); }
+    .icon-tiktok { background: linear-gradient(135deg, #00f2fe, #fe2c55); }
+    .icon-youtube { background: linear-gradient(135deg, #FF0000, #b30000); }
+    .icon-telegram { background: linear-gradient(135deg, #229ED9, #177aa7); }
+    .icon-github { background: linear-gradient(135deg, #333333, #111111); }
+    .icon-website { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
 
     .btn-group {
       display: flex;
@@ -463,11 +505,15 @@
         </div>
       </div>
 
+      <div class="card-title">
+        <i class="fa-solid fa-share-nodes"></i> Réseaux Sociaux & Liens
+      </div>
+
       <div class="form-group">
         <label for="input-whatsapp">WhatsApp</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-whatsapp"></i>
-          <input type="text" id="input-whatsapp" class="social-input" data-platform="whatsapp" placeholder="Numéro (ex: 221770000000)">
+          <input type="text" id="input-whatsapp" class="social-input" data-platform="whatsapp" placeholder="Numéro avec indicatif (ex: 221770000000)">
         </div>
       </div>
 
@@ -475,7 +521,7 @@
         <label for="input-instagram">Instagram</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-instagram"></i>
-          <input type="text" id="input-instagram" class="social-input" data-platform="instagram" placeholder="Nom d'utilisateur">
+          <input type="text" id="input-instagram" class="social-input" data-platform="instagram" placeholder="Nom d'utilisateur (ex: alex_design)">
         </div>
       </div>
 
@@ -483,19 +529,67 @@
         <label for="input-linkedin">LinkedIn</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-linkedin"></i>
-          <input type="text" id="input-linkedin" class="social-input" data-platform="linkedin" placeholder="ID / Lien profil">
+          <input type="text" id="input-linkedin" class="social-input" data-platform="linkedin" placeholder="ID Profil / Lien">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="input-website">Site Web</label>
+        <label for="input-facebook">Facebook</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-facebook"></i>
+          <input type="text" id="input-facebook" class="social-input" data-platform="facebook" placeholder="Nom de page ou profil">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-twitter">X (Twitter)</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-x-twitter"></i>
+          <input type="text" id="input-twitter" class="social-input" data-platform="twitter" placeholder="Nom d'utilisateur">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-tiktok">TikTok</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-tiktok"></i>
+          <input type="text" id="input-tiktok" class="social-input" data-platform="tiktok" placeholder="Nom d'utilisateur (@ex)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-youtube">YouTube</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-youtube"></i>
+          <input type="text" id="input-youtube" class="social-input" data-platform="youtube" placeholder="Nom de chaîne (@chaine)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-telegram">Telegram</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-telegram"></i>
+          <input type="text" id="input-telegram" class="social-input" data-platform="telegram" placeholder="Nom d'utilisateur ou canal">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-github">GitHub</label>
+        <div class="input-with-icon">
+          <i class="fa-brands fa-github"></i>
+          <input type="text" id="input-github" class="social-input" data-platform="github" placeholder="Nom d'utilisateur">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input-website">Site Web Officiel</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-globe"></i>
           <input type="url" id="input-website" class="social-input" data-platform="website" placeholder="https://votre-site.com">
         </div>
       </div>
 
-      <label style="margin-top: 18px;">Couleurs du QR Code Modernisé</label>
+      <label style="margin-top: 18px;">Couleurs du QR Code</label>
       <div class="color-picker-grid">
         <div class="color-picker-wrapper">
           <input type="color" id="qr-color-dark" value="#0f172a">
@@ -549,15 +643,21 @@
   </footer>
 
   <script>
-    // Configuration des plateformes
+    // Configuration complète des réseaux sociaux et styles associées
     const PLATFORMS = {
-      whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", name: "WhatsApp" },
-      instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", name: "Instagram" },
-      linkedin: { prefix: "https://linkedin.com/", icon: "fa-brands fa-linkedin", name: "LinkedIn" },
-      website: { prefix: "", icon: "fa-solid fa-globe", name: "Site Web" }
+      whatsapp: { prefix: "https://wa.me/", icon: "fa-brands fa-whatsapp", badgeClass: "icon-whatsapp", name: "WhatsApp" },
+      instagram: { prefix: "https://instagram.com/", icon: "fa-brands fa-instagram", badgeClass: "icon-instagram", name: "Instagram" },
+      linkedin: { prefix: "https://linkedin.com/in/", icon: "fa-brands fa-linkedin", badgeClass: "icon-linkedin", name: "LinkedIn" },
+      facebook: { prefix: "https://facebook.com/", icon: "fa-brands fa-facebook", badgeClass: "icon-facebook", name: "Facebook" },
+      twitter: { prefix: "https://x.com/", icon: "fa-brands fa-x-twitter", badgeClass: "icon-x-twitter", name: "X (Twitter)" },
+      tiktok: { prefix: "https://tiktok.com/@", icon: "fa-brands fa-tiktok", badgeClass: "icon-tiktok", name: "TikTok" },
+      youtube: { prefix: "https://youtube.com/@", icon: "fa-brands fa-youtube", badgeClass: "icon-youtube", name: "YouTube" },
+      telegram: { prefix: "https://t.me/", icon: "fa-brands fa-telegram", badgeClass: "icon-telegram", name: "Telegram" },
+      github: { prefix: "https://github.com/", icon: "fa-brands fa-github", badgeClass: "icon-github", name: "GitHub" },
+      website: { prefix: "", icon: "fa-solid fa-globe", badgeClass: "icon-website", name: "Site Web" }
     };
 
-    // Helper Encodage / Décodage UTF-8 Sécurisé pour Base64 (Empêche les erreurs btoa avec é, è, etc.)
+    // Helper Encodage / Décodage UTF-8 Sécurisé pour Base64
     function utf8ToBase64(str) {
       return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => 
         String.fromCharCode('0x' + p1)
@@ -593,7 +693,7 @@
     const viewPhoneContainer = document.getElementById('view-phone-container');
 
     let selectedTheme = 'dark';
-    let currentQRMatrix = []; // Stockage de la matrice dynamique
+    let currentQRMatrix = [];
 
     // Toggle Mode Aperçu
     btnModeQr.addEventListener('click', () => {
@@ -610,7 +710,7 @@
       viewPhoneContainer.classList.add('active');
     });
 
-    // Theme Switcher
+    // Switcher de Thème
     themeOptions.forEach(opt => {
       opt.addEventListener('click', () => {
         themeOptions.forEach(o => o.classList.remove('active'));
@@ -628,11 +728,17 @@
         if (val) {
           const platform = input.dataset.platform;
           let url = val;
-          if (platform !== 'website') {
-            const clean = val.replace(/^https?:\/\/(www\.)?/, '').replace(/^@/, '');
+          if (platform !== 'website' && !val.startsWith('http')) {
+            const clean = val.replace(/^@/, '');
             url = PLATFORMS[platform].prefix + clean;
           }
-          active.push({ platform, url, name: PLATFORMS[platform].name, icon: PLATFORMS[platform].icon });
+          active.push({ 
+            platform, 
+            url, 
+            name: PLATFORMS[platform].name, 
+            icon: PLATFORMS[platform].icon,
+            badgeClass: PLATFORMS[platform].badgeClass
+          });
         }
       });
       return active;
@@ -649,11 +755,10 @@
       return `${baseUrl}?hub=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}&bio=${encodeURIComponent(bio)}&theme=${selectedTheme}&data=${utf8ToBase64(payload)}`;
     }
 
-    // Moteur Dynamique de Rendu QR Code (Dots Modernes + Détection dynamique de matrice)
+    // Moteur Dynamique de Rendu QR Code
     function renderModernQR(text) {
       rawQrContainer.innerHTML = '';
       
-      // Génération initiale par la bibliothèque
       new QRCode(rawQrContainer, {
         text: text,
         width: 200,
@@ -673,7 +778,6 @@
         const ctx = modernCanvas.getContext('2d');
         const imgData = srcCtx.getImageData(0, 0, size, size);
 
-        // Algorithme d'analyse : Détection dynamique de la taille de grille du QR Code
         let firstBlackPixelWidth = 0;
         for (let x = 0; x < size; x++) {
           if (imgData.data[x * 4] < 127) {
@@ -683,20 +787,16 @@
           }
         }
         
-        // Le Finder Pattern supérieur gauche mesure exactement 7 modules de large
         const calculatedModuleSize = firstBlackPixelWidth / 7;
         const moduleCount = Math.round(size / calculatedModuleSize);
         const cellSize = size / moduleCount;
 
-        currentQRMatrix = []; // Reconstruire la matrice pour l'export SVG
+        currentQRMatrix = [];
 
-        // Rendu du fond
         ctx.fillStyle = qrColorLight.value;
         ctx.fillRect(0, 0, size, size);
-
         ctx.fillStyle = qrColorDark.value;
 
-        // Dessin des modules en version arrondie (Dots)
         for (let row = 0; row < moduleCount; row++) {
           const matrixRow = [];
           for (let col = 0; col < moduleCount; col++) {
@@ -734,7 +834,7 @@
       linksPreview.innerHTML = '';
 
       if (links.length === 0) {
-        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.75rem;">Ajoutez des informations pour activer le Hub.</p>';
+        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.75rem;">Ajoutez des liens pour construire votre Hub.</p>';
       } else {
         links.forEach(item => {
           const a = document.createElement('a');
@@ -742,7 +842,12 @@
           a.href = item.url;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
-          a.innerHTML = `<i class="${item.icon}"></i> ${item.name}`;
+          a.innerHTML = `
+            <div class="social-icon-badge ${item.badgeClass}">
+              <i class="${item.icon}"></i>
+            </div>
+            <span>${item.name}</span>
+          `;
           linksPreview.appendChild(a);
         });
       }
@@ -751,7 +856,7 @@
       renderModernQR(targetUrl);
     }
 
-    // Export SVG Vectoriel Propre (<circle> pur)
+    // Export SVG Vectoriel
     document.getElementById('download-svg').addEventListener('click', () => {
       if (!currentQRMatrix || currentQRMatrix.length === 0) return;
 
@@ -846,7 +951,10 @@
               if (PLATFORMS[platform]) {
                 linksHTML += `
                   <a href="${url}" target="_blank" rel="noopener noreferrer" class="social-link-item" style="margin-bottom:12px;">
-                    <i class="${PLATFORMS[platform].icon}"></i> ${PLATFORMS[platform].name}
+                    <div class="social-icon-badge ${PLATFORMS[platform].badgeClass}">
+                      <i class="${PLATFORMS[platform].icon}"></i>
+                    </div>
+                    <span>${PLATFORMS[platform].name}</span>
                   </a>`;
               }
             }
@@ -860,12 +968,12 @@
               <h1 style="font-size:1.6rem; margin-bottom:4px;">${hubName}</h1>
               ${hubTitle ? `<div style="color:var(--accent-color); font-weight:600; font-size:0.95rem; margin-bottom:10px;">${hubTitle}</div>` : ''}
               ${hubBio ? `<p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; line-height:1.5;">${hubBio}</p>` : ''}
-              <div style="text-align:left;">${linksHTML}</div>
+              <div style="text-align:left;" class="social-links-list">${linksHTML}</div>
             </div>
           `;
           return true;
         } catch (e) {
-          console.error("Erreur de lecture du hub :", e);
+          console.error("Erreur lors de la lecture du hub :", e);
         }
       }
       return false;
