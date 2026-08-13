@@ -3,78 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hub Multi-Réseaux & Générateur de QR Code (PNG, SVG, PDF)</title>
+  <title>Hub Multi-Réseaux & QR Code Studio</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <!-- QRCode.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- jsPDF Library pour la génération PDF -->
+  
+  <!-- jsPDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     :root {
-      --bg-primary: #0f172a;
-      --card-bg: #1e293b;
-      --accent-color: #3b82f6;
-      --accent-hover: #2563eb;
+      --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #0d1322 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border-color: #334155;
+      --input-bg: rgba(15, 23, 42, 0.6);
+      --focus-ring: rgba(59, 130, 246, 0.4);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--bg-primary);
+      background: var(--bg-gradient);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 40px 20px;
     }
 
     .container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      max-width: 1000px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      max-width: 1080px;
       width: 100%;
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 900px) {
       .container { grid-template-columns: 1fr; }
     }
 
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
     }
 
-    h1, h2 {
-      font-size: 1.4rem;
-      margin-bottom: 20px;
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 24px;
       color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      letter-spacing: -0.02em;
     }
 
-    .form-group { margin-bottom: 16px; }
+    .card-title i {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
 
     label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .input-with-icon {
@@ -85,132 +109,191 @@
 
     .input-with-icon i {
       position: absolute;
-      left: 12px;
+      left: 14px;
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 1rem;
+      transition: color 0.3s;
     }
 
     input[type="text"], input[type="url"] {
       width: 100%;
-      padding: 10px 12px 10px 40px;
-      background: #0f172a;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      padding: 12px 14px 12px 42px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 500;
       outline: none;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
     }
 
-    input:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    input[type="text"]:focus, input[type="url"]:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px var(--focus-ring);
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    input:focus + i, .input-with-icon:focus-within i {
+      color: #3b82f6;
     }
 
     .color-picker-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .color-picker-wrapper {
+      display: flex;
+      align-items: center;
       gap: 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px 12px;
+      border-radius: 12px;
     }
 
     input[type="color"] {
-      width: 100%;
-      height: 40px;
+      -webkit-appearance: none;
       border: none;
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
       cursor: pointer;
       background: none;
     }
 
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      margin-top: 15px;
-    }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
 
-    .btn {
-      width: 100%;
-      padding: 12px;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn:hover { opacity: 0.9; }
-
-    .btn-png { background-color: #10b981; }
-    .btn-svg { background-color: #f59e0b; }
-    .btn-pdf { background-color: #ef4444; }
-
+    /* Preview Side */
     .preview-card {
-      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
+      text-align: center;
+      position: relative;
+    }
+
+    .preview-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+      margin: 15px 0;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .qr-container:hover {
+      transform: scale(1.02);
     }
 
     .social-links-list {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin: 15px 0;
-      max-height: 180px;
+      gap: 10px;
+      margin: 20px 0;
+      max-height: 160px;
       overflow-y: auto;
+      padding-right: 4px;
     }
+
+    /* Custom scrollbar */
+    .social-links-list::-webkit-scrollbar { width: 4px; }
+    .social-links-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 
     .social-link-item {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
-      background: #0f172a;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      padding: 12px 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
       color: var(--text-main);
       text-decoration: none;
-      font-size: 0.9rem;
-      transition: transform 0.2s, border-color 0.2s;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
     }
 
     .social-link-item:hover {
-      transform: translateX(4px);
-      border-color: var(--accent-color);
+      transform: translateY(-2px);
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .social-link-item i {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-right: 12px;
-      width: 24px;
+      width: 20px;
       text-align: center;
     }
 
-    /* Brand Colors */
+    /* Couleurs de marque */
     .fa-whatsapp { color: #25D366; }
     .fa-instagram { color: #E4405F; }
     .fa-linkedin { color: #0A66C2; }
     .fa-facebook { color: #1877F2; }
-    .fa-tiktok { color: #EE1D52; }
+    .fa-tiktok { color: #00f2fe; }
     .fa-x-twitter { color: #ffffff; }
     .fa-globe { color: #3b82f6; }
 
-    #qr-output {
-      background: white;
-      padding: 12px;
-      border-radius: 12px;
-      margin: 15px 0;
-      display: inline-block;
+    /* Buttons Group */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin-top: 10px;
     }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn-png { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .btn-svg { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+    .btn-pdf { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
   </style>
 </head>
 <body>
@@ -218,18 +301,20 @@
   <div class="container">
     <!-- Form Side -->
     <div class="card">
-      <h1><i class="fa-solid fa-share-nodes"></i> Configuration du Hub</h1>
+      <div class="card-title">
+        <i class="fa-solid fa-sliders"></i> Personnalisation
+      </div>
 
       <div class="form-group">
-        <label>Nom du profil / Titre</label>
+        <label>Nom du profil / Entité</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="profile-name" value="Mon Profil Social" placeholder="Ex: Jean Dupont">
+          <input type="text" id="profile-name" value="Mon Profil Hub" placeholder="Ex: Jean Dupont">
         </div>
       </div>
 
       <div class="form-group">
-        <label>WhatsApp (Numéro complet)</label>
+        <label>WhatsApp</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-whatsapp"></i>
           <input type="text" class="social-input" data-platform="whatsapp" placeholder="Ex: 221770000000">
@@ -237,7 +322,7 @@
       </div>
 
       <div class="form-group">
-        <label>Instagram (Nom d'utilisateur)</label>
+        <label>Instagram</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-instagram"></i>
           <input type="text" class="social-input" data-platform="instagram" placeholder="Ex: mon_pseudo">
@@ -245,7 +330,7 @@
       </div>
 
       <div class="form-group">
-        <label>LinkedIn (URL ou Identifiant)</label>
+        <label>LinkedIn</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-linkedin"></i>
           <input type="text" class="social-input" data-platform="linkedin" placeholder="Ex: in/mon-profil">
@@ -253,7 +338,7 @@
       </div>
 
       <div class="form-group">
-        <label>TikTok (Nom d'utilisateur)</label>
+        <label>TikTok</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-tiktok"></i>
           <input type="text" class="social-input" data-platform="tiktok" placeholder="Ex: @mon_pseudo">
@@ -261,7 +346,7 @@
       </div>
 
       <div class="form-group">
-        <label>Facebook (Page / Profil)</label>
+        <label>Facebook</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-facebook"></i>
           <input type="text" class="social-input" data-platform="facebook" placeholder="Ex: ma.page">
@@ -269,7 +354,7 @@
       </div>
 
       <div class="form-group">
-        <label>X / Twitter (Nom d'utilisateur)</label>
+        <label>X (Twitter)</label>
         <div class="input-with-icon">
           <i class="fa-brands fa-x-twitter"></i>
           <input type="text" class="social-input" data-platform="x" placeholder="Ex: mon_pseudo">
@@ -277,21 +362,22 @@
       </div>
 
       <div class="form-group">
-        <label>Site Web / Portfolio</label>
+        <label>Site Web</label>
         <div class="input-with-icon">
           <i class="fa-solid fa-globe"></i>
           <input type="url" class="social-input" data-platform="website" placeholder="Ex: https://mon-site.com">
         </div>
       </div>
 
+      <label style="margin-top: 20px;">Apparence du QR Code</label>
       <div class="color-picker-grid">
-        <div class="form-group">
-          <label>Couleur QR Code</label>
+        <div class="color-picker-wrapper">
           <input type="color" id="qr-color-dark" value="#0f172a">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Code</span>
         </div>
-        <div class="form-group">
-          <label>Fond QR Code</label>
+        <div class="color-picker-wrapper">
           <input type="color" id="qr-color-light" value="#ffffff">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Arrière-plan</span>
         </div>
       </div>
     </div>
@@ -299,12 +385,16 @@
     <!-- Preview & Export Side -->
     <div class="card preview-card">
       <div style="width: 100%;">
-        <h2><i class="fa-solid fa-qrcode"></i> Aperçu & QR Code</h2>
-        <div id="qr-output"></div>
+        <span class="preview-badge"><i class="fa-solid fa-bolt"></i> Aperçu en direct</span>
+        
+        <div class="qr-container">
+          <div id="qr-output"></div>
+        </div>
+
         <div class="social-links-list" id="links-preview"></div>
       </div>
 
-      <!-- Boutons d'exportation PNG / SVG / PDF -->
+      <!-- Export Buttons -->
       <div class="btn-group">
         <button id="download-png" class="btn btn-png">
           <i class="fa-solid fa-file-image"></i> Télécharger en PNG
@@ -364,7 +454,7 @@
       linksPreview.innerHTML = '';
 
       if (links.length === 0) {
-        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Remplissez au moins un champ pour voir l\'aperçu.</p>';
+        linksPreview.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Complétez un champ pour générer l\'aperçu.</p>';
       } else {
         links.forEach(item => {
           const a = document.createElement('a');
@@ -381,17 +471,15 @@
       qrOutput.innerHTML = '';
       new QRCode(qrOutput, {
         text: qrTarget,
-        width: 200,
-        height: 200,
+        width: 180,
+        height: 180,
         colorDark: qrColorDark.value,
         colorLight: qrColorLight.value,
         correctLevel: QRCode.CorrectLevel.H
       });
     }
 
-    // --- LOGIQUE DE TÉLÉCHARGEMENT ---
-
-    // 1. Export PNG
+    // Export Logic
     document.getElementById('download-png').addEventListener('click', () => {
       const img = qrOutput.querySelector('img');
       const canvas = qrOutput.querySelector('canvas');
@@ -400,12 +488,11 @@
       if (imageSrc) {
         const a = document.createElement('a');
         a.href = imageSrc;
-        a.download = 'qrcode_reseaux.png';
+        a.download = 'qrcode.png';
         a.click();
       }
     });
 
-    // 2. Export SVG (Convertit le Canvas en élément SVG vectoriel)
     document.getElementById('download-svg').addEventListener('click', () => {
       const canvas = qrOutput.querySelector('canvas');
       if (!canvas) return;
@@ -426,7 +513,6 @@
             const r = imgData.data[index];
             const g = imgData.data[index + 1];
             const b = imgData.data[index + 2];
-            // Si la couleur n'est pas blanche
             if (!(r > 240 && g > 240 && b > 240)) {
               svgString += `<rect x="${x}" y="${y}" width="1" height="1" fill="${qrColorDark.value}"/>`;
             }
@@ -439,12 +525,11 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'qrcode_vectoriel.svg';
+      a.download = 'qrcode.svg';
       a.click();
       URL.revokeObjectURL(url);
     });
 
-    // 3. Export PDF (Utilise jsPDF pour créer une fiche prête pour l'impression)
     document.getElementById('download-pdf').addEventListener('click', () => {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
@@ -453,29 +538,25 @@
       if (!canvas) return;
 
       const imgData = canvas.toDataURL('image/png');
-      const profileName = profileNameInput.value.trim() || "Mon Profil Social";
+      const profileName = profileNameInput.value.trim() || "Mon Profil Hub";
 
-      // Titre PDF
       doc.setFontSize(22);
       doc.setTextColor(15, 23, 42);
       doc.text(profileName, 105, 30, { align: "center" });
 
       doc.setFontSize(12);
       doc.setTextColor(100, 100, 100);
-      doc.text("Scannez le QR code pour accéder à tous mes profils sociaux", 105, 40, { align: "center" });
+      doc.text("Scannez le QR code pour accéder à tous mes réseaux", 105, 40, { align: "center" });
 
-      // Inserer l'image du QR code centrée
       doc.addImage(imgData, 'PNG', 55, 55, 100, 100);
 
-      // Pied de page
       doc.setFontSize(10);
-      doc.text("Généré via Hub QR Réseaux Sociaux", 105, 175, { align: "center" });
+      doc.text("Généré via QR Code Studio", 105, 175, { align: "center" });
 
-      // Télécharger
-      doc.save('qrcode_impression.pdf');
+      doc.save('qrcode.pdf');
     });
 
-    // Écouteurs d'événements
+    // Event Listeners
     socialInputs.forEach(input => input.addEventListener('input', updateApp));
     profileNameInput.addEventListener('input', updateApp);
     qrColorDark.addEventListener('input', updateApp);
